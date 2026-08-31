@@ -294,58 +294,88 @@ body {
 }
 
 .btn-menu {
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  padding: 10px 16px;
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  padding: 10px 16px 10px 14px;
+  color: #475569;
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  gap: 7px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  letter-spacing: 0.01em;
 }
 
-.btn-menu:hover,
+.btn-menu:hover {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(124, 58, 237, 0.25);
+  color: #6d28d9;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  transform: translateY(-1px);
+}
+
 .btn-menu.active {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(124, 58, 237, 0.2);
-  color: var(--primary);
-  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(124, 58, 237, 0.3);
+  color: #6d28d9;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15), inset 0 1px 0 rgba(255,255,255,1);
+}
+
+/* Ikon hamburger di kiri tombol Menu */
+.menu-btn-icon {
+  width: 15px;
+  height: 15px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.btn-menu:hover .menu-btn-icon,
+.btn-menu.active .menu-btn-icon {
+  opacity: 1;
 }
 
 .chevron-down {
-  width: 14px;
-  height: 14px;
-  transition: transform 0.25s ease;
+  width: 13px;
+  height: 13px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.6;
+}
+
+.btn-menu:hover .chevron-down,
+.btn-menu.active .chevron-down {
+  opacity: 1;
 }
 
 .btn-menu.active .chevron-down {
   transform: rotate(180deg);
 }
 
+/* Dropdown Card */
 .menu-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 14px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  min-width: 180px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.04),
+    0 16px 48px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(255,255,255,0.8) inset;
+  min-width: 200px;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(-8px) scale(0.97);
+  transform: translateY(-6px) scale(0.96);
+  transform-origin: top right;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-dropdown.open {
@@ -354,36 +384,90 @@ body {
   pointer-events: all;
 }
 
+/* Label kecil di atas dropdown */
+.menu-dropdown-label {
+  padding: 12px 16px 8px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+/* Divider */
+.menu-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0 12px;
+}
+
+/* Item Menu */
 .menu-item {
   width: 100%;
   background: none;
   border: none;
-  padding: 12px 16px;
+  padding: 11px 14px;
   font-family: var(--font-sans);
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--text-color);
+  color: #334155;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   text-align: left;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.menu-item:not(:last-child) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: background 0.12s ease, color 0.12s ease;
+  border-radius: 0;
+  margin: 2px 6px;
+  width: calc(100% - 12px);
+  border-radius: 10px;
 }
 
 .menu-item:hover {
-  background: rgba(124, 58, 237, 0.05);
-  color: var(--primary);
+  background: #f8fafc;
 }
 
-/* Kunci Browser item — merah saat hover */
+/* Ikon kontainer bulat per item */
+.menu-item-icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s ease;
+}
+
+/* Kunci Browser — merah */
+#menu-lock-btn .menu-item-icon-wrap {
+  background: rgba(239, 68, 68, 0.08);
+}
+#menu-lock-btn:hover .menu-item-icon-wrap {
+  background: rgba(239, 68, 68, 0.14);
+}
+#menu-lock-btn {
+  color: #64748b;
+}
 #menu-lock-btn:hover {
-  background: rgba(239, 68, 68, 0.05);
+  background: rgba(239, 68, 68, 0.04);
   color: #ef4444;
+}
+
+/* Ubah Kata Sandi — ungu */
+#menu-changepw-btn .menu-item-icon-wrap {
+  background: rgba(124, 58, 237, 0.08);
+}
+#menu-changepw-btn:hover .menu-item-icon-wrap {
+  background: rgba(124, 58, 237, 0.14);
+}
+#menu-changepw-btn {
+  color: #64748b;
+}
+#menu-changepw-btn:hover {
+  background: rgba(124, 58, 237, 0.04);
+  color: #7c3aed;
 }
 
 .menu-item-icon {
@@ -391,6 +475,26 @@ body {
   height: 15px;
   flex-shrink: 0;
 }
+
+/* Icon warna ikut parent saat hover */
+#menu-lock-btn .menu-item-icon { stroke: #ef4444; }
+#menu-changepw-btn .menu-item-icon { stroke: #7c3aed; }
+
+/* Teks nama item */
+.menu-item-label {
+  font-weight: 500;
+}
+
+/* Area bawah dropdown — versi */
+.menu-footer {
+  padding: 8px 14px 10px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: #cbd5e1;
+  text-align: right;
+}
+
+
 
 /* ---- Modal Ubah Kata Sandi ---- */
 

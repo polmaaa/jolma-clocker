@@ -36,27 +36,44 @@
     <!-- Dropdown Menu -->
     <div class="menu-wrapper" id="menu-wrapper">
       <button id="menu-btn" class="btn-menu" title="Menu">
+        <!-- hamburger icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="menu-btn-icon">
+          <line x1="3" y1="7" x2="21" y2="7"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="17" x2="21" y2="17"></line>
+        </svg>
         Menu
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </button>
+
       <div id="menu-dropdown" class="menu-dropdown">
+        <div class="menu-dropdown-label">Pengaturan</div>
+
         <button id="menu-lock-btn" class="menu-item">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          Kunci Browser
+          <span class="menu-item-icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </span>
+          <span class="menu-item-label">Kunci Browser</span>
         </button>
+
+        <div class="menu-divider"></div>
+
         <button id="menu-changepw-btn" class="menu-item">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0"></path>
-            <line x1="12" y1="16" x2="12" y2="16.01"></line>
-          </svg>
-          Ubah Kata Sandi
+          <span class="menu-item-icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </span>
+          <span class="menu-item-label">Ubah Kata Sandi</span>
         </button>
+
+        <div class="menu-footer">Krompol Locker v0.2.1</div>
       </div>
     </div>
   </div>
