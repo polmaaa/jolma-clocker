@@ -16,11 +16,62 @@ const searchInput = document.getElementById('search-input');
 const searchSection = document.getElementById('search-section');
 const topBar = document.getElementById('unlocked-top-bar');
 
+// Update Toast Elements
+const updateToast       = document.getElementById('update-toast');
+const updateToastVer    = document.getElementById('update-toast-version');
+const updateToastLink   = document.getElementById('update-toast-link');
+const updateToastClose  = document.getElementById('update-toast-close');
+
+// ---- Update Toast Logic ------------------------------------------------
+
+function showUpdateToast(version, url) {
+  updateToastVer.textContent  = `Versi ${version} tersedia`;
+  updateToastLink.href        = url || 'https://github.com/polmaaa/polock';
+  updateToast.classList.add('visible');
+}
+
+function hideUpdateToast() {
+  updateToast.classList.remove('visible');
+}
+
+// Tombol tutup toast
+updateToastClose.addEventListener('click', hideUpdateToast);
+
+// Cek storage saat halaman dimuat
+function checkUpdateStorage() {
+  chrome.storage.local.get(['updateAvailable', 'updateVersion', 'updateUrl'], (data) => {
+    if (data.updateAvailable) {
+      showUpdateToast(data.updateVersion, data.updateUrl);
+    } else {
+      hideUpdateToast();
+    }
+  });
+}
+
+// Dengarkan perubahan storage secara real-time
+// (misal: background.js baru saja menemukan update → tampilkan langsung)
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'local' && changes.updateAvailable) {
+    if (changes.updateAvailable.newValue) {
+      chrome.storage.local.get(['updateVersion', 'updateUrl'], (data) => {
+        showUpdateToast(data.updateVersion, data.updateUrl);
+      });
+    } else {
+      hideUpdateToast();
+    }
+  }
+});
+
+// ---- Initialize view state on load ----------------------------------------
+
 // Initialize view state on load
 document.addEventListener('DOMContentLoaded', () => {
   // Start Clock and Date immediately
   updateClockAndDate();
   setInterval(updateClockAndDate, 1000);
+
+  // Cek status update dari storage
+  checkUpdateStorage();
 
   // Verify session lock state
   const storageSession = chrome.storage.session || chrome.storage.local;
@@ -29,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLockerState(isUnlocked);
   });
 });
+
 
 // Helper: Transitions elements between locked and unlocked views
 function updateLockerState(isUnlocked) {

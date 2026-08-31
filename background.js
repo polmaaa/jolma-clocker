@@ -26,6 +26,20 @@ const VERSION_CHECK_URL =
 const UPDATE_ALARM_NAME = 'krompol-update-check';
 const UPDATE_CHECK_INTERVAL_HOURS = 6; // Cek setiap 6 jam
 
+// ---- Pastikan alarm selalu terdaftar (jaga-jaga jika service worker restart) ----
+// Ini berjalan setiap kali service worker aktif/bangun
+chrome.alarms.get(UPDATE_ALARM_NAME, (alarm) => {
+  if (!alarm) {
+    chrome.alarms.create(UPDATE_ALARM_NAME, {
+      delayInMinutes: 0.1, // ~6 detik — cek hampir langsung
+      periodInMinutes: UPDATE_CHECK_INTERVAL_HOURS * 60
+    });
+  }
+});
+
+// Cek update segera saat service worker pertama aktif
+checkForUpdates();
+
 // Bandingkan dua string versi semver (X.Y.Z)
 // Returns true jika remoteVersion lebih baru dari localVersion
 function isNewerVersion(remoteVersion, localVersion) {
