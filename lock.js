@@ -92,7 +92,8 @@ lockForm.addEventListener('submit', (e) => {
       // Write the unlock state directly to session storage
       const storageSession = chrome.storage.session || chrome.storage.local;
       storageSession.set({ unlocked: true }, () => {
-        updateLockerState(true);
+        // Reload halaman agar transisi ke dashboard lebih bersih
+        window.location.reload();
       });
     } else {
       // Shake animation and warning on invalid password
