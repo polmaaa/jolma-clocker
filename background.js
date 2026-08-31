@@ -15,6 +15,59 @@ function releaseScreenAwake() {
   chrome.power.releaseKeepAwake();
 }
 
+// ============================================================
+// AUTO-UPDATE CHECKER
+// Mengambil version.json dari GitHub dan membandingkan dengan
+// versi lokal yang ada di manifest.json
+// ============================================================
+
+const VERSION_CHECK_URL =
+  'https://raw.githubusercontent.com/polmaaa/polock/main/version.json';
+const UPDATE_ALARM_NAME = 'krompol-update-check';
+const UPDATE_CHECK_INTERVAL_HOURS = 6; // Cek setiap 6 jam
+
+// Bandingkan dua string versi semver (X.Y.Z)
+// Returns true jika remoteVersion lebih baru dari localVersion
+function isNewerVersion(remoteVersion, localVersion) {
+  const remote = remoteVersion.split('.').map(Number);
+  const local  = localVersion.split('.').map(Number);
+  for (let i = 0; i < Math.max(remote.length, local.length); i++) {
+    const r = remote[i] || 0;
+    const l = local[i] || 0;
+    if (r > l) return true;
+    if (r < l) return false;
+  }
+  return false;
+}
+
+// Ambil version.json dari GitHub dan simpan status update ke storage
+async function checkForUpdates() {
+  try {
+    const response = await fetch(VERSION_CHECK_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const remoteData = await response.json();
+    const remoteVersion = remoteData.version;
+    const localVersion  = chrome.runtime.getManifest().version;
+
+    if (isNewerVersion(remoteVersion, localVersion)) {
+      // Ada versi baru! Simpan info update ke storage
+      chrome.storage.local.set({
+        updateAvailable: true,
+        updateVersion: remoteVersion,
+        updateNotes: remoteData.releaseNotes || '',
+        updateUrl: remoteData.downloadUrl || 'https://github.com/polmaaa/polock'
+      });
+    } else {
+      // Sudah versi terbaru, hapus flag update
+      chrome.storage.local.set({ updateAvailable: false });
+    }
+  } catch (error) {
+    // Gagal fetch (offline/error) — tidak lakukan apa-apa, coba lagi nanti
+    console.warn('[Krompol Locker] Gagal cek update:', error.message);
+  }
+}
+
 // Helper: Check if the URL is an internal Chrome or restricted browser URL
 function isInternalChromeUrl(url) {
   if (!url) return false;
@@ -91,15 +144,23 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   }
 });
 
-// Perform browser lockdown on startup
+// Perform browser lockdown on startup + cek update
 chrome.runtime.onStartup.addListener(() => {
   keepScreenAwake(); // Cegah sleep saat Chrome dibuka
   lockBrowser();
+  checkForUpdates(); // Cek update saat browser dibuka
 });
 
-// Perform browser lockdown on installation and set default password
+// Perform browser lockdown on installation, set default password, setup alarm
 chrome.runtime.onInstalled.addListener(() => {
   keepScreenAwake(); // Cegah sleep sejak ekstensi pertama kali dimuat
+
+  // Set up alarm periodik untuk cek update setiap 6 jam
+  chrome.alarms.create(UPDATE_ALARM_NAME, {
+    delayInMinutes: 1,                          // Cek pertama kali 1 menit setelah install
+    periodInMinutes: UPDATE_CHECK_INTERVAL_HOURS * 60
+  });
+
   chrome.storage.local.get('password', (data) => {
     if (!data || !data.password) {
       chrome.storage.local.set({ password: 'ganteng' }, () => {
@@ -109,6 +170,13 @@ chrome.runtime.onInstalled.addListener(() => {
       lockBrowser();
     }
   });
+});
+
+// Alarm listener: jalankan checkForUpdates setiap alarm berbunyi
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === UPDATE_ALARM_NAME) {
+    checkForUpdates();
+  }
 });
 
 // Message listener for password check, manual locking, and password updates
@@ -151,6 +219,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     keepScreenAwake();
     lockBrowser();
     sendResponse({ success: true });
+    return true;
+  }
+
+  if (message.action === 'checkUpdateNow') {
+    // Panggilan manual dari popup untuk cek update sekarang
+    checkForUpdates().then(() => {
+      sendResponse({ success: true });
+    });
     return true;
   }
 });
