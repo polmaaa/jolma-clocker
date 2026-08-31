@@ -1,17 +1,19 @@
 {
   "manifest_version": 3,
   "name": "Krompol Locker",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Mengamankan aktivitas browser Chrome Anda dengan proteksi kata sandi.",
   "permissions": [
     "storage",
     "tabs",
     "webNavigation",
     "power",
-    "alarms"
+    "alarms",
+    "downloads"
   ],
   "host_permissions": [
-    "https://raw.githubusercontent.com/*"
+    "https://raw.githubusercontent.com/*",
+    "https://github.com/*"
   ],
   "background": {
     "service_worker": "background.js"

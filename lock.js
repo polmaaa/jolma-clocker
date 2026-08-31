@@ -36,11 +36,15 @@ const updateToastVer    = document.getElementById('update-toast-version');
 const updateToastLink   = document.getElementById('update-toast-link');
 const updateToastClose  = document.getElementById('update-toast-close');
 
+
 // ---- Update Toast Logic ------------------------------------------------
 
+
 function showUpdateToast(version, url) {
-  updateToastVer.textContent  = `Versi ${version} tersedia`;
-  updateToastLink.href        = url || 'https://github.com/polmaaa/polock';
+  updateToastVer.textContent = `Versi ${version} tersedia`;
+  // Simpan URL dan versi untuk keperluan download
+  updateToast.dataset.downloadUrl = url || 'https://github.com/polmaaa/polock/archive/refs/heads/main.zip';
+  updateToast.dataset.version = version;
   updateToast.classList.add('visible');
 }
 
@@ -51,7 +55,38 @@ function hideUpdateToast() {
 // Tombol tutup toast
 updateToastClose.addEventListener('click', hideUpdateToast);
 
-// Cek storage saat halaman dimuat
+// Tombol unduh — download in-page via chrome.downloads (tidak redirect)
+updateToastLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  const version = updateToast.dataset.version || 'latest';
+  const zipUrl  = 'https://github.com/polmaaa/polock/archive/refs/heads/main.zip';
+
+  // Tampilkan status downloading di tombol
+  updateToastLink.textContent = '⏳ Mengunduh...';
+  updateToastLink.style.pointerEvents = 'none';
+
+  chrome.downloads.download({
+    url: zipUrl,
+    filename: `krompol-locker-v${version}.zip`,
+    saveAs: false   // Langsung simpan ke folder Downloads
+  }, (downloadId) => {
+    if (chrome.runtime.lastError || !downloadId) {
+      updateToastLink.textContent = '✗ Gagal';
+      setTimeout(() => {
+        updateToastLink.textContent = 'Unduh';
+        updateToastLink.style.pointerEvents = '';
+      }, 2000);
+    } else {
+      updateToastLink.textContent = '✓ Tersimpan!';
+      setTimeout(() => {
+        updateToastLink.textContent = 'Unduh';
+        updateToastLink.style.pointerEvents = '';
+      }, 3000);
+    }
+  });
+});
+
+// Cek storage update — HANYA dipanggil saat unlocked
 function checkUpdateStorage() {
   chrome.storage.local.get(['updateAvailable', 'updateVersion', 'updateUrl'], (data) => {
     if (data.updateAvailable) {
@@ -63,16 +98,22 @@ function checkUpdateStorage() {
 }
 
 // Dengarkan perubahan storage secara real-time
-// (misal: background.js baru saja menemukan update → tampilkan langsung)
+// Hanya tampilkan toast jika halaman sudah dalam state unlocked
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === 'local' && changes.updateAvailable) {
-    if (changes.updateAvailable.newValue) {
-      chrome.storage.local.get(['updateVersion', 'updateUrl'], (data) => {
-        showUpdateToast(data.updateVersion, data.updateUrl);
-      });
-    } else {
-      hideUpdateToast();
-    }
+    // Cek dulu apakah saat ini posisi unlocked
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.get('unlocked', (session) => {
+      const isUnlocked = !!(session && session.unlocked);
+      if (!isUnlocked) return; // Jangan tampilkan saat terkunci
+      if (changes.updateAvailable.newValue) {
+        chrome.storage.local.get(['updateVersion', 'updateUrl'], (data) => {
+          showUpdateToast(data.updateVersion, data.updateUrl);
+        });
+      } else {
+        hideUpdateToast();
+      }
+    });
   }
 });
 
@@ -84,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClockAndDate();
   setInterval(updateClockAndDate, 1000);
 
-  // Cek status update dari storage
-  checkUpdateStorage();
+  // CATATAN: checkUpdateStorage() dipanggil di dalam updateLockerState(true)
+  // sehingga toast hanya muncul saat posisi terbuka
 
   // Verify session lock state
   const storageSession = chrome.storage.session || chrome.storage.local;
@@ -94,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLockerState(isUnlocked);
   });
 });
+
 
 
 // Helper: Transitions elements between locked and unlocked views
@@ -106,19 +148,23 @@ function updateLockerState(isUnlocked) {
       // Transition to simple unlocked search dashboard
       lockCard.classList.remove('active');
       errorMessage.classList.remove('visible');
-      
+
       // Delay showing search elements slightly for smooth transition
       setTimeout(() => {
         searchSection.classList.add('active');
         topBar.classList.add('active');
         searchInput.focus();
       }, 200);
+
+      // Cek & tampilkan toast update hanya saat terbuka
+      checkUpdateStorage();
     }
   } else {
-    // Transition to locked state
+    // Transition to locked state — sembunyikan toast update
+    hideUpdateToast();
     searchSection.classList.remove('active');
     topBar.classList.remove('active');
-    
+
     setTimeout(() => {
       lockCard.classList.add('active');
       passwordInput.value = '';
@@ -126,6 +172,7 @@ function updateLockerState(isUnlocked) {
     }, 100);
   }
 }
+
 
 // Toggle password visibility
 togglePasswordBtn.addEventListener('click', () => {
