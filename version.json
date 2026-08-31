@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
-  "releaseNotes": "Rilis perdana Krompol Locker v.0.1.0 dengan fitur layar kunci minimalis, tema adaptif berdasarkan waktu, dan manajemen kata sandi lokal.",
+  "version": "0.2.0",
+  "releaseNotes": "v0.2.0 — Tombol Kunci Browser diganti menjadi dropdown Menu yang berisi opsi Kunci Browser dan Ubah Kata Sandi langsung dari halaman tab.",
   "downloadUrl": "https://github.com/polmaaa/polock"
 }

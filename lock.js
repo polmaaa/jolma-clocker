@@ -10,11 +10,25 @@ const passwordInput = document.getElementById('password-input');
 const togglePasswordBtn = document.getElementById('toggle-password');
 const eyeIcon = document.getElementById('eye-icon');
 const errorMessage = document.getElementById('error-message');
-const lockBtn = document.getElementById('lock-btn');
-const searchForm = document.getElementById('search-form');
-const searchInput = document.getElementById('search-input');
-const searchSection = document.getElementById('search-section');
-const topBar = document.getElementById('unlocked-top-bar');
+const searchForm      = document.getElementById('search-form');
+const searchInput     = document.getElementById('search-input');
+const searchSection   = document.getElementById('search-section');
+const topBar          = document.getElementById('unlocked-top-bar');
+
+// Menu dropdown elements
+const menuBtn         = document.getElementById('menu-btn');
+const menuDropdown    = document.getElementById('menu-dropdown');
+const menuLockBtn     = document.getElementById('menu-lock-btn');
+const menuChangePwBtn = document.getElementById('menu-changepw-btn');
+
+// Modal "Ubah Kata Sandi" elements
+const modalOverlay      = document.getElementById('changepw-modal-overlay');
+const modalCloseBtn     = document.getElementById('modal-close-btn');
+const modalChangePwForm = document.getElementById('modal-changepw-form');
+const modalOldPw        = document.getElementById('modal-old-password');
+const modalNewPw        = document.getElementById('modal-new-password');
+const modalConfirmPw    = document.getElementById('modal-confirm-password');
+const modalFeedback     = document.getElementById('modal-feedback');
 
 // Update Toast Elements
 const updateToast       = document.getElementById('update-toast');
@@ -169,9 +183,93 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   }
 });
 
-// Manual locking button
-lockBtn.addEventListener('click', () => {
+// ---- Menu Dropdown -------------------------------------------------------
+
+// Toggle dropdown buka/tutup
+menuBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  menuDropdown.classList.toggle('open');
+  menuBtn.classList.toggle('active');
+});
+
+// Tutup dropdown jika klik di luar area menu
+document.addEventListener('click', (e) => {
+  if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+    closeDropdown();
+  }
+});
+
+function closeDropdown() {
+  menuDropdown.classList.remove('open');
+  menuBtn.classList.remove('active');
+}
+
+// Opsi: Kunci Browser
+menuLockBtn.addEventListener('click', () => {
+  closeDropdown();
   chrome.runtime.sendMessage({ action: 'lockBrowser' });
+});
+
+// Opsi: Ubah Kata Sandi → buka modal
+menuChangePwBtn.addEventListener('click', () => {
+  closeDropdown();
+  openModal();
+});
+
+// ---- Modal Ubah Kata Sandi -----------------------------------------------
+
+function openModal() {
+  modalOverlay.classList.add('open');
+  modalOldPw.focus();
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  modalOldPw.value = '';
+  modalNewPw.value = '';
+  modalConfirmPw.value = '';
+  modalFeedback.className = 'modal-feedback';
+  modalFeedback.textContent = '';
+}
+
+// Tutup modal via tombol ✕
+modalCloseBtn.addEventListener('click', closeModal);
+
+// Tutup modal jika klik di luar modal-card
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+// Submit form ubah kata sandi
+modalChangePwForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const oldPw     = modalOldPw.value;
+  const newPw     = modalNewPw.value;
+  const confirmPw = modalConfirmPw.value;
+
+  if (newPw !== confirmPw) {
+    modalFeedback.className = 'modal-feedback error';
+    modalFeedback.textContent = 'Konfirmasi kata sandi tidak sesuai!';
+    return;
+  }
+
+  chrome.storage.local.get('password', (data) => {
+    const currentPassword = (data && data.password) || 'ganteng';
+    if (oldPw === currentPassword) {
+      chrome.storage.local.set({ password: newPw }, () => {
+        modalFeedback.className = 'modal-feedback success';
+        modalFeedback.textContent = 'Kata sandi berhasil diperbarui!';
+        modalOldPw.value = '';
+        modalNewPw.value = '';
+        modalConfirmPw.value = '';
+        // Tutup modal otomatis setelah 1.5 detik
+        setTimeout(closeModal, 1500);
+      });
+    } else {
+      modalFeedback.className = 'modal-feedback error';
+      modalFeedback.textContent = 'Kata sandi lama salah!';
+    }
+  });
 });
 
 // Dashboard: Handle search bar

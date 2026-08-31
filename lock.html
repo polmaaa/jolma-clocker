@@ -33,13 +33,49 @@
 
   <!-- Unlocked Top Bar -->
   <div id="unlocked-top-bar" class="top-bar">
-    <button id="lock-btn" class="btn-lock" title="Kunci Browser">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-lock-icon">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-      </svg>
-      Kunci Browser
-    </button>
+    <!-- Dropdown Menu -->
+    <div class="menu-wrapper" id="menu-wrapper">
+      <button id="menu-btn" class="btn-menu" title="Menu">
+        Menu
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron-down">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+      <div id="menu-dropdown" class="menu-dropdown">
+        <button id="menu-lock-btn" class="menu-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Kunci Browser
+        </button>
+        <button id="menu-changepw-btn" class="menu-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0"></path>
+            <line x1="12" y1="16" x2="12" y2="16.01"></line>
+          </svg>
+          Ubah Kata Sandi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ubah Kata Sandi -->
+  <div id="changepw-modal-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Ubah Kata Sandi</h3>
+        <button id="modal-close-btn" class="modal-close" title="Tutup">✕</button>
+      </div>
+      <form id="modal-changepw-form" onsubmit="return false;">
+        <input type="password" id="modal-old-password" placeholder="Kata sandi lama..." required autocomplete="off">
+        <input type="password" id="modal-new-password" placeholder="Kata sandi baru..." required autocomplete="off">
+        <input type="password" id="modal-confirm-password" placeholder="Konfirmasi kata sandi baru..." required autocomplete="off">
+        <div id="modal-feedback" class="modal-feedback"></div>
+        <button type="submit" class="btn-modal-submit">Simpan Kata Sandi</button>
+      </form>
+    </div>
   </div>
 
   <div class="container">
