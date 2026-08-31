@@ -1,5 +1,20 @@
 // background.js
 
+// ============================================================
+// KEEP AWAKE: Mencegah layar/laptop masuk sleep atau lock screen
+// Menggunakan chrome.power API (permission: "power")
+// ============================================================
+
+// Aktifkan mode keep-awake: layar tetap menyala, tidak sleep
+function keepScreenAwake() {
+  chrome.power.requestKeepAwake('display');
+}
+
+// Lepaskan mode keep-awake: kembalikan kontrol sleep ke OS
+function releaseScreenAwake() {
+  chrome.power.releaseKeepAwake();
+}
+
 // Helper: Check if the URL is an internal Chrome or restricted browser URL
 function isInternalChromeUrl(url) {
   if (!url) return false;
@@ -78,11 +93,13 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 
 // Perform browser lockdown on startup
 chrome.runtime.onStartup.addListener(() => {
+  keepScreenAwake(); // Cegah sleep saat Chrome dibuka
   lockBrowser();
 });
 
 // Perform browser lockdown on installation and set default password
 chrome.runtime.onInstalled.addListener(() => {
+  keepScreenAwake(); // Cegah sleep sejak ekstensi pertama kali dimuat
   chrome.storage.local.get('password', (data) => {
     if (!data || !data.password) {
       chrome.storage.local.set({ password: 'ganteng' }, () => {
@@ -102,6 +119,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       if (message.password === currentPassword) {
         const storageSession = chrome.storage.session || chrome.storage.local;
         storageSession.set({ unlocked: true }, () => {
+          // Saat berhasil dibuka, lepaskan keep-awake agar OS
+          // bisa mengatur sleep secara normal saat pengguna aktif
+          releaseScreenAwake();
           sendResponse({ success: true });
         });
       } else {
@@ -126,6 +146,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'lockBrowser') {
+    // Saat dikunci kembali, aktifkan keep-awake agar layar kunci
+    // tetap terlihat dan tidak masuk sleep/screensaver OS
+    keepScreenAwake();
     lockBrowser();
     sendResponse({ success: true });
     return true;
