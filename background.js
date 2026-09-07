@@ -144,11 +144,50 @@ function lockBrowser() {
   });
 }
 
+// Programmatically injects content.js into all open web tabs
+function injectContentScriptIntoAllTabs() {
+  if (!chrome.scripting) return;
+  chrome.tabs.query({}, (tabs) => {
+    for (const tab of tabs) {
+      if (tab.id && tab.url && (tab.url.startsWith('http://') || tab.url.startsWith('https://') || tab.url.startsWith('file://'))) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['content.js']
+        }).catch(() => {});
+      }
+    }
+  });
+}
+
 // Intercept events when tabs are created or updated
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.url) {
     handleTabState(tabId, changeInfo.url);
   }
+  if (changeInfo.status === 'complete') {
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.get('unlocked', (session) => {
+      if (session && session.unlocked) {
+        if (tab.url && (tab.url.startsWith('http://') || tab.url.startsWith('https://') || tab.url.startsWith('file://'))) {
+          if (chrome.scripting) {
+            chrome.scripting.executeScript({
+              target: { tabId: tabId },
+              files: ['content.js']
+            }).catch(() => {});
+          }
+        }
+      }
+    });
+  }
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  const storageSession = chrome.storage.session || chrome.storage.local;
+  storageSession.get('unlocked', (session) => {
+    if (session && session.unlocked) {
+      injectContentScriptIntoAllTabs();
+    }
+  });
 });
 
 chrome.tabs.onCreated.addListener((tab) => {
@@ -211,6 +250,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           // Saat berhasil dibuka, lepaskan keep-awake agar OS
           // bisa mengatur sleep secara normal saat pengguna aktif
           releaseScreenAwake();
+          injectContentScriptIntoAllTabs();
           sendResponse({ success: true });
         });
       } else {

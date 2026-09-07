@@ -1,6 +1,15 @@
 // content.js - Injects floating lock button at bottom-right on all open tabs when browser is unlocked
 
 (function () {
+  // Prevent duplicate instances in the same frame
+  if (window.__krompolLockScriptInjected) {
+    if (typeof window.__krompolCheckAndRender === 'function') {
+      window.__krompolCheckAndRender();
+    }
+    return;
+  }
+  window.__krompolLockScriptInjected = true;
+
   const HOST_ID = 'krompol-floating-lock-host';
 
   // Only inject in top window (not inside iframes)
@@ -26,6 +35,7 @@
       fallbackStorageCheck();
     }
   }
+  window.__krompolCheckAndRender = checkAndRender;
 
   function fallbackStorageCheck() {
     try {
@@ -71,6 +81,11 @@
       pointer-events: auto !important;
       display: block !important;
       user-select: none !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transform: none !important;
     `;
 
     const shadow = host.attachShadow({ mode: 'open' });
@@ -88,6 +103,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        width: max-content;
       }
 
       .fab-btn {
@@ -95,7 +111,7 @@
         align-items: center;
         gap: 8px;
         height: 46px;
-        padding: 0 16px 0 13px;
+        padding: 0 18px 0 14px;
         background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%);
         color: #ffffff;
         border: 1px solid rgba(255, 255, 255, 0.25);
@@ -208,13 +224,18 @@
       }
     });
 
-    const mountTarget = document.body || document.documentElement;
-    if (mountTarget) {
-      mountTarget.appendChild(host);
-    } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        (document.body || document.documentElement).appendChild(host);
-      });
+    // Mount to documentElement so it's guaranteed to attach even before body is ready
+    const mount = () => {
+      const root = document.documentElement || document.body;
+      if (root && !document.getElementById(HOST_ID)) {
+        root.appendChild(host);
+      }
+    };
+
+    mount();
+    if (!host.parentElement) {
+      window.addEventListener('DOMContentLoaded', mount);
+      window.addEventListener('load', mount);
     }
   }
 
@@ -225,26 +246,12 @@
     }
   }
 
-  // Run initial check
+  // Run initial check immediately
+  checkAndRender();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', checkAndRender);
-  } else {
-    checkAndRender();
   }
 
   // Periodic check to ensure button stays mounted on dynamic SPA websites
-  setInterval(() => {
-    try {
-      chrome.runtime.sendMessage({ action: 'getLockState' }, (res) => {
-        if (chrome.runtime.lastError) return;
-        if (res && res.unlocked) {
-          if (!document.getElementById(HOST_ID)) {
-            renderFloatingButton();
-          }
-        } else {
-          removeFloatingButton();
-        }
-      });
-    } catch (e) {}
-  }, 2500);
+  setInterval(checkAndRender, 2000);
 })();

@@ -9,7 +9,8 @@
     "webNavigation",
     "power",
     "alarms",
-    "downloads"
+    "downloads",
+    "scripting"
   ],
   "host_permissions": [
     "<all_urls>"
