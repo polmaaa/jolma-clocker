@@ -131,18 +131,21 @@ function handleTabState(tabId, url) {
   });
 }
 
-// Locks the browser session, enters Fullscreen, and redirects all open tabs
-function lockBrowser() {
+// Locks the browser session and redirects all open tabs
+// enterFullscreen parameter determines if the window should enter fullscreen (only true when user clicks lock button)
+function lockBrowser(enterFullscreen = false) {
   const storageSession = chrome.storage.session || chrome.storage.local;
   storageSession.set({ unlocked: false }, () => {
     chrome.storage.local.set({ unlocked: false });
 
-    // Masuk mode Fullscreen otomatis untuk semua jendela browser normal
-    chrome.windows.getAll({ windowTypes: ['normal'] }, (windows) => {
-      for (const win of windows) {
-        chrome.windows.update(win.id, { state: 'fullscreen' }).catch(() => {});
-      }
-    });
+    // Masuk mode Fullscreen otomatis HANYA jika dipicu oleh klik tombol gembok
+    if (enterFullscreen) {
+      chrome.windows.getAll({ windowTypes: ['normal'] }, (windows) => {
+        for (const win of windows) {
+          chrome.windows.update(win.id, { state: 'fullscreen' }).catch(() => {});
+        }
+      });
+    }
 
     chrome.tabs.query({}, (tabs) => {
       for (const tab of tabs) {
@@ -211,10 +214,10 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   }
 });
 
-// Perform browser lockdown on startup + cek update
+// Perform browser lockdown on startup + cek update (tanpa paksa fullscreen)
 chrome.runtime.onStartup.addListener(() => {
   keepScreenAwake(); // Cegah sleep saat Chrome dibuka
-  lockBrowser();
+  lockBrowser(false);
   checkForUpdates(); // Cek update saat browser dibuka
 });
 
@@ -231,10 +234,10 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get('password', (data) => {
     if (!data || !data.password) {
       chrome.storage.local.set({ password: 'ganteng' }, () => {
-        lockBrowser();
+        lockBrowser(false);
       });
     } else {
-      lockBrowser();
+      lockBrowser(false);
     }
   });
 });
@@ -283,10 +286,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'lockBrowser') {
-    // Saat dikunci kembali, aktifkan keep-awake agar layar kunci
-    // tetap terlihat dan tidak masuk sleep/screensaver OS
+    // Saat tombol gembok ditekan, aktifkan keep-awake dan MASUK FULLSCREEN
     keepScreenAwake();
-    lockBrowser();
+    lockBrowser(true);
     sendResponse({ success: true });
     return true;
   }

@@ -117,6 +117,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   }
 });
 
+// Synchronous state tracking for instant event blocking
+let isCurrentlyUnlocked = false;
+
 // ---- Initialize view state on load ----------------------------------------
 
 // Initialize view state on load
@@ -136,10 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-
-
 // Helper: Transitions elements between locked and unlocked views
 function updateLockerState(isUnlocked) {
+  isCurrentlyUnlocked = !!isUnlocked;
+
   if (isUnlocked) {
     // Release keyboard lock & restore window state
     releaseKeyboardLock();
@@ -180,60 +183,120 @@ function updateLockerState(isUnlocked) {
   }
 }
 
-// ---- Keyboard & Fullscreen Security Guard (Active when locked) ----
+// ---- Synchronous Keyboard & Fullscreen Security Guard (Active when locked) ----
 
-// 1. Block prohibited shortcut keys on lock screen
-window.addEventListener('keydown', (e) => {
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.get('unlocked', (session) => {
-    const isUnlocked = !!(session && session.unlocked);
-    if (isUnlocked) return; // Allow normal keys when unlocked
+function isKeyProhibited(e) {
+  if (isCurrentlyUnlocked) return false;
 
-    // List of blocked keys/shortcuts on lock screen
-    const isF11 = e.key === 'F11';
-    const isEscape = e.key === 'Escape';
-    const isF12 = e.key === 'F12';
-    const isDevTools = (e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c');
-    const isViewSource = (e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u');
-    const isCloseTab = (e.ctrlKey || e.metaKey) && (e.key === 'W' || e.key === 'w' || e.key === 'F4');
-    const isNewTab = (e.ctrlKey || e.metaKey) && (e.key === 'T' || e.key === 't' || e.key === 'N' || e.key === 'n');
-    const isHistoryOrDownloads = (e.ctrlKey || e.metaKey) && (e.key === 'H' || e.key === 'h' || e.key === 'J' || e.key === 'j');
-    const isNavigation = e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Home');
+  const key = e.key;
+  const code = e.code;
+  const target = e.target;
+  const isInput = target && target.id === 'password-input';
 
-    if (isF11 || isEscape || isF12 || isDevTools || isViewSource || isCloseTab || isNewTab || isHistoryOrDownloads || isNavigation) {
-      e.preventDefault();
-      e.stopPropagation();
+  // 1. Block Escape (mencegah keluar dari Fullscreen)
+  if (key === 'Escape' || code === 'Escape') return true;
+
+  // 2. Block Tab & Alt+Tab (mencegah berpindah fokus/tab)
+  if (key === 'Tab' || code === 'Tab') return true;
+
+  // 3. Block all Function Keys F1 - F12 (F11 Fullscreen toggle, F12 DevTools, F5 Refresh, etc.)
+  if (key && /^F([1-9]|1[0-2])$/.test(key)) return true;
+
+  // 4. Block ALL Alt combinations (Alt+Tab, Alt+F4, Alt+Left/Right, Alt+Home, Alt+Space, Alt+D, dll)
+  if (e.altKey || key === 'Alt' || code === 'AltLeft' || code === 'AltRight') {
+    return true;
+  }
+
+  // 5. Block Ctrl / Command (Meta) combinations
+  if (e.ctrlKey || e.metaKey) {
+    // Izinkan clipboard standar (Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X) HANYA di dalam input password
+    if (isInput && !e.shiftKey && !e.altKey && ['a', 'c', 'v', 'x', 'A', 'C', 'V', 'X'].includes(key)) {
       return false;
     }
-  });
+    // Blokir semua shortcut Ctrl lainnya (Ctrl+W tutup tab, Ctrl+T tab baru, Ctrl+N jendela baru, Ctrl+Shift+I inspect, Ctrl+U view source, Ctrl+R reload, dll)
+    return true;
+  }
+
+  // 6. Jika pengguna mengetik karakter normal di luar kotak input, otomatis arahkan fokus ke password
+  if (!isInput && key && key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    if (passwordInput) {
+      passwordInput.focus();
+    }
+  }
+
+  return false;
+}
+
+// Intercept keydown in capture phase (synchronous)
+window.addEventListener('keydown', (e) => {
+  if (isKeyProhibited(e)) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    if (passwordInput && document.activeElement !== passwordInput) {
+      passwordInput.focus();
+    }
+    return false;
+  }
 }, true);
 
-// 2. Disable right-click context menu on lock screen
+// Intercept keyup in capture phase (synchronous)
+window.addEventListener('keyup', (e) => {
+  if (isKeyProhibited(e)) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    return false;
+  }
+}, true);
+
+// Intercept keypress in capture phase (synchronous)
+window.addEventListener('keypress', (e) => {
+  if (isKeyProhibited(e)) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    return false;
+  }
+}, true);
+
+// Disable right-click context menu synchronously on lock screen
 document.addEventListener('contextmenu', (e) => {
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.get('unlocked', (session) => {
-    if (!session || !session.unlocked) {
-      e.preventDefault();
+  if (!isCurrentlyUnlocked) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+}, true);
+
+// Keep focus trapped on password input when locked
+document.addEventListener('click', () => {
+  if (!isCurrentlyUnlocked) {
+    if (passwordInput && document.activeElement !== passwordInput) {
+      passwordInput.focus();
     }
-  });
+  }
+}, true);
+
+window.addEventListener('focus', () => {
+  if (!isCurrentlyUnlocked) {
+    requestKeyboardLock();
+    if (passwordInput) {
+      passwordInput.focus();
+    }
+  }
 });
 
-// 3. Keep focus trapped on password input when locked
-document.addEventListener('click', (e) => {
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.get('unlocked', (session) => {
-    if (!session || !session.unlocked) {
-      if (passwordInput && document.activeElement !== passwordInput) {
-        passwordInput.focus();
-      }
-    }
-  });
+document.addEventListener('fullscreenchange', () => {
+  if (!isCurrentlyUnlocked) {
+    requestKeyboardLock();
+  }
 });
 
-// 4. Request Keyboard Lock API when available in Fullscreen
+// Request HTML5 Keyboard Lock API (Locks all browser keys in Fullscreen)
 function requestKeyboardLock() {
   if (navigator.keyboard && navigator.keyboard.lock) {
-    navigator.keyboard.lock(['Escape', 'F11', 'Tab', 'AltLeft', 'AltRight']).catch(() => {});
+    navigator.keyboard.lock().catch(() => {});
   }
 }
 
@@ -276,8 +339,12 @@ lockForm.addEventListener('submit', (e) => {
       const storageSession = chrome.storage.session || chrome.storage.local;
       storageSession.set({ unlocked: true }, () => {
         chrome.storage.local.set({ unlocked: true }, () => {
-          // Reload halaman agar transisi ke dashboard lebih bersih
-          window.location.reload();
+          isCurrentlyUnlocked = true;
+          releaseKeyboardLock();
+          chrome.runtime.sendMessage({ action: 'exitFullscreen' }, () => {
+            // Reload halaman agar transisi ke dashboard lebih bersih
+            window.location.reload();
+          });
         });
       });
     } else {
