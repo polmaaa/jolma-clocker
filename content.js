@@ -1,4 +1,4 @@
-// content.js - Ultra-sleek, modern floating lock button matching Krompol Locker aesthetic
+// content.js - Sleek circular floating lock button matching Gambar 2
 
 (function () {
   if (window.__krompolLockScriptInjected) {
@@ -108,118 +108,82 @@
 
     const style = document.createElement('style');
     style.textContent = `
-      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
-
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
 
       .fab-wrapper {
         position: relative;
         display: flex;
         align-items: center;
-        width: max-content;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
       }
 
-      /* Base Floating Button */
-      .fab-btn {
-        display: inline-flex;
-        align-items: center;
-        height: 44px;
-        padding: 0 12px;
-        border-radius: 22px;
-        cursor: pointer;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        outline: none;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                    background 0.8s ease,
-                    border-color 0.8s ease,
-                    color 0.8s ease,
-                    box-shadow 0.8s ease;
-      }
-
-      .icon-container {
+      /* Circular Floating Button (Gambar 2) */
+      .fab-circle-btn {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
-        flex-shrink: 0;
+        cursor: pointer;
+        outline: none;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    background 0.8s ease,
+                    border-color 0.8s ease,
+                    box-shadow 0.8s ease;
       }
 
       .fab-icon {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         stroke-width: 2.2;
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.3s ease;
       }
 
-      .fab-text {
-        max-width: 0;
-        opacity: 0;
-        overflow: hidden;
-        white-space: nowrap;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        margin-left: 0;
-        transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                    opacity 0.3s ease,
-                    margin-left 0.3s ease;
+      .fab-circle-btn:hover {
+        transform: scale(1.08) translateY(-2px);
       }
 
-      /* Hover: Smoothly reveal "Kunci Browser" */
-      .fab-btn:hover {
-        padding: 0 16px 0 14px;
-        transform: translateY(-2px) scale(1.02);
+      .fab-circle-btn:hover .fab-icon {
+        transform: scale(1.1);
       }
 
-      .fab-btn:hover .fab-text {
-        max-width: 120px;
-        opacity: 1;
-        margin-left: 8px;
-      }
-
-      .fab-btn:hover .fab-icon {
-        transform: scale(1.08) rotate(-8deg);
-      }
-
-      .fab-btn:active {
-        transform: translateY(1px) scale(0.95);
+      .fab-circle-btn:active {
+        transform: scale(0.94) translateY(1px);
       }
 
       /* ============================================================
-         THEMES — ULTRA SLEEK GLASSMORPHIC PALETTES
+         THEMES — CIRCULAR GLASS (Matches time periods)
          ============================================================ */
 
-      /* 1. PAGI (Morning: Golden Warm Ivory Glass) */
-      .fab-wrapper.theme-pagi .fab-btn {
-        background: rgba(255, 253, 240, 0.88);
-        border: 1px solid rgba(245, 158, 11, 0.25);
-        color: #92400e;
+      /* 1. PAGI (Morning: Warm Golden Ivory Glass) */
+      .fab-wrapper.theme-pagi .fab-circle-btn {
+        background: rgba(255, 253, 240, 0.9);
+        border: 1.5px solid rgba(245, 158, 11, 0.45);
         box-shadow: 
-          0 10px 30px -4px rgba(245, 158, 11, 0.22),
-          0 4px 12px -2px rgba(0, 0, 0, 0.05),
+          0 8px 24px -2px rgba(245, 158, 11, 0.25),
+          0 2px 8px rgba(0, 0, 0, 0.06),
           inset 0 1px 0 rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-pagi .fab-icon {
         stroke: #d97706;
       }
 
-      /* 2. SIANG (Afternoon: Crystal Mint Emerald Glass) */
-      .fab-wrapper.theme-siang .fab-btn {
-        background: rgba(240, 253, 250, 0.88);
-        border: 1px solid rgba(16, 185, 129, 0.25);
-        color: #065f46;
+      /* 2. SIANG (Afternoon: Mint Emerald Glass) */
+      .fab-wrapper.theme-siang .fab-circle-btn {
+        background: rgba(240, 253, 250, 0.9);
+        border: 1.5px solid rgba(16, 185, 129, 0.45);
         box-shadow: 
-          0 10px 30px -4px rgba(16, 185, 129, 0.2),
-          0 4px 12px -2px rgba(0, 0, 0, 0.05),
+          0 8px 24px -2px rgba(16, 185, 129, 0.25),
+          0 2px 8px rgba(0, 0, 0, 0.06),
           inset 0 1px 0 rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-siang .fab-icon {
@@ -227,70 +191,63 @@
       }
 
       /* 3. SORE (Evening: Sunset Rose Coral Glass) */
-      .fab-wrapper.theme-sore .fab-btn {
-        background: rgba(255, 241, 242, 0.88);
-        border: 1px solid rgba(244, 63, 94, 0.25);
-        color: #9f1239;
+      .fab-wrapper.theme-sore .fab-circle-btn {
+        background: rgba(255, 241, 242, 0.9);
+        border: 1.5px solid rgba(244, 63, 94, 0.45);
         box-shadow: 
-          0 10px 30px -4px rgba(244, 63, 94, 0.22),
-          0 4px 12px -2px rgba(0, 0, 0, 0.05),
+          0 8px 24px -2px rgba(244, 63, 94, 0.25),
+          0 2px 8px rgba(0, 0, 0, 0.06),
           inset 0 1px 0 rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-sore .fab-icon {
         stroke: #e11d48;
       }
 
-      /* 4. MALAM (Night: Obsidian Midnight Purple Glass) */
-      .fab-wrapper.theme-malam .fab-btn {
-        background: rgba(15, 23, 42, 0.82);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: #f8fafc;
+      /* 4. MALAM (Night: Gambar 2 - Obsidian Midnight Purple Ring) */
+      .fab-wrapper.theme-malam .fab-circle-btn {
+        background: radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.85) 0%, rgba(10, 8, 26, 0.92) 100%);
+        border: 1.5px solid rgba(167, 139, 250, 0.5);
         box-shadow: 
-          0 12px 36px -4px rgba(0, 0, 0, 0.6),
-          0 4px 16px -2px rgba(139, 92, 246, 0.25),
+          0 10px 30px -4px rgba(0, 0, 0, 0.65),
+          0 0 18px rgba(167, 139, 250, 0.3),
           inset 0 1px 0 rgba(255, 255, 255, 0.15);
       }
       .fab-wrapper.theme-malam .fab-icon {
-        stroke: #a78bfa;
+        stroke: #c4b5fd;
       }
 
-      /* Hover Accent: Elegant Crimson / Red Glass across all themes */
-      .fab-wrapper .fab-btn:hover {
-        background: rgba(239, 68, 68, 0.92) !important;
-        border-color: rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
+      /* Hover: Crimson Alert Glow across all themes */
+      .fab-wrapper .fab-circle-btn:hover {
+        background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.92) 0%, rgba(185, 28, 28, 0.95) 100%) !important;
+        border-color: rgba(254, 202, 202, 0.8) !important;
         box-shadow: 
-          0 14px 34px -4px rgba(239, 68, 68, 0.45),
-          0 6px 14px -2px rgba(0, 0, 0, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+          0 12px 28px -2px rgba(220, 38, 38, 0.55),
+          0 0 20px rgba(239, 68, 68, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
       }
-
-      .fab-wrapper .fab-btn:hover .fab-icon {
+      .fab-wrapper .fab-circle-btn:hover .fab-icon {
         stroke: #ffffff !important;
       }
 
-      /* Entrance */
+      /* Entrance Animation */
       .fab-enter {
-        animation: fabPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: fabCirclePop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
-      @keyframes fabPop {
-        0% { opacity: 0; transform: translateY(16px) scale(0.85); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
+      @keyframes fabCirclePop {
+        0% { opacity: 0; transform: scale(0.6) translateY(12px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
       }
     `;
 
     const wrapper = document.createElement('div');
     wrapper.className = `fab-wrapper fab-enter ${currentTheme}`;
     wrapper.innerHTML = `
-      <button class="fab-btn" id="lock-btn-trigger" title="Kunci Browser">
-        <div class="icon-container">
-          <svg class="fab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-        </div>
-        <span class="fab-text">Kunci Browser</span>
+      <button class="fab-circle-btn" id="lock-btn-trigger" title="Kunci Browser Sekarang">
+        <svg class="fab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
       </button>
     `;
 
@@ -301,8 +258,8 @@
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
-      btn.style.opacity = '0.7';
-      wrapper.querySelector('.fab-text').textContent = 'Mengunci...';
+      btn.style.opacity = '0.6';
+      btn.style.transform = 'scale(0.9)';
 
       try {
         chrome.runtime.sendMessage({ action: 'lockBrowser' });
