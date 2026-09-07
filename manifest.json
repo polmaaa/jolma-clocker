@@ -12,8 +12,14 @@
     "downloads"
   ],
   "host_permissions": [
-    "https://raw.githubusercontent.com/*",
-    "https://github.com/*"
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
   ],
   "background": {
     "service_worker": "background.js"

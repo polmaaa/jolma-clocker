@@ -202,11 +202,13 @@ lockForm.addEventListener('submit', (e) => {
   chrome.storage.local.get('password', (data) => {
     const currentPassword = (data && data.password) || 'ganteng';
     if (password === currentPassword) {
-      // Write the unlock state directly to session storage
+      // Write the unlock state directly to session and local storage
       const storageSession = chrome.storage.session || chrome.storage.local;
       storageSession.set({ unlocked: true }, () => {
-        // Reload halaman agar transisi ke dashboard lebih bersih
-        window.location.reload();
+        chrome.storage.local.set({ unlocked: true }, () => {
+          // Reload halaman agar transisi ke dashboard lebih bersih
+          window.location.reload();
+        });
       });
     } else {
       // Shake animation and warning on invalid password

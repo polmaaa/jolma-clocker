@@ -26,6 +26,11 @@ const VERSION_CHECK_URL =
 const UPDATE_ALARM_NAME = 'krompol-update-check';
 const UPDATE_CHECK_INTERVAL_HOURS = 6; // Cek setiap 6 jam
 
+// Izinkan content scripts membaca chrome.storage.session
+if (chrome.storage && chrome.storage.session && chrome.storage.session.setAccessLevel) {
+  chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_AND_UNTRUSTED_CONTEXTS' }).catch(() => {});
+}
+
 // ---- Pastikan alarm selalu terdaftar (jaga-jaga jika service worker restart) ----
 // Ini berjalan setiap kali service worker aktif/bangun
 chrome.alarms.get(UPDATE_ALARM_NAME, (alarm) => {
@@ -130,6 +135,7 @@ function handleTabState(tabId, url) {
 function lockBrowser() {
   const storageSession = chrome.storage.session || chrome.storage.local;
   storageSession.set({ unlocked: false }, () => {
+    chrome.storage.local.set({ unlocked: false });
     chrome.tabs.query({}, (tabs) => {
       for (const tab of tabs) {
         handleTabState(tab.id, tab.url);
@@ -201,6 +207,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       if (message.password === currentPassword) {
         const storageSession = chrome.storage.session || chrome.storage.local;
         storageSession.set({ unlocked: true }, () => {
+          chrome.storage.local.set({ unlocked: true });
           // Saat berhasil dibuka, lepaskan keep-awake agar OS
           // bisa mengatur sleep secara normal saat pengguna aktif
           releaseScreenAwake();
@@ -240,6 +247,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Panggilan manual dari popup untuk cek update sekarang
     checkForUpdates().then(() => {
       sendResponse({ success: true });
+    });
+    return true;
+  }
+
+  if (message.action === 'getLockState') {
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.get('unlocked', (session) => {
+      if (session && typeof session.unlocked !== 'undefined') {
+        sendResponse({ unlocked: session.unlocked });
+      } else {
+        chrome.storage.local.get('unlocked', (localData) => {
+          sendResponse({ unlocked: !!(localData && localData.unlocked) });
+        });
+      }
     });
     return true;
   }
