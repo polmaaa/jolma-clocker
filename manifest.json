@@ -28,6 +28,15 @@
   "chrome_url_overrides": {
     "newtab": "lock.html"
   },
+  "commands": {
+    "lock-browser-command": {
+      "suggested_key": {
+        "default": "Ctrl+L",
+        "mac": "Command+L"
+      },
+      "description": "Kunci Browser Instan (Fullscreen & Lock)"
+    }
+  },
   "action": {
     "default_popup": "popup.html"
   }

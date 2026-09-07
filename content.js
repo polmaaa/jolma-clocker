@@ -15,6 +15,22 @@
     return;
   }
 
+  // Shortcut instan CTRL+L / CMD+L untuk mengunci browser dari halaman mana pun
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L' || e.code === 'KeyL') && !e.altKey && !e.shiftKey) {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        chrome.runtime.sendMessage({ action: 'lockBrowser' });
+      } catch (err) {
+        const storage = chrome.storage.session || chrome.storage.local;
+        storage.set({ unlocked: false }, () => {
+          window.location.reload();
+        });
+      }
+    }
+  }, true);
+
   function getThemeClass() {
     const now = new Date();
     const hour = now.getHours() + now.getMinutes() / 60;

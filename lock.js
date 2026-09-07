@@ -474,6 +474,15 @@ searchForm.addEventListener('submit', (e) => {
   }
 });
 
+// Shortcut instan CTRL+L / CMD+L saat di dashboard terbuka
+window.addEventListener('keydown', (e) => {
+  if (isCurrentlyUnlocked && (e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L' || e.code === 'KeyL') && !e.altKey && !e.shiftKey) {
+    e.preventDefault();
+    e.stopPropagation();
+    chrome.runtime.sendMessage({ action: 'lockBrowser' });
+  }
+}, true);
+
 // Dashboard: Clock, Date, and Greeting in Indonesian with Dynamic Themes
 function updateClockAndDate() {
   const now = new Date();

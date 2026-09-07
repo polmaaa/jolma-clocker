@@ -327,3 +327,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
+
+// Listener tombol pintasan keyboard global (CTRL+L)
+if (chrome.commands && chrome.commands.onCommand) {
+  chrome.commands.onCommand.addListener((command) => {
+    if (command === 'lock-browser-command') {
+      keepScreenAwake();
+      lockBrowser(true);
+    }
+  });
+}
