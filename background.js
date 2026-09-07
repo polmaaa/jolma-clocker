@@ -106,8 +106,6 @@ function shouldCloseTab(url) {
 
 // Helper: Evaluates tab state and redirects/closes tabs if locked
 function handleTabState(tabId, url) {
-  if (!url) return;
-
   const storageSession = chrome.storage.session || chrome.storage.local;
   storageSession.get('unlocked', (session) => {
     if (session && session.unlocked) {
@@ -115,18 +113,18 @@ function handleTabState(tabId, url) {
     }
 
     // If it's already our lock page, do nothing
-    if (url.startsWith(chrome.runtime.getURL('lock.html'))) {
+    if (url && url.startsWith(chrome.runtime.getURL('lock.html'))) {
       return;
     }
 
     // Close sensitive internal pages to prevent bypasses (e.g., chrome://settings)
-    if (shouldCloseTab(url)) {
+    if (url && shouldCloseTab(url)) {
       chrome.tabs.remove(tabId).catch(() => {});
       return;
     }
 
-    // Redirect standard web pages to the lock page and preserve the original URL
-    const lockUrl = chrome.runtime.getURL('lock.html') + '?originalUrl=' + encodeURIComponent(url);
+    // Redirect any web page or empty/new tab to the lock page
+    const lockUrl = chrome.runtime.getURL('lock.html') + (url && url !== 'chrome://newtab/' && url !== 'about:blank' ? '?originalUrl=' + encodeURIComponent(url) : '');
     chrome.tabs.update(tabId, { url: lockUrl }).catch(() => {});
   });
 }
@@ -187,6 +185,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             }).catch(() => {});
           }
         }
+      } else {
+        handleTabState(tabId, tab.url);
       }
     });
   }
@@ -197,14 +197,16 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
   storageSession.get('unlocked', (session) => {
     if (session && session.unlocked) {
       injectContentScriptIntoAllTabs();
+    } else {
+      chrome.tabs.get(activeInfo.tabId, (tab) => {
+        if (tab) handleTabState(tab.id, tab.url);
+      });
     }
   });
 });
 
 chrome.tabs.onCreated.addListener((tab) => {
-  if (tab.url) {
-    handleTabState(tab.id, tab.url);
-  }
+  handleTabState(tab.id, tab.url);
 });
 
 // Intercept navigations early via webNavigation to avoid flashing the target page
