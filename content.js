@@ -1,4 +1,4 @@
-// content.js - Injects floating lock button at bottom-right on all open tabs when browser is unlocked
+// content.js - Injects floating lock button that dynamically adapts to time-of-day themes (Pagi, Siang, Sore, Malam)
 
 (function () {
   // Prevent duplicate instances in the same frame
@@ -15,6 +15,21 @@
   // Only inject in top window (not inside iframes)
   if (window.top !== window.self) {
     return;
+  }
+
+  // Calculate current time-of-day theme class
+  function getThemeClass() {
+    const now = new Date();
+    const hour = now.getHours() + now.getMinutes() / 60;
+    if (hour >= 4 && hour < 11) {
+      return 'theme-pagi';
+    } else if (hour >= 11 && hour < 15) {
+      return 'theme-siang';
+    } else if (hour >= 15 && hour < 18.5) {
+      return 'theme-sore';
+    } else {
+      return 'theme-malam';
+    }
   }
 
   // Check lock state and render or remove button
@@ -65,9 +80,15 @@
   } catch (e) {}
 
   function renderFloatingButton() {
+    const currentTheme = getThemeClass();
     let host = document.getElementById(HOST_ID);
-    if (host) {
+
+    if (host && host.shadowRoot) {
       host.style.display = 'block';
+      const wrapper = host.shadowRoot.querySelector('.fab-wrapper');
+      if (wrapper) {
+        wrapper.className = `fab-wrapper anim-enter ${currentTheme}`;
+      }
       return;
     }
 
@@ -112,45 +133,23 @@
         gap: 8px;
         height: 46px;
         padding: 0 18px 0 14px;
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.25);
         border-radius: 23px;
         cursor: pointer;
-        box-shadow: 
-          0 8px 24px rgba(15, 23, 42, 0.45),
-          0 2px 6px rgba(0, 0, 0, 0.25),
-          inset 0 1px 0 rgba(255, 255, 255, 0.35);
-        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         outline: none;
-      }
-
-      .fab-btn:hover {
-        transform: translateY(-3px) scale(1.05);
-        background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
-        border-color: rgba(255, 255, 255, 0.5);
-        box-shadow: 
-          0 12px 28px rgba(220, 38, 38, 0.5),
-          0 4px 10px rgba(0, 0, 0, 0.3),
-          inset 0 1px 0 rgba(255, 255, 255, 0.45);
-      }
-
-      .fab-btn:active {
-        transform: translateY(1px) scale(0.96);
-        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    background 0.8s ease,
+                    border-color 0.8s ease,
+                    color 0.8s ease,
+                    box-shadow 0.8s ease;
       }
 
       .fab-icon {
         width: 19px;
         height: 19px;
         flex-shrink: 0;
-        transition: transform 0.2s ease;
-      }
-
-      .fab-btn:hover .fab-icon {
-        transform: rotate(-12deg) scale(1.1);
+        transition: transform 0.2s ease, stroke 0.3s ease;
       }
 
       .fab-text {
@@ -158,25 +157,141 @@
         font-weight: 600;
         letter-spacing: 0.02em;
         white-space: nowrap;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        transition: color 0.3s ease;
       }
 
-      /* Subtle pulse glow */
+      /* Pulse Ring Effect */
       .pulse-glow {
         position: absolute;
         inset: -4px;
         border-radius: 27px;
-        border: 2px solid rgba(129, 140, 248, 0.4);
         opacity: 0;
         animation: pulseGlow 3s infinite cubic-bezier(0.4, 0, 0.6, 1);
         pointer-events: none;
+        transition: border-color 0.8s ease;
       }
 
       @keyframes pulseGlow {
         0% { transform: scale(0.96); opacity: 0.7; }
         50% { transform: scale(1.08); opacity: 0.1; }
         100% { transform: scale(1.14); opacity: 0; }
+      }
+
+      /* ============================================================
+         THEME COLOR PALETTES (Matches lock.css time periods)
+         ============================================================ */
+
+      /* 1. PAGI (04:00–10:59) — Warm Golden Ivory / Amber */
+      .fab-wrapper.theme-pagi .fab-btn {
+        background: rgba(255, 253, 235, 0.94);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        color: #78350f;
+        box-shadow: 
+          0 8px 24px rgba(217, 119, 6, 0.18),
+          0 2px 6px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-pagi .fab-icon {
+        stroke: #b45309;
+      }
+      .fab-wrapper.theme-pagi .fab-text {
+        color: #78350f;
+        text-shadow: none;
+      }
+      .fab-wrapper.theme-pagi .pulse-glow {
+        border: 2px solid rgba(245, 158, 11, 0.4);
+      }
+
+      /* 2. SIANG (11:00–14:59) — Fresh Mint Emerald / Sky */
+      .fab-wrapper.theme-siang .fab-btn {
+        background: rgba(240, 253, 250, 0.94);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        color: #064e3b;
+        box-shadow: 
+          0 8px 24px rgba(16, 185, 129, 0.18),
+          0 2px 6px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-siang .fab-icon {
+        stroke: #047857;
+      }
+      .fab-wrapper.theme-siang .fab-text {
+        color: #064e3b;
+        text-shadow: none;
+      }
+      .fab-wrapper.theme-siang .pulse-glow {
+        border: 2px solid rgba(16, 185, 129, 0.4);
+      }
+
+      /* 3. SORE (15:00–18:29) — Warm Sunset Rose / Peach */
+      .fab-wrapper.theme-sore .fab-btn {
+        background: rgba(255, 241, 242, 0.94);
+        border: 1px solid rgba(244, 63, 94, 0.35);
+        color: #881337;
+        box-shadow: 
+          0 8px 24px rgba(244, 63, 94, 0.18),
+          0 2px 6px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-sore .fab-icon {
+        stroke: #be185d;
+      }
+      .fab-wrapper.theme-sore .fab-text {
+        color: #881337;
+        text-shadow: none;
+      }
+      .fab-wrapper.theme-sore .pulse-glow {
+        border: 2px solid rgba(244, 63, 94, 0.4);
+      }
+
+      /* 4. MALAM (18:30–03:59) — Starry Midnight Dark Navy / Purple Glass */
+      .fab-wrapper.theme-malam .fab-btn {
+        background: rgba(15, 10, 30, 0.88);
+        border: 1px solid rgba(167, 139, 250, 0.35);
+        color: #f1f5f9;
+        box-shadow: 
+          0 8px 28px rgba(0, 0, 0, 0.5),
+          0 2px 8px rgba(109, 40, 217, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+      .fab-wrapper.theme-malam .fab-icon {
+        stroke: #c4b5fd;
+      }
+      .fab-wrapper.theme-malam .fab-text {
+        color: #f1f5f9;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .fab-wrapper.theme-malam .pulse-glow {
+        border: 2px solid rgba(167, 139, 250, 0.4);
+      }
+
+      /* ============================================================
+         HOVER & ACTIVE STATES (Universal Alert Feedback)
+         ============================================================ */
+      .fab-wrapper .fab-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%) !important;
+        border-color: rgba(255, 255, 255, 0.5) !important;
+        color: #ffffff !important;
+        box-shadow: 
+          0 12px 30px rgba(220, 38, 38, 0.5),
+          0 4px 10px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+      }
+
+      .fab-wrapper .fab-btn:hover .fab-icon {
+        stroke: #ffffff !important;
+        transform: rotate(-12deg) scale(1.1);
+      }
+
+      .fab-wrapper .fab-btn:hover .fab-text {
+        color: #ffffff !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+      }
+
+      .fab-wrapper .fab-btn:active {
+        transform: translateY(1px) scale(0.96);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35) !important;
       }
 
       /* Entrance animation */
@@ -191,7 +306,7 @@
     `;
 
     const wrapper = document.createElement('div');
-    wrapper.className = 'fab-wrapper anim-enter';
+    wrapper.className = `fab-wrapper anim-enter ${currentTheme}`;
     wrapper.innerHTML = `
       <div class="pulse-glow"></div>
       <button class="fab-btn" id="lock-btn-trigger" title="Kunci Browser Sekarang">
@@ -252,6 +367,6 @@
     document.addEventListener('DOMContentLoaded', checkAndRender);
   }
 
-  // Periodic check to ensure button stays mounted on dynamic SPA websites
+  // Periodic check to ensure button stays mounted and theme stays up-to-date with current hour
   setInterval(checkAndRender, 2000);
 })();
