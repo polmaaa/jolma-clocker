@@ -294,45 +294,48 @@ body {
 }
 
 .btn-menu {
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 14px;
-  padding: 10px 16px 10px 14px;
-  color: #475569;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  height: 38px;
+  padding: 0 15px 0 13px;
+  color: #334155;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 7px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  letter-spacing: 0.01em;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.8s ease,
+              border-color 0.8s ease,
+              color 0.8s ease,
+              box-shadow 0.8s ease;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  letter-spacing: -0.01em;
+  user-select: none;
 }
 
 .btn-menu:hover {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(124, 58, 237, 0.25);
-  color: #6d28d9;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12), inset 0 1px 0 rgba(255,255,255,0.9);
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.btn-menu:active {
+  transform: translateY(1px) scale(0.97);
 }
 
 .btn-menu.active {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(124, 58, 237, 0.3);
-  color: #6d28d9;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15), inset 0 1px 0 rgba(255,255,255,1);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-/* Ikon hamburger di kiri tombol Menu */
 .menu-btn-icon {
-  width: 15px;
-  height: 15px;
-  opacity: 0.7;
+  width: 14px;
+  height: 14px;
+  opacity: 0.75;
   transition: opacity 0.2s;
 }
 
@@ -342,10 +345,11 @@ body {
 }
 
 .chevron-down {
-  width: 13px;
-  height: 13px;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 12px;
+  height: 12px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   opacity: 0.6;
+  margin-left: 1px;
 }
 
 .btn-menu:hover .chevron-down,
@@ -360,22 +364,29 @@ body {
 /* Dropdown Card */
 .menu-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   right: 0;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 18px;
   box-shadow:
-    0 4px 6px rgba(0,0,0,0.04),
-    0 16px 48px rgba(0,0,0,0.12),
-    0 0 0 1px rgba(255,255,255,0.8) inset;
-  min-width: 200px;
+    0 20px 48px -8px rgba(0, 0, 0, 0.12),
+    0 4px 16px -2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  min-width: 210px;
+  padding: 6px;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(-6px) scale(0.96);
+  transform: translateY(-8px) scale(0.94);
   transform-origin: top right;
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.8s ease,
+              border-color 0.8s ease,
+              box-shadow 0.8s ease;
 }
 
 .menu-dropdown.open {
@@ -385,10 +396,13 @@ body {
 }
 
 /* Label kecil di atas dropdown */
+.menu-dropdown-header {
+  padding: 8px 12px 6px;
+}
+
 .menu-dropdown-label {
-  padding: 12px 16px 8px;
   font-family: var(--font-sans);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -398,76 +412,75 @@ body {
 /* Divider */
 .menu-divider {
   height: 1px;
-  background: #f1f5f9;
-  margin: 0 12px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 3px 8px;
 }
 
 /* Item Menu */
 .menu-item {
   width: 100%;
-  background: none;
+  background: transparent;
   border: none;
-  padding: 11px 14px;
+  padding: 8px 10px;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   color: #334155;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   text-align: left;
-  transition: background 0.12s ease, color 0.12s ease;
-  border-radius: 0;
-  margin: 2px 6px;
-  width: calc(100% - 12px);
-  border-radius: 10px;
+  border-radius: 12px;
+  transition: all 0.15s ease;
 }
 
 .menu-item:hover {
-  background: #f8fafc;
+  background: rgba(0, 0, 0, 0.04);
 }
 
-/* Ikon kontainer bulat per item */
+/* Ikon kontainer rounded per item */
 .menu-item-icon-wrap {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.12s ease;
+  transition: all 0.15s ease;
 }
 
-/* Kunci Browser — merah */
-#menu-lock-btn .menu-item-icon-wrap {
+/* Kunci Browser — merah aksen */
+.menu-item-lock .menu-item-icon-wrap {
   background: rgba(239, 68, 68, 0.08);
 }
-#menu-lock-btn:hover .menu-item-icon-wrap {
-  background: rgba(239, 68, 68, 0.14);
+.menu-item-lock:hover .menu-item-icon-wrap {
+  background: rgba(239, 68, 68, 0.16);
+  transform: scale(1.06);
 }
-#menu-lock-btn {
-  color: #64748b;
+.menu-item-lock .menu-item-icon {
+  stroke: #ef4444;
 }
-#menu-lock-btn:hover {
-  background: rgba(239, 68, 68, 0.04);
-  color: #ef4444;
+.menu-item-lock:hover {
+  background: rgba(239, 68, 68, 0.05);
+  color: #dc2626;
 }
 
-/* Ubah Kata Sandi — ungu */
-#menu-changepw-btn .menu-item-icon-wrap {
+/* Ubah Kata Sandi — ungu aksen */
+.menu-item-pw .menu-item-icon-wrap {
   background: rgba(124, 58, 237, 0.08);
 }
-#menu-changepw-btn:hover .menu-item-icon-wrap {
-  background: rgba(124, 58, 237, 0.14);
+.menu-item-pw:hover .menu-item-icon-wrap {
+  background: rgba(124, 58, 237, 0.16);
+  transform: scale(1.06);
 }
-#menu-changepw-btn {
-  color: #64748b;
+.menu-item-pw .menu-item-icon {
+  stroke: #7c3aed;
 }
-#menu-changepw-btn:hover {
-  background: rgba(124, 58, 237, 0.04);
-  color: #7c3aed;
+.menu-item-pw:hover {
+  background: rgba(124, 58, 237, 0.05);
+  color: #6d28d9;
 }
 
 .menu-item-icon {
@@ -476,23 +489,21 @@ body {
   flex-shrink: 0;
 }
 
-/* Icon warna ikut parent saat hover */
-#menu-lock-btn .menu-item-icon { stroke: #ef4444; }
-#menu-changepw-btn .menu-item-icon { stroke: #7c3aed; }
-
-/* Teks nama item */
 .menu-item-label {
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 /* Area bawah dropdown — versi */
 .menu-footer {
-  padding: 8px 14px 10px;
+  padding: 6px 12px 4px;
   font-family: var(--font-sans);
   font-size: 10px;
-  color: #cbd5e1;
+  color: #94a3b8;
   text-align: right;
+  opacity: 0.7;
 }
+
 
 
 
@@ -764,6 +775,113 @@ body.theme-malam .btn-lock:hover {
   background: rgba(239, 68, 68, 0.08);
   color: #f87171;
 }
+
+/* ============================================================
+   THEME-SPECIFIC MENU DROPDOWN PALETTES
+   ============================================================ */
+
+/* 1. PAGI (04:00–10:59) — Warm Golden Ivory Glass */
+body.theme-pagi .btn-menu {
+  background: rgba(255, 253, 240, 0.82);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #92400e;
+  box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+body.theme-pagi .btn-menu:hover,
+body.theme-pagi .btn-menu.active {
+  background: rgba(255, 253, 240, 0.96);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+body.theme-pagi .menu-dropdown {
+  background: rgba(255, 253, 242, 0.96);
+  border-color: rgba(245, 158, 11, 0.18);
+  box-shadow: 0 20px 48px -8px rgba(245, 158, 11, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+}
+body.theme-pagi .menu-dropdown-label { color: #d97706; }
+body.theme-pagi .menu-item { color: #78350f; }
+body.theme-pagi .menu-item:hover { background: rgba(245, 158, 11, 0.06); }
+body.theme-pagi .menu-item-pw .menu-item-icon-wrap { background: rgba(245, 158, 11, 0.1); }
+body.theme-pagi .menu-item-pw .menu-item-icon { stroke: #d97706; }
+body.theme-pagi .menu-item-pw:hover { color: #b45309; }
+
+/* 2. SIANG (11:00–14:59) — Crystal Mint Emerald Glass */
+body.theme-siang .btn-menu {
+  background: rgba(240, 253, 250, 0.82);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #065f46;
+  box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+body.theme-siang .btn-menu:hover,
+body.theme-siang .btn-menu.active {
+  background: rgba(240, 253, 250, 0.96);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+body.theme-siang .menu-dropdown {
+  background: rgba(244, 253, 250, 0.96);
+  border-color: rgba(16, 185, 129, 0.18);
+  box-shadow: 0 20px 48px -8px rgba(16, 185, 129, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+}
+body.theme-siang .menu-dropdown-label { color: #059669; }
+body.theme-siang .menu-item { color: #064e3b; }
+body.theme-siang .menu-item:hover { background: rgba(16, 185, 129, 0.06); }
+body.theme-siang .menu-item-pw .menu-item-icon-wrap { background: rgba(16, 185, 129, 0.1); }
+body.theme-siang .menu-item-pw .menu-item-icon { stroke: #059669; }
+body.theme-siang .menu-item-pw:hover { color: #047857; }
+
+/* 3. SORE (15:00–18:29) — Sunset Rose Coral Glass */
+body.theme-sore .btn-menu {
+  background: rgba(255, 241, 242, 0.82);
+  border-color: rgba(244, 63, 94, 0.25);
+  color: #9f1239;
+  box-shadow: 0 4px 16px -2px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+body.theme-sore .btn-menu:hover,
+body.theme-sore .btn-menu.active {
+  background: rgba(255, 241, 242, 0.96);
+  border-color: rgba(244, 63, 94, 0.4);
+  box-shadow: 0 8px 24px -4px rgba(244, 63, 94, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+body.theme-sore .menu-dropdown {
+  background: rgba(255, 246, 246, 0.96);
+  border-color: rgba(244, 63, 94, 0.18);
+  box-shadow: 0 20px 48px -8px rgba(244, 63, 94, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+}
+body.theme-sore .menu-dropdown-label { color: #e11d48; }
+body.theme-sore .menu-item { color: #881337; }
+body.theme-sore .menu-item:hover { background: rgba(244, 63, 94, 0.06); }
+body.theme-sore .menu-item-pw .menu-item-icon-wrap { background: rgba(244, 63, 94, 0.1); }
+body.theme-sore .menu-item-pw .menu-item-icon { stroke: #e11d48; }
+body.theme-sore .menu-item-pw:hover { color: #be185d; }
+
+/* 4. MALAM (18:30–03:59) — Obsidian Midnight Purple Glass */
+body.theme-malam .btn-menu {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #f8fafc;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+body.theme-malam .btn-menu:hover,
+body.theme-malam .btn-menu.active {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 8px 24px -4px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+body.theme-malam .menu-dropdown {
+  background: rgba(15, 23, 42, 0.94);
+  border-color: rgba(139, 92, 246, 0.25);
+  box-shadow: 0 20px 52px -8px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(139, 92, 246, 0.15) inset;
+}
+body.theme-malam .menu-dropdown-label { color: #a78bfa; }
+body.theme-malam .menu-item { color: #f1f5f9; }
+body.theme-malam .menu-item:hover { background: rgba(139, 92, 246, 0.12); color: #ffffff; }
+body.theme-malam .menu-item-pw .menu-item-icon-wrap { background: rgba(139, 92, 246, 0.15); }
+body.theme-malam .menu-item-pw .menu-item-icon { stroke: #c4b5fd; }
+body.theme-malam .menu-item-pw:hover { color: #c4b5fd; }
+body.theme-malam .menu-divider { background: rgba(255, 255, 255, 0.08); }
+body.theme-malam .menu-footer { color: #64748b; }
+
 
 /* Responsiveness */
 @media (max-width: 768px) {
