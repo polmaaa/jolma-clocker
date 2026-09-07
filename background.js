@@ -131,11 +131,19 @@ function handleTabState(tabId, url) {
   });
 }
 
-// Locks the browser session and redirects all open tabs
+// Locks the browser session, enters Fullscreen, and redirects all open tabs
 function lockBrowser() {
   const storageSession = chrome.storage.session || chrome.storage.local;
   storageSession.set({ unlocked: false }, () => {
     chrome.storage.local.set({ unlocked: false });
+
+    // Masuk mode Fullscreen otomatis untuk semua jendela browser normal
+    chrome.windows.getAll({ windowTypes: ['normal'] }, (windows) => {
+      for (const win of windows) {
+        chrome.windows.update(win.id, { state: 'fullscreen' }).catch(() => {});
+      }
+    });
+
     chrome.tabs.query({}, (tabs) => {
       for (const tab of tabs) {
         handleTabState(tab.id, tab.url);
@@ -302,6 +310,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         });
       }
     });
+    return true;
+  }
+
+  if (message.action === 'exitFullscreen') {
+    chrome.windows.getCurrent((win) => {
+      if (win && win.id) {
+        chrome.windows.update(win.id, { state: 'maximized' }).catch(() => {});
+      }
+    });
+    sendResponse({ success: true });
     return true;
   }
 });

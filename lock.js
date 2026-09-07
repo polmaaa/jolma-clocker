@@ -141,6 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // Helper: Transitions elements between locked and unlocked views
 function updateLockerState(isUnlocked) {
   if (isUnlocked) {
+    // Release keyboard lock & restore window state
+    releaseKeyboardLock();
+    chrome.runtime.sendMessage({ action: 'exitFullscreen' });
+
     if (originalUrl) {
       // Redirect to original page
       window.location.href = originalUrl;
@@ -160,6 +164,9 @@ function updateLockerState(isUnlocked) {
       checkUpdateStorage();
     }
   } else {
+    // Request keyboard lock on lock screen
+    requestKeyboardLock();
+
     // Transition to locked state — sembunyikan toast update
     hideUpdateToast();
     searchSection.classList.remove('active');
@@ -170,6 +177,69 @@ function updateLockerState(isUnlocked) {
       passwordInput.value = '';
       passwordInput.focus();
     }, 100);
+  }
+}
+
+// ---- Keyboard & Fullscreen Security Guard (Active when locked) ----
+
+// 1. Block prohibited shortcut keys on lock screen
+window.addEventListener('keydown', (e) => {
+  const storageSession = chrome.storage.session || chrome.storage.local;
+  storageSession.get('unlocked', (session) => {
+    const isUnlocked = !!(session && session.unlocked);
+    if (isUnlocked) return; // Allow normal keys when unlocked
+
+    // List of blocked keys/shortcuts on lock screen
+    const isF11 = e.key === 'F11';
+    const isEscape = e.key === 'Escape';
+    const isF12 = e.key === 'F12';
+    const isDevTools = (e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c');
+    const isViewSource = (e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u');
+    const isCloseTab = (e.ctrlKey || e.metaKey) && (e.key === 'W' || e.key === 'w' || e.key === 'F4');
+    const isNewTab = (e.ctrlKey || e.metaKey) && (e.key === 'T' || e.key === 't' || e.key === 'N' || e.key === 'n');
+    const isHistoryOrDownloads = (e.ctrlKey || e.metaKey) && (e.key === 'H' || e.key === 'h' || e.key === 'J' || e.key === 'j');
+    const isNavigation = e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Home');
+
+    if (isF11 || isEscape || isF12 || isDevTools || isViewSource || isCloseTab || isNewTab || isHistoryOrDownloads || isNavigation) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  });
+}, true);
+
+// 2. Disable right-click context menu on lock screen
+document.addEventListener('contextmenu', (e) => {
+  const storageSession = chrome.storage.session || chrome.storage.local;
+  storageSession.get('unlocked', (session) => {
+    if (!session || !session.unlocked) {
+      e.preventDefault();
+    }
+  });
+});
+
+// 3. Keep focus trapped on password input when locked
+document.addEventListener('click', (e) => {
+  const storageSession = chrome.storage.session || chrome.storage.local;
+  storageSession.get('unlocked', (session) => {
+    if (!session || !session.unlocked) {
+      if (passwordInput && document.activeElement !== passwordInput) {
+        passwordInput.focus();
+      }
+    }
+  });
+});
+
+// 4. Request Keyboard Lock API when available in Fullscreen
+function requestKeyboardLock() {
+  if (navigator.keyboard && navigator.keyboard.lock) {
+    navigator.keyboard.lock(['Escape', 'F11', 'Tab', 'AltLeft', 'AltRight']).catch(() => {});
+  }
+}
+
+function releaseKeyboardLock() {
+  if (navigator.keyboard && navigator.keyboard.unlock) {
+    navigator.keyboard.unlock();
   }
 }
 
