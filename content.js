@@ -267,12 +267,12 @@
          ============================================================ */
 
       .fab-wrapper:hover .morph-capsule {
-        width: 140px; /* Expands smoothly into Capsule Island */
+        width: 184px; /* Expands smoothly to fit Kunci Browser (CTRL+L) */
         transform: translateY(-2px);
       }
 
       .fab-wrapper:hover .fab-aura {
-        width: 140px;
+        width: 184px;
         opacity: 0.85;
       }
 
@@ -413,7 +413,7 @@
     wrapper.className = `fab-wrapper fab-enter ${currentTheme}`;
     wrapper.innerHTML = `
       <div class="fab-aura"></div>
-      <button class="morph-capsule" id="lock-btn-trigger" title="Kunci Browser (Ctrl+L)">
+      <button class="morph-capsule" id="lock-btn-trigger" title="Kunci Browser (CTRL+L)">
         <div class="shimmer-ray"></div>
         <div class="icon-box">
           <svg class="lock-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -424,8 +424,8 @@
           </svg>
         </div>
         <div class="morph-label">
-          <span class="label-text">Kunci</span>
-          <span class="key-badge">Ctrl+L</span>
+          <span class="label-text">Kunci Browser</span>
+          <span class="key-badge">CTRL+L</span>
         </div>
       </button>
     `;
