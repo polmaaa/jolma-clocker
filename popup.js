@@ -190,7 +190,8 @@ changePwForm.addEventListener('submit', (e) => {
 
 // ---- Unlock via popup form -----------------------------------------------
 
-popupLockForm.addEventListener('submit', () => {
+popupLockForm.addEventListener('submit', (e) => {
+  e.preventDefault();
   const password = popupPasswordInput.value;
   chrome.storage.local.get('password', (data) => {
     const currentPassword = (data && data.password) || 'ganteng';

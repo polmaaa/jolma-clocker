@@ -48,7 +48,7 @@
 
     <!-- View 1: Locked Actions (enter password in popup) -->
     <div id="locked-actions" class="content-section">
-      <form id="popup-lock-form" onsubmit="return false;">
+      <form id="popup-lock-form">
         <input type="password" id="popup-password-input" placeholder="Masukkan kata sandi..." required autocomplete="off">
         <div id="popup-error" class="error-text">Sandi salah!</div>
         <button type="submit" class="btn-popup btn-primary">Buka Kunci</button>
@@ -70,7 +70,7 @@
 
       <!-- Accordion Panel (hidden by default) -->
       <div id="accordion-panel" class="accordion-panel">
-        <form id="change-pw-form" onsubmit="return false;">
+        <form id="change-pw-form">
           <input type="password" id="old-password" placeholder="Kata sandi lama..." required autocomplete="off">
           <input type="password" id="new-password" placeholder="Kata sandi baru..." required autocomplete="off">
           <input type="password" id="confirm-password" placeholder="Konfirmasi kata sandi baru..." required autocomplete="off">
