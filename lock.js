@@ -31,6 +31,8 @@ const menuAutolockLabel = document.getElementById('menu-autolock-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
+const menuDonateBtn   = document.getElementById('menu-donate-btn');
+const menuDonateLabel = document.getElementById('menu-donate-label');
 
 // Feature Toggles Elements (ON / OFF segmented switch pills)
 const pillGroupFloating       = document.getElementById('pill-group-floating');
@@ -151,6 +153,7 @@ const i18n = {
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
+    menuDonate: 'Dukung Pengembang',
     menuLangTitle: 'Bahasa',
     addShortcut: 'Pintasan',
 
@@ -291,6 +294,7 @@ const i18n = {
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
+    menuDonate: 'Support Developer',
     menuLangTitle: 'Language',
     addShortcut: 'Shortcut',
 
@@ -441,6 +445,7 @@ function applyTranslations(lang) {
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
+  if (menuDonateLabel) menuDonateLabel.textContent = dict.menuDonate;
 
   // Search & Lock Form Placeholders
   if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
@@ -1096,6 +1101,13 @@ menuChangePwBtn.addEventListener('click', () => {
   closeDropdown();
   openModal();
 });
+
+// Opsi: Dukung Pengembang / Donasi Saweria → tutup dropdown saat link diklik
+if (menuDonateBtn) {
+  menuDonateBtn.addEventListener('click', () => {
+    closeDropdown();
+  });
+}
 
 // Klik bar cuaca di footer → buka modal cuaca
 if (weatherBtn) {
