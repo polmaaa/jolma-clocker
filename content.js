@@ -143,22 +143,22 @@
         position: absolute;
         right: 0;
         top: 0;
-        width: 46px;
-        height: 46px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         filter: blur(14px);
-        opacity: 0.5;
+        opacity: 0.4;
         pointer-events: none;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1;
       }
 
-      /* Compact Floating Glass Button (Stays Fixed Size) */
+      /* Compact Frosted Glass Lock Button (Matching Menu Button Style) */
       .fab-btn {
         position: relative;
         z-index: 2;
-        width: 46px;
-        height: 46px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -166,44 +166,31 @@
         cursor: pointer;
         outline: none;
         overflow: hidden;
-        border: 1.5px solid transparent;
-        backdrop-filter: blur(28px) saturate(200%);
-        -webkit-backdrop-filter: blur(28px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
         box-shadow: 
-          0 10px 26px -3px rgba(0, 0, 0, 0.12),
-          0 2px 8px rgba(0, 0, 0, 0.04),
-          inset 0 1.5px 1.5px rgba(255, 255, 255, 0.9);
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                    background 0.5s ease,
-                    border-color 0.5s ease,
-                    box-shadow 0.4s ease;
+          0 4px 16px -2px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                    background 0.8s ease,
+                    border-color 0.8s ease,
+                    color 0.8s ease,
+                    box-shadow 0.8s ease;
         user-select: none;
       }
 
-      /* Light Specular Curved Top Reflection */
-      .fab-btn::before {
-        content: '';
-        position: absolute;
-        top: 1px;
-        left: 15%;
-        right: 15%;
-        height: 45%;
-        border-radius: 50% / 100% 100% 0 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%);
-        pointer-events: none;
-      }
-
-      /* Lock SVG Icon */
+      /* Lock SVG Icon (Clean Feather/Lucide Stroke matching Menu icon) */
       .lock-svg {
-        width: 20px;
-        height: 20px;
+        width: 17px;
+        height: 17px;
         overflow: visible;
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       /* Animated Shackle that snaps down into locked state on hover */
       .lock-shackle {
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         transform-origin: center top;
       }
 
@@ -213,39 +200,39 @@
 
       .fab-tooltip {
         position: absolute;
-        right: 56px;
+        right: 52px;
         top: 50%;
-        transform: translateY(-50%) translateX(10px) scale(0.94);
+        transform: translateY(-50%) translateX(8px) scale(0.94);
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 7px 12px 7px 14px;
-        border-radius: 30px;
-        backdrop-filter: blur(24px) saturate(190%);
-        -webkit-backdrop-filter: blur(24px) saturate(190%);
+        padding: 6px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
         white-space: nowrap;
         pointer-events: none;
         opacity: 0;
         box-shadow: 
-          0 10px 30px -4px rgba(0, 0, 0, 0.15),
-          0 2px 8px rgba(0, 0, 0, 0.04),
-          inset 0 1px 1px rgba(255, 255, 255, 0.85);
-        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          0 10px 30px -4px rgba(0, 0, 0, 0.1),
+          0 2px 8px rgba(0, 0, 0, 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 10;
       }
 
       .tooltip-text {
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 11.5px;
+        font-weight: 600;
         letter-spacing: -0.01em;
       }
 
       .tooltip-badge {
-        font-size: 9.5px;
-        font-weight: 800;
-        padding: 2px 6px;
-        border-radius: 6px;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 5px;
+        border-radius: 5px;
         letter-spacing: 0.03em;
         text-transform: uppercase;
       }
@@ -260,124 +247,132 @@
         transform: translateY(-50%) translateX(0) scale(1);
       }
 
-      /* Lift & Glow Button */
+      /* Lift & Glow Button (matches .btn-menu:hover) */
       .fab-wrapper:hover .fab-btn {
-        transform: translateY(-2px) scale(1.06);
+        transform: translateY(-1.5px);
       }
 
       .fab-wrapper:hover .fab-aura {
-        opacity: 0.85;
-        transform: scale(1.3);
+        opacity: 0.75;
+        transform: scale(1.25);
       }
 
       /* Mechanical Shackle Snap */
       .fab-wrapper:hover .lock-shackle {
-        transform: translateY(2.2px);
+        transform: translateY(2px);
       }
 
       .fab-wrapper:hover .lock-svg {
-        transform: scale(1.05);
+        transform: scale(1.06);
       }
 
       /* Active / Press State */
       .fab-btn:active {
-        transform: translateY(1px) scale(0.92) !important;
+        transform: translateY(1px) scale(0.96) !important;
       }
 
       /* ============================================================
-         THEMES — HARMONIC GLASS PALETTES (Matches time of day)
+         THEMES — MATCHING MENU DROPDOWN THEME PALETTES
          ============================================================ */
 
-      /* 1. PAGI (Morning: Nordic Glacier Mist / Aurora Dawn Glass) */
+      /* 1. PAGI (04:00–10:59) — Nordic Glacier Mist */
       .fab-wrapper.theme-pagi .fab-aura {
-        background: radial-gradient(circle, rgba(14, 165, 233, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.4) 0%, transparent 70%);
       }
       .fab-wrapper.theme-pagi .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(224, 242, 254, 0.8) 100%);
-        border-color: rgba(14, 165, 233, 0.35);
-        color: #0284c7;
-        box-shadow: 
-          0 10px 26px -3px rgba(14, 165, 233, 0.22),
-          0 3px 10px rgba(0, 0, 0, 0.04),
-          inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+        background: rgba(240, 249, 255, 0.85);
+        border-color: rgba(14, 165, 233, 0.3);
+        color: #0369a1;
+        box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-pagi:hover .fab-btn {
+        background: rgba(240, 249, 255, 0.96);
+        border-color: rgba(14, 165, 233, 0.45);
+        box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
       }
       .fab-wrapper.theme-pagi .fab-tooltip {
-        background: rgba(240, 249, 255, 0.95);
-        border: 1px solid rgba(14, 165, 233, 0.35);
-        color: #0369a1;
+        background: rgba(240, 249, 255, 0.96);
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        color: #0c4a6e;
       }
       .fab-wrapper.theme-pagi .tooltip-badge {
-        background: rgba(14, 165, 233, 0.15);
+        background: rgba(14, 165, 233, 0.12);
         color: #0284c7;
-        border: 1px solid rgba(14, 165, 233, 0.3);
+        border: 1px solid rgba(14, 165, 233, 0.25);
       }
 
-      /* 2. SIANG (Afternoon: Solar Azure / Royal Sky Daylight Glass) */
+      /* 2. SIANG (11:00–14:59) — Solar Royal Azure */
       .fab-wrapper.theme-siang .fab-aura {
-        background: radial-gradient(circle, rgba(79, 70, 229, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.4) 0%, transparent 70%);
       }
       .fab-wrapper.theme-siang .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(224, 231, 255, 0.8) 100%);
-        border-color: rgba(79, 70, 229, 0.35);
-        color: #4f46e5;
-        box-shadow: 
-          0 10px 26px -3px rgba(79, 70, 229, 0.22),
-          0 3px 10px rgba(0, 0, 0, 0.04),
-          inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+        background: rgba(238, 242, 255, 0.85);
+        border-color: rgba(79, 70, 229, 0.28);
+        color: #3730a3;
+        box-shadow: 0 4px 16px -2px rgba(79, 70, 229, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-siang:hover .fab-btn {
+        background: rgba(238, 242, 255, 0.96);
+        border-color: rgba(79, 70, 229, 0.45);
+        box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
       }
       .fab-wrapper.theme-siang .fab-tooltip {
-        background: rgba(238, 242, 255, 0.95);
-        border: 1px solid rgba(79, 70, 229, 0.35);
-        color: #3730a3;
+        background: rgba(238, 242, 255, 0.96);
+        border: 1px solid rgba(79, 70, 229, 0.25);
+        color: #312e81;
       }
       .fab-wrapper.theme-siang .tooltip-badge {
-        background: rgba(79, 70, 229, 0.15);
+        background: rgba(79, 70, 229, 0.12);
         color: #4f46e5;
-        border: 1px solid rgba(79, 70, 229, 0.3);
+        border: 1px solid rgba(79, 70, 229, 0.25);
       }
 
-      /* 3. SORE (Evening: Twilight Amber Sunset / Golden Dusk Glass) */
+      /* 3. SORE (15:00–18:29) — Twilight Sunset Amber */
       .fab-wrapper.theme-sore .fab-aura {
-        background: radial-gradient(circle, rgba(234, 88, 12, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(234, 88, 12, 0.4) 0%, transparent 70%);
       }
       .fab-wrapper.theme-sore .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 237, 213, 0.8) 100%);
-        border-color: rgba(234, 88, 12, 0.35);
-        color: #ea580c;
-        box-shadow: 
-          0 10px 26px -3px rgba(234, 88, 12, 0.22),
-          0 3px 10px rgba(0, 0, 0, 0.04),
-          inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+        background: rgba(255, 247, 237, 0.85);
+        border-color: rgba(234, 88, 12, 0.28);
+        color: #9a3412;
+        box-shadow: 0 4px 16px -2px rgba(234, 88, 12, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      .fab-wrapper.theme-sore:hover .fab-btn {
+        background: rgba(255, 247, 237, 0.96);
+        border-color: rgba(234, 88, 12, 0.45);
+        box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
       }
       .fab-wrapper.theme-sore .fab-tooltip {
-        background: rgba(255, 247, 237, 0.95);
-        border: 1px solid rgba(234, 88, 12, 0.35);
-        color: #9a3412;
+        background: rgba(255, 247, 237, 0.96);
+        border: 1px solid rgba(234, 88, 12, 0.25);
+        color: #7c2d12;
       }
       .fab-wrapper.theme-sore .tooltip-badge {
-        background: rgba(234, 88, 12, 0.15);
+        background: rgba(234, 88, 12, 0.12);
         color: #ea580c;
-        border: 1px solid rgba(234, 88, 12, 0.3);
+        border: 1px solid rgba(234, 88, 12, 0.25);
       }
 
-      /* 4. MALAM (Night: Obsidian Midnight Aurora Violet Glass) */
+      /* 4. MALAM (18:30–03:59) — Obsidian Midnight Aurora */
       .fab-wrapper.theme-malam .fab-aura {
-        background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 70%);
       }
       .fab-wrapper.theme-malam .fab-btn {
-        background: linear-gradient(135deg, rgba(28, 22, 58, 0.88) 0%, rgba(12, 9, 28, 0.96) 100%);
-        border-color: rgba(167, 139, 250, 0.4);
-        color: #c4b5fd;
-        box-shadow: 
-          0 12px 34px -4px rgba(0, 0, 0, 0.7),
-          0 0 18px rgba(139, 92, 246, 0.3),
-          inset 0 1.5px 1.5px rgba(255, 255, 255, 0.22);
+        background: rgba(15, 23, 42, 0.75);
+        border-color: rgba(139, 92, 246, 0.3);
+        color: #f8fafc;
+        box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+      .fab-wrapper.theme-malam:hover .fab-btn {
+        background: rgba(15, 23, 42, 0.92);
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 8px 24px -4px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       }
       .fab-wrapper.theme-malam .fab-tooltip {
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(139, 92, 246, 0.4);
+        background: rgba(15, 23, 42, 0.94);
+        border: 1px solid rgba(139, 92, 246, 0.25);
         color: #f1f5f9;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.2) inset;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.15) inset;
       }
       .fab-wrapper.theme-malam .tooltip-badge {
         background: rgba(139, 92, 246, 0.25);
@@ -387,11 +382,11 @@
 
       /* Entrance Animation */
       .fab-enter {
-        animation: fabIslandPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: fabIslandPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
       @keyframes fabIslandPop {
-        0% { opacity: 0; transform: scale(0.65) translateY(12px); }
+        0% { opacity: 0; transform: scale(0.7) translateY(8px); }
         100% { opacity: 1; transform: scale(1) translateY(0); }
       }
     `;
@@ -408,13 +403,11 @@
       <!-- Ambient Aura Glow -->
       <div class="fab-aura"></div>
 
-      <!-- Compact Glass Button -->
-      <button class="fab-btn" id="lock-btn-trigger">
-        <svg class="lock-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="lock-shackle" d="M7 10V6.8a5 5 0 0 1 10 0V10" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-          <rect class="lock-body" x="3.5" y="10" width="17" height="11" rx="3.5" stroke="currentColor" stroke-width="2.3" fill="currentColor" fill-opacity="0.15"/>
-          <circle cx="12" cy="15.2" r="1.3" fill="currentColor"/>
-          <path d="M12 16.5v1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Compact Glass Button matching Menu Button -->
+      <button class="fab-btn" id="lock-btn-trigger" title="Kunci Browser (Ctrl+L)">
+        <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect class="lock-body" x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path class="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
       </button>
     `;
