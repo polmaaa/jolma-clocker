@@ -2096,96 +2096,6 @@ body.theme-malam .btn-pomo-secondary {
 }
 
 /* ============================================================
-   WALLPAPER & THEME SELECTOR MODAL
-   ============================================================ */
-
-.modal-card-wide {
-  width: 520px;
-  max-width: 92vw;
-}
-
-.theme-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.theme-card {
-  border-radius: 12px;
-  border: 2px solid transparent;
-  background: #f8fafc;
-  padding: 6px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.theme-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(99, 102, 241, 0.35);
-}
-
-.theme-card.active {
-  border-color: var(--primary);
-  background: rgba(99, 102, 241, 0.08);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
-}
-
-.theme-preview {
-  width: 100%;
-  height: 52px;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.preview-dynamic { background: linear-gradient(135deg, #eff6ff 0%, #fef3c7 50%, #f3e8ff 100%); }
-.preview-amoled  { background: #000000; }
-.preview-ocean   { background: linear-gradient(135deg, #07172c 0%, #0c3559 50%, #034870 100%); }
-.preview-emerald { background: linear-gradient(135deg, #03251d 0%, #064e3b 50%, #0b6b52 100%); }
-.preview-mountain{ background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=300&q=70') center/cover; }
-.preview-lake    { background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.3)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=70') center/cover; }
-
-.theme-name {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-color);
-  text-align: center;
-}
-
-.custom-wallpaper-section {
-  padding-top: 10px;
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
-}
-
-.custom-wall-input-row {
-  display: flex;
-  gap: 8px;
-}
-
-.custom-wall-input-row input {
-  flex: 1;
-  margin-bottom: 0 !important;
-}
-
-.btn-theme-apply {
-  padding: 0 16px;
-  border: none;
-  border-radius: 12px;
-  background: var(--primary);
-  color: #ffffff;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-/* ============================================================
    AUTO-LOCK INACTIVITY MODAL
    ============================================================ */
 
@@ -2251,39 +2161,6 @@ body.theme-malam .btn-pomo-secondary {
   color: #ffffff;
 }
 
-/* ============================================================
-   THEME BACKGROUND OVERRIDES ON BODY
-   ============================================================ */
-
-body.theme-bg-amoled {
-  background: #000000 !important;
-  color: #f1f5f9;
-}
-body.theme-bg-amoled .bg-gradient {
-  display: none !important;
-}
-
-body.theme-bg-ocean .bg-gradient {
-  background: linear-gradient(135deg, #07172c 0%, #0c3559 50%, #034870 100%) !important;
-}
-
-body.theme-bg-emerald .bg-gradient {
-  background: linear-gradient(135deg, #03251d 0%, #064e3b 50%, #0b6b52 100%) !important;
-}
-
-body.theme-bg-nature-mountain .bg-gradient {
-  background: linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.55)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat !important;
-}
-
-body.theme-bg-nature-lake .bg-gradient {
-  background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat !important;
-}
-
-body.theme-bg-custom .bg-gradient {
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
 
 
 

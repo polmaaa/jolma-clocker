@@ -48,14 +48,6 @@
         <span class="top-action-text" id="top-focus-label">Focus</span>
       </button>
 
-      <!-- Theme / Wallpaper Picker Toggle -->
-      <button id="theme-btn" class="btn-top-action" title="Wallpaper & Themes">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="top-action-icon">
-          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-        </svg>
-        <span class="top-action-text" id="top-theme-label">Theme</span>
-      </button>
-
       <!-- Dropdown Menu -->
       <div class="menu-wrapper" id="menu-wrapper">
         <button id="menu-btn" class="btn-menu" title="Menu">
@@ -100,15 +92,6 @@
               </svg>
             </span>
             <span class="menu-item-label" id="menu-autolock-label">Auto-Lock Timer</span>
-          </button>
-
-          <button id="menu-theme-btn" class="menu-item menu-item-theme">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-theme-label">Wallpaper & Theme</span>
           </button>
 
           <button id="menu-focus-btn" class="menu-item menu-item-focus">
@@ -238,48 +221,6 @@
           <button type="button" class="btn-autolock-opt" data-mins="60">60 Min</button>
         </div>
         <div id="autolock-feedback" class="modal-feedback"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Wallpaper & Theme Selector -->
-  <div id="theme-modal-overlay" class="modal-overlay">
-    <div class="modal-card modal-card-wide">
-      <div class="modal-header">
-        <h3 class="modal-title" id="theme-modal-title">Pilih Tema & Latar Belakang</h3>
-        <button id="theme-modal-close-btn" class="modal-close" title="Close">✕</button>
-      </div>
-      <div class="theme-grid" id="theme-grid">
-        <div class="theme-card active" data-theme="dynamic">
-          <div class="theme-preview preview-dynamic"></div>
-          <span class="theme-name" id="theme-name-dynamic">Dynamic Time</span>
-        </div>
-        <div class="theme-card" data-theme="amoled">
-          <div class="theme-preview preview-amoled"></div>
-          <span class="theme-name" id="theme-name-amoled">Pure AMOLED</span>
-        </div>
-        <div class="theme-card" data-theme="ocean">
-          <div class="theme-preview preview-ocean"></div>
-          <span class="theme-name" id="theme-name-ocean">Pacific Ocean</span>
-        </div>
-        <div class="theme-card" data-theme="emerald">
-          <div class="theme-preview preview-emerald"></div>
-          <span class="theme-name" id="theme-name-emerald">Emerald Forest</span>
-        </div>
-        <div class="theme-card" data-theme="nature-mountain">
-          <div class="theme-preview preview-mountain"></div>
-          <span class="theme-name" id="theme-name-mountain">Misty Mountains</span>
-        </div>
-        <div class="theme-card" data-theme="nature-lake">
-          <div class="theme-preview preview-lake"></div>
-          <span class="theme-name" id="theme-name-lake">Golden Lake</span>
-        </div>
-      </div>
-      <div class="custom-wallpaper-section">
-        <div class="custom-wall-input-row">
-          <input type="url" id="custom-wall-url" placeholder="https://example.com/wallpaper.jpg">
-          <button type="button" id="btn-apply-custom-wall" class="btn-theme-apply">Terapkan URL</button>
-        </div>
       </div>
     </div>
   </div>

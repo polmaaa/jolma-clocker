@@ -17,16 +17,13 @@ const topBar          = document.getElementById('unlocked-top-bar');
 
 // Top Bar Action Buttons
 const focusBtn        = document.getElementById('focus-btn');
-const themeBtn        = document.getElementById('theme-btn');
 const topFocusLabel   = document.getElementById('top-focus-label');
-const topThemeLabel   = document.getElementById('top-theme-label');
 
 // Menu dropdown elements
 const menuBtn         = document.getElementById('menu-btn');
 const menuDropdown    = document.getElementById('menu-dropdown');
 const menuLockBtn     = document.getElementById('menu-lock-btn');
 const menuAutolockBtn = document.getElementById('menu-autolock-btn');
-const menuThemeBtn    = document.getElementById('menu-theme-btn');
 const menuFocusBtn    = document.getElementById('menu-focus-btn');
 const menuUsernameBtn = document.getElementById('menu-username-btn');
 const menuWeatherBtn  = document.getElementById('menu-weather-btn');
@@ -36,7 +33,6 @@ const btnLangEn       = document.getElementById('btn-lang-en');
 const menuHeaderLabel = document.getElementById('menu-header-label');
 const menuLockLabel   = document.getElementById('menu-lock-label');
 const menuAutolockLabel = document.getElementById('menu-autolock-label');
-const menuThemeLabel  = document.getElementById('menu-theme-label');
 const menuFocusLabel  = document.getElementById('menu-focus-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
@@ -85,14 +81,6 @@ const lblFocusLen             = document.getElementById('lbl-focus-len');
 const lblShortLen             = document.getElementById('lbl-short-len');
 const lblLongLen              = document.getElementById('lbl-long-len');
 const lblSoundPomo            = document.getElementById('lbl-sound-pomo');
-
-// Theme & Wallpaper Modal Elements
-const themeModalOverlay       = document.getElementById('theme-modal-overlay');
-const themeModalCloseBtn      = document.getElementById('theme-modal-close-btn');
-const themeModalTitle         = document.getElementById('theme-modal-title');
-const themeCards              = document.querySelectorAll('.theme-card');
-const customWallUrlInput      = document.getElementById('custom-wall-url');
-const btnApplyCustomWall      = document.getElementById('btn-apply-custom-wall');
 
 // Auto-Lock Inactivity Modal Elements
 const autolockModalOverlay    = document.getElementById('autolock-modal-overlay');
@@ -161,14 +149,12 @@ const i18n = {
     menuHeader: 'Pengaturan',
     menuLock: 'Kunci Browser',
     menuAutolock: 'Auto-Lock Saat Menganggur',
-    menuTheme: 'Wallpaper & Tema',
     menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
     menuLangTitle: 'Bahasa',
     topFocus: 'Fokus',
-    topTheme: 'Tema',
     addShortcut: 'Pintasan',
 
     // Greeting
@@ -228,17 +214,6 @@ const i18n = {
     pomoShortLen: 'Istirahat Pendek (Menit):',
     pomoLongLen: 'Istirahat Panjang (Menit):',
     pomoSoundAlert: 'Suara Notifikasi:',
-
-    // Theme Modal
-    themeTitle: 'Pilih Tema & Latar Belakang',
-    themeDynamic: 'Dynamic Time',
-    themeAmoled: 'Pure AMOLED',
-    themeOcean: 'Pacific Ocean',
-    themeEmerald: 'Emerald Forest',
-    themeMountain: 'Misty Mountains',
-    themeLake: 'Golden Lake',
-    themeUrlPh: 'Tempel URL Gambar (https://...)',
-    themeApplyBtn: 'Terapkan URL',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Saat Menganggur',
@@ -316,14 +291,12 @@ const i18n = {
     menuHeader: 'Settings',
     menuLock: 'Lock Browser',
     menuAutolock: 'Auto-Lock Inactivity Timer',
-    menuTheme: 'Wallpaper & Theme',
     menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
     menuLangTitle: 'Language',
     topFocus: 'Focus',
-    topTheme: 'Theme',
     addShortcut: 'Shortcut',
 
     // Greeting
@@ -383,17 +356,6 @@ const i18n = {
     pomoShortLen: 'Short Break (Min):',
     pomoLongLen: 'Long Break (Min):',
     pomoSoundAlert: 'Sound Alert:',
-
-    // Theme Modal
-    themeTitle: 'Choose Theme & Wallpaper',
-    themeDynamic: 'Dynamic Time',
-    themeAmoled: 'Pure AMOLED',
-    themeOcean: 'Pacific Ocean',
-    themeEmerald: 'Emerald Forest',
-    themeMountain: 'Misty Mountains',
-    themeLake: 'Golden Lake',
-    themeUrlPh: 'Paste Image URL (https://...)',
-    themeApplyBtn: 'Apply URL',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Inactivity Timer',
@@ -479,13 +441,11 @@ function applyTranslations(lang) {
 
   // Top Bar action labels
   if (topFocusLabel) topFocusLabel.textContent = dict.topFocus;
-  if (topThemeLabel) topThemeLabel.textContent = dict.topTheme;
 
   // Menu texts
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
   if (menuAutolockLabel) menuAutolockLabel.textContent = dict.menuAutolock;
-  if (menuThemeLabel) menuThemeLabel.textContent = dict.menuTheme;
   if (menuFocusLabel) menuFocusLabel.textContent = dict.menuFocus;
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
@@ -513,23 +473,6 @@ function applyTranslations(lang) {
   if (lblLongLen) lblLongLen.textContent = dict.pomoLongLen;
   if (lblSoundPomo) lblSoundPomo.textContent = dict.pomoSoundAlert;
   if (pomoResetBtn) pomoResetBtn.textContent = dict.pomoReset;
-
-  // Theme Modal
-  if (themeModalTitle) themeModalTitle.textContent = dict.themeTitle;
-  const themeNameDyn = document.getElementById('theme-name-dynamic');
-  const themeNameAmo = document.getElementById('theme-name-amoled');
-  const themeNameOce = document.getElementById('theme-name-ocean');
-  const themeNameEme = document.getElementById('theme-name-emerald');
-  const themeNameMtn = document.getElementById('theme-name-mountain');
-  const themeNameLak = document.getElementById('theme-name-lake');
-  if (themeNameDyn) themeNameDyn.textContent = dict.themeDynamic;
-  if (themeNameAmo) themeNameAmo.textContent = dict.themeAmoled;
-  if (themeNameOce) themeNameOce.textContent = dict.themeOcean;
-  if (themeNameEme) themeNameEme.textContent = dict.themeEmerald;
-  if (themeNameMtn) themeNameMtn.textContent = dict.themeMountain;
-  if (themeNameLak) themeNameLak.textContent = dict.themeLake;
-  if (customWallUrlInput) customWallUrlInput.placeholder = dict.themeUrlPh;
-  if (btnApplyCustomWall) btnApplyCustomWall.textContent = dict.themeApplyBtn;
 
   // Auto-Lock Modal
   if (autolockModalTitle) autolockModalTitle.textContent = dict.autolockTitle;
@@ -697,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initDailyQuotes();
   initQuickLinks();
   initPomodoro();
-  initThemes();
   initAutoLock();
 
   // CATATAN: checkUpdateStorage() dipanggil di dalam updateLockerState(true)
@@ -761,7 +703,6 @@ function updateLockerState(isUnlocked) {
     closeUsernameModal();
     closeModal();
     closePomodoroModal();
-    closeThemeModal();
     closeAutoLockModal();
     closeQuickLinkModal();
 
@@ -998,12 +939,6 @@ if (focusBtn) {
   });
 }
 
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
-    openThemeModal();
-  });
-}
-
 // Toggle dropdown buka/tutup
 menuBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -1034,14 +969,6 @@ if (menuAutolockBtn) {
   menuAutolockBtn.addEventListener('click', () => {
     closeDropdown();
     openAutoLockModal();
-  });
-}
-
-// Opsi: Wallpaper & Theme
-if (menuThemeBtn) {
-  menuThemeBtn.addEventListener('click', () => {
-    closeDropdown();
-    openThemeModal();
   });
 }
 
@@ -2154,94 +2081,7 @@ function playPomoChime() {
 }
 
 // ============================================================
-// 4. WALLPAPER & THEMES MODULE
-// ============================================================
-let currentTheme = 'dynamic';
-
-function initThemes() {
-  chrome.storage.local.get(['appTheme', 'customWallpaperUrl'], (data) => {
-    currentTheme = data.appTheme || 'dynamic';
-    applyTheme(currentTheme, data.customWallpaperUrl || '');
-  });
-
-  if (themeModalCloseBtn) {
-    themeModalCloseBtn.addEventListener('click', closeThemeModal);
-  }
-  if (themeModalOverlay) {
-    themeModalOverlay.addEventListener('click', (e) => {
-      if (e.target === themeModalOverlay) closeThemeModal();
-    });
-  }
-
-  themeCards.forEach((card) => {
-    card.addEventListener('click', () => {
-      const themeKey = card.dataset.theme;
-      applyTheme(themeKey);
-      chrome.storage.local.set({ appTheme: themeKey });
-    });
-  });
-
-  if (btnApplyCustomWall && customWallUrlInput) {
-    btnApplyCustomWall.addEventListener('click', () => {
-      const url = customWallUrlInput.value.trim();
-      if (url) {
-        applyTheme('custom', url);
-        chrome.storage.local.set({ appTheme: 'custom', customWallpaperUrl: url });
-      }
-    });
-  }
-}
-
-function openThemeModal() {
-  if (themeModalOverlay) themeModalOverlay.classList.add('open');
-}
-
-function closeThemeModal() {
-  if (themeModalOverlay) themeModalOverlay.classList.remove('open');
-}
-
-function applyTheme(themeKey, customUrl = '') {
-  currentTheme = themeKey;
-  
-  document.body.classList.remove(
-    'theme-bg-amoled',
-    'theme-bg-ocean',
-    'theme-bg-emerald',
-    'theme-bg-nature-mountain',
-    'theme-bg-nature-lake',
-    'theme-bg-custom'
-  );
-
-  themeCards.forEach((card) => {
-    card.classList.toggle('active', card.dataset.theme === themeKey);
-  });
-
-  const bgGradientEl = document.querySelector('.bg-gradient');
-
-  if (themeKey === 'amoled') {
-    document.body.classList.add('theme-bg-amoled');
-  } else if (themeKey === 'ocean') {
-    document.body.classList.add('theme-bg-ocean');
-  } else if (themeKey === 'emerald') {
-    document.body.classList.add('theme-bg-emerald');
-  } else if (themeKey === 'nature-mountain') {
-    document.body.classList.add('theme-bg-nature-mountain');
-  } else if (themeKey === 'nature-lake') {
-    document.body.classList.add('theme-bg-nature-lake');
-  } else if (themeKey === 'custom' && customUrl) {
-    document.body.classList.add('theme-bg-custom');
-    if (bgGradientEl) {
-      bgGradientEl.style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('${customUrl}')`;
-    }
-  } else {
-    if (bgGradientEl) {
-      bgGradientEl.style.backgroundImage = '';
-    }
-  }
-}
-
-// ============================================================
-// 5. AUTO-LOCK INACTIVITY TIMER MODULE
+// 4. AUTO-LOCK INACTIVITY TIMER MODULE
 // ============================================================
 let idleMinutesSetting = 0;
 
@@ -2294,5 +2134,6 @@ function setIdleDuration(mins) {
     }
   });
 }
+
 
 
