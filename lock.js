@@ -1677,9 +1677,12 @@ async function loadWeather(forceRefresh = false) {
 let currentQuoteIndex = 0;
 
 function initDailyQuotes() {
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
   const dict = i18n[currentLang] || i18n.en;
-  currentQuoteIndex = dayOfYear % (dict.quotes ? dict.quotes.length : 1);
+  if (dict.quotes && dict.quotes.length > 0) {
+    currentQuoteIndex = Math.floor(Math.random() * dict.quotes.length);
+  } else {
+    currentQuoteIndex = 0;
+  }
   updateQuoteDisplay();
 
   if (btnQuoteShuffle) {
