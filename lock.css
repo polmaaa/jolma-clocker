@@ -1901,6 +1901,11 @@ body.theme-siang .weather-snowflake {
   opacity: 1;
 }
 
+/* Khusus Mode Terkunci: Naikkan posisi quote lebih tinggi agar seimbang dengan lock pill */
+body.is-locked .daily-quote-container {
+  bottom: 85px;
+}
+
 .quote-text {
   font-family: var(--font-sans);
   font-size: 13.5px;
