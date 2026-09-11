@@ -22,6 +22,14 @@ const menuLockBtn     = document.getElementById('menu-lock-btn');
 const menuUsernameBtn = document.getElementById('menu-username-btn');
 const menuWeatherBtn  = document.getElementById('menu-weather-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
+const btnLangId       = document.getElementById('btn-lang-id');
+const btnLangEn       = document.getElementById('btn-lang-en');
+const menuLangTitle   = document.getElementById('menu-lang-title');
+const menuHeaderLabel = document.getElementById('menu-header-label');
+const menuLockLabel   = document.getElementById('menu-lock-label');
+const menuUserLabel   = document.getElementById('menu-user-label');
+const menuWeatherLabel= document.getElementById('menu-weather-label');
+const menuPwLabel     = document.getElementById('menu-pw-label');
 
 // Weather Footer & Modal elements
 const weatherFooter           = document.getElementById('weather-footer');
@@ -66,6 +74,273 @@ const updateToast       = document.getElementById('update-toast');
 const updateToastVer    = document.getElementById('update-toast-version');
 const updateToastLink   = document.getElementById('update-toast-link');
 const updateToastClose  = document.getElementById('update-toast-close');
+
+// ============================================================
+// INTERNATIONALIZATION (i18n) DICTIONARY
+// ============================================================
+
+let currentLang = 'id';
+
+const i18n = {
+  id: {
+    menuHeader: 'Pengaturan',
+    menuLock: 'Kunci Browser',
+    menuUser: 'Ubah Nama',
+    menuWeather: 'Pengaturan Cuaca',
+    menuPw: 'Ubah Kata Sandi',
+    menuLangTitle: 'Bahasa',
+
+    // Greeting
+    greetingPagi: 'Selamat Pagi',
+    greetingSiang: 'Selamat Siang',
+    greetingSore: 'Selamat Sore',
+    greetingMalam: 'Selamat Malam',
+
+    // Calendar
+    days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+    months: [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ],
+    formatDate: (day, date, month, year) => `${day}, ${date} ${month} ${year}`,
+
+    // Search & Lock
+    searchPlaceholder: 'Cari di Google...',
+    passwordPlaceholder: 'Masukkan kata sandi...',
+    passwordError: 'Sandi salah. Silakan coba lagi!',
+    unlockedBtn: 'Buka Kunci',
+
+    // Username Modal
+    usernameModalTitle: 'Ubah Nama Pengguna',
+    usernamePlaceholder: 'Masukkan nama Anda...',
+    usernameSaveBtn: 'Simpan Nama',
+    usernameSuccess: 'Nama berhasil diperbarui!',
+    usernameEmpty: 'Nama tidak boleh kosong!',
+
+    // Weather Modal
+    weatherModalTitle: 'Pengaturan Cuaca',
+    weatherGpsTitle: 'Lokasi Presisi (GPS Real-time)',
+    weatherGpsDesc: 'Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.',
+    weatherRefreshBtn: 'Perbarui Cuaca Sekarang',
+    weatherRefreshing: '⏳ Memperbarui...',
+    weatherSuccess: '✓ Data cuaca berhasil diperbarui!',
+    weatherGpsActive: '✓ Lokasi presisi GPS aktif!',
+    weatherGpsError: 'Izin lokasi ditolak/gagal. Beralih ke deteksi IP.',
+    weatherIpActive: '✓ Menggunakan deteksi IP otomatis.',
+    weatherLocLabel: (city, source) => `📍 Lokasi: ${city} (${source})`,
+    weatherLoading: 'Memuat cuaca...',
+    weatherDefaultCity: 'Indonesia',
+
+    // Weather Descriptions
+    weather: {
+      0: 'Cerah',
+      1: 'Sebagian Cerah',
+      2: 'Cerah Berawan',
+      3: 'Berawan Tebal',
+      45: 'Berkabut',
+      48: 'Berkabut',
+      51: 'Gerimis Ringan',
+      53: 'Gerimis',
+      55: 'Gerimis Lebat',
+      56: 'Gerimis Dingin',
+      57: 'Gerimis Dingin',
+      61: 'Hujan Ringan',
+      63: 'Hujan Sedang',
+      65: 'Hujan Lebat',
+      66: 'Hujan Beku',
+      67: 'Hujan Beku',
+      71: 'Bersalju',
+      73: 'Salju Sedang',
+      75: 'Salju Lebat',
+      77: 'Butiran Salju',
+      80: 'Hujan Lokal',
+      81: 'Hujan Deras',
+      82: 'Hujan Sangat Deras',
+      85: 'Hujan Salju',
+      86: 'Hujan Salju Lebat',
+      95: 'Badai Petir',
+      96: 'Badai Petir & Es',
+      99: 'Badai Petir & Es'
+    },
+
+    // Password Modal
+    pwModalTitle: 'Ubah Kata Sandi',
+    oldPwPlaceholder: 'Kata sandi lama...',
+    newPwPlaceholder: 'Kata sandi baru...',
+    confirmPwPlaceholder: 'Konfirmasi kata sandi baru...',
+    pwSaveBtn: 'Simpan Kata Sandi',
+    pwSuccess: 'Kata sandi berhasil diperbarui!',
+    pwMismatch: 'Konfirmasi kata sandi tidak sesuai!',
+    pwOldWrong: 'Kata sandi lama salah!'
+  },
+  en: {
+    menuHeader: 'Settings',
+    menuLock: 'Lock Browser',
+    menuUser: 'Change Name',
+    menuWeather: 'Weather Settings',
+    menuPw: 'Change Password',
+    menuLangTitle: 'Language',
+
+    // Greeting
+    greetingPagi: 'Good Morning',
+    greetingSiang: 'Good Afternoon',
+    greetingSore: 'Good Evening',
+    greetingMalam: 'Good Night',
+
+    // Calendar
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    months: [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ],
+    formatDate: (day, date, month, year) => `${day}, ${month} ${date}, ${year}`,
+
+    // Search & Lock
+    searchPlaceholder: 'Search Google...',
+    passwordPlaceholder: 'Enter password...',
+    passwordError: 'Incorrect password. Please try again!',
+    unlockedBtn: 'Unlock',
+
+    // Username Modal
+    usernameModalTitle: 'Change Username',
+    usernamePlaceholder: 'Enter your name...',
+    usernameSaveBtn: 'Save Name',
+    usernameSuccess: 'Name updated successfully!',
+    usernameEmpty: 'Name cannot be empty!',
+
+    // Weather Modal
+    weatherModalTitle: 'Weather Settings',
+    weatherGpsTitle: 'Precise Location (Real-time GPS)',
+    weatherGpsDesc: 'Uses device GPS (requires location permission). If disabled, location is detected automatically via IP network.',
+    weatherRefreshBtn: 'Refresh Weather Now',
+    weatherRefreshing: '⏳ Refreshing...',
+    weatherSuccess: '✓ Weather data updated successfully!',
+    weatherGpsActive: '✓ GPS precise location enabled!',
+    weatherGpsError: 'Location permission denied/failed. Falling back to IP.',
+    weatherIpActive: '✓ Using automatic IP detection.',
+    weatherLocLabel: (city, source) => `📍 Location: ${city} (${source})`,
+    weatherLoading: 'Loading weather...',
+    weatherDefaultCity: 'Worldwide',
+
+    // Weather Descriptions
+    weather: {
+      0: 'Clear Sky',
+      1: 'Mainly Clear',
+      2: 'Partly Cloudy',
+      3: 'Overcast',
+      45: 'Foggy',
+      48: 'Depositing Rime Fog',
+      51: 'Light Drizzle',
+      53: 'Moderate Drizzle',
+      55: 'Dense Drizzle',
+      56: 'Freezing Drizzle',
+      57: 'Freezing Drizzle',
+      61: 'Slight Rain',
+      63: 'Moderate Rain',
+      65: 'Heavy Rain',
+      66: 'Freezing Rain',
+      67: 'Heavy Freezing Rain',
+      71: 'Slight Snow Fall',
+      73: 'Moderate Snow Fall',
+      75: 'Heavy Snow Fall',
+      77: 'Snow Grains',
+      80: 'Rain Showers',
+      81: 'Heavy Showers',
+      82: 'Violent Showers',
+      85: 'Slight Snow Showers',
+      86: 'Heavy Snow Showers',
+      95: 'Thunderstorm',
+      96: 'Thunderstorm with Hail',
+      99: 'Severe Thunderstorm'
+    },
+
+    // Password Modal
+    pwModalTitle: 'Change Password',
+    oldPwPlaceholder: 'Current password...',
+    newPwPlaceholder: 'New password...',
+    confirmPwPlaceholder: 'Confirm new password...',
+    pwSaveBtn: 'Save Password',
+    pwSuccess: 'Password updated successfully!',
+    pwMismatch: 'Password confirmation does not match!',
+    pwOldWrong: 'Incorrect current password!'
+  }
+};
+
+function applyTranslations(lang) {
+  currentLang = (lang === 'en') ? 'en' : 'id';
+  const dict = i18n[currentLang];
+
+  // Update Language switcher buttons state
+  if (btnLangId) btnLangId.classList.toggle('active', currentLang === 'id');
+  if (btnLangEn) btnLangEn.classList.toggle('active', currentLang === 'en');
+
+  // Menu texts
+  if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
+  if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
+  if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
+  if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
+  if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
+  if (menuLangTitle) menuLangTitle.textContent = dict.menuLangTitle;
+
+  // Search & Lock Form Placeholders
+  if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
+  if (passwordInput) passwordInput.placeholder = dict.passwordPlaceholder;
+  if (errorMessage) errorMessage.textContent = dict.passwordError;
+
+  // Username Modal
+  const usernameModalTitle = document.getElementById('username-modal-title');
+  const modalUsernameSubmit = document.getElementById('modal-username-submit');
+  if (usernameModalTitle) usernameModalTitle.textContent = dict.usernameModalTitle;
+  if (modalUsernameInput) modalUsernameInput.placeholder = dict.usernamePlaceholder;
+  if (modalUsernameSubmit) modalUsernameSubmit.textContent = dict.usernameSaveBtn;
+
+  // Weather Modal
+  const weatherModalTitle = document.getElementById('weather-modal-title');
+  const settingToggleTitleEl = document.getElementById('setting-toggle-title-el');
+  const settingToggleDescEl = document.getElementById('setting-toggle-desc-el');
+  if (weatherModalTitle) weatherModalTitle.textContent = dict.weatherModalTitle;
+  if (settingToggleTitleEl) settingToggleTitleEl.textContent = dict.weatherGpsTitle;
+  if (settingToggleDescEl) settingToggleDescEl.textContent = dict.weatherGpsDesc;
+  if (modalRefreshWeatherBtn) modalRefreshWeatherBtn.textContent = dict.weatherRefreshBtn;
+
+  // Password Modal
+  const changepwModalTitle = document.getElementById('changepw-modal-title');
+  const modalChangepwSubmit = document.getElementById('modal-changepw-submit');
+  if (changepwModalTitle) changepwModalTitle.textContent = dict.pwModalTitle;
+  if (modalOldPw) modalOldPw.placeholder = dict.oldPwPlaceholder;
+  if (modalNewPw) modalNewPw.placeholder = dict.newPwPlaceholder;
+  if (modalConfirmPw) modalConfirmPw.placeholder = dict.confirmPwPlaceholder;
+  if (modalChangepwSubmit) modalChangepwSubmit.textContent = dict.pwSaveBtn;
+
+  // Update Clock, Greeting, and Weather display immediately
+  updateClockAndDate();
+  chrome.storage.local.get('weatherCache', (data) => {
+    if (data && data.weatherCache) {
+      updateWeatherUI(data.weatherCache);
+    }
+  });
+}
+
+function setLanguage(lang) {
+  currentLang = (lang === 'en') ? 'en' : 'id';
+  chrome.storage.local.set({ language: currentLang }, () => {
+    applyTranslations(currentLang);
+  });
+}
+
+if (btnLangId) {
+  btnLangId.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setLanguage('id');
+  });
+}
+
+if (btnLangEn) {
+  btnLangEn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setLanguage('en');
+  });
+}
 
 
 // ---- Update Toast Logic ------------------------------------------------
@@ -155,6 +430,15 @@ let isCurrentlyUnlocked = false;
 
 // Initialize view state on load
 document.addEventListener('DOMContentLoaded', () => {
+  // Load language settings first
+  chrome.storage.local.get(['language', 'userName'], (data) => {
+    if (data && data.language) {
+      applyTranslations(data.language);
+    } else {
+      applyTranslations('id');
+    }
+  });
+
   // Start Clock and Date immediately
   updateClockAndDate();
   setInterval(updateClockAndDate, 1000);
@@ -406,6 +690,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.unlocked) {
     updateLockerState(changes.unlocked.newValue);
   }
+  if (changes.language) {
+    applyTranslations(changes.language.newValue);
+  }
   if (changes.userName) {
     updateGreeting();
   }
@@ -489,16 +776,17 @@ usernameModalOverlay.addEventListener('click', (e) => {
 
 modalUsernameForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  const dict = i18n[currentLang] || i18n.id;
   const newName = modalUsernameInput.value.trim();
   if (!newName) {
     usernameModalFeedback.className = 'modal-feedback error';
-    usernameModalFeedback.textContent = 'Nama tidak boleh kosong!';
+    usernameModalFeedback.textContent = dict.usernameEmpty;
     return;
   }
 
   chrome.storage.local.set({ userName: newName }, () => {
     usernameModalFeedback.className = 'modal-feedback success';
-    usernameModalFeedback.textContent = 'Nama berhasil diperbarui!';
+    usernameModalFeedback.textContent = dict.usernameSuccess;
     updateGreeting();
     setTimeout(closeUsernameModal, 1200);
   });
@@ -507,13 +795,26 @@ modalUsernameForm.addEventListener('submit', (e) => {
 // ---- Modal Pengaturan Cuaca ----------------------------------------------
 
 function openWeatherModal() {
+  const dict = i18n[currentLang] || i18n.id;
   chrome.storage.local.get(['useGpsLocation', 'weatherCache'], (data) => {
     modalGpsToggle.checked = !!data.useGpsLocation;
     if (data.weatherCache) {
-      modalWeatherIcon.textContent = data.weatherCache.icon || '🌤️';
-      modalWeatherTemp.textContent = data.weatherCache.temp || '--°C';
-      modalWeatherDesc.textContent = data.weatherCache.condition || 'Memuat...';
-      modalWeatherLoc.textContent = `📍 Lokasi: ${data.weatherCache.city || 'Indonesia'} (${data.weatherCache.source || 'Deteksi IP'})`;
+      const c = data.weatherCache;
+      let cond = c.condition;
+      let icon = c.icon;
+      if (c.weatherCode !== undefined) {
+        const det = getWeatherDetails(c.weatherCode, c.isDay);
+        cond = det.label;
+        icon = det.icon;
+      }
+      const src = c.source === 'GPS Presisi' 
+        ? (currentLang === 'en' ? 'Precise GPS' : 'GPS Presisi') 
+        : (c.source === 'Deteksi IP' ? (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP') : (c.source || 'IP'));
+
+      modalWeatherIcon.textContent = icon || '🌤️';
+      modalWeatherTemp.textContent = c.temp || '--°C';
+      modalWeatherDesc.textContent = cond || dict.weatherLoading;
+      modalWeatherLoc.textContent = dict.weatherLocLabel(c.city || dict.weatherDefaultCity, src);
     }
     weatherModalFeedback.className = 'modal-feedback';
     weatherModalFeedback.textContent = '';
@@ -541,6 +842,7 @@ if (weatherModalOverlay) {
 if (modalGpsToggle) {
   modalGpsToggle.addEventListener('change', () => {
     const isGps = modalGpsToggle.checked;
+    const dict = i18n[currentLang] || i18n.id;
     weatherModalFeedback.className = 'modal-feedback';
     weatherModalFeedback.textContent = '';
 
@@ -548,20 +850,20 @@ if (modalGpsToggle) {
       if (!navigator.geolocation) {
         modalGpsToggle.checked = false;
         weatherModalFeedback.className = 'modal-feedback error';
-        weatherModalFeedback.textContent = 'Geolocation tidak didukung browser ini.';
+        weatherModalFeedback.textContent = dict.weatherGpsError;
         return;
       }
 
       weatherModalFeedback.className = 'modal-feedback';
       weatherModalFeedback.style.display = 'block';
       weatherModalFeedback.style.color = 'var(--primary)';
-      weatherModalFeedback.textContent = 'Meminta izin lokasi perangkat...';
+      weatherModalFeedback.textContent = currentLang === 'en' ? 'Requesting location permission...' : 'Meminta izin lokasi perangkat...';
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           chrome.storage.local.set({ useGpsLocation: true }, () => {
             weatherModalFeedback.className = 'modal-feedback success';
-            weatherModalFeedback.textContent = '✓ Lokasi presisi GPS aktif!';
+            weatherModalFeedback.textContent = dict.weatherGpsActive;
             loadWeather(true);
           });
         },
@@ -569,7 +871,7 @@ if (modalGpsToggle) {
           modalGpsToggle.checked = false;
           chrome.storage.local.set({ useGpsLocation: false });
           weatherModalFeedback.className = 'modal-feedback error';
-          weatherModalFeedback.textContent = 'Izin lokasi ditolak/gagal. Beralih ke deteksi IP.';
+          weatherModalFeedback.textContent = dict.weatherGpsError;
           loadWeather(true);
         },
         { timeout: 10000, enableHighAccuracy: true }
@@ -577,7 +879,7 @@ if (modalGpsToggle) {
     } else {
       chrome.storage.local.set({ useGpsLocation: false }, () => {
         weatherModalFeedback.className = 'modal-feedback success';
-        weatherModalFeedback.textContent = '✓ Menggunakan deteksi IP otomatis.';
+        weatherModalFeedback.textContent = dict.weatherIpActive;
         loadWeather(true);
       });
     }
@@ -587,13 +889,14 @@ if (modalGpsToggle) {
 // Tombol Perbarui Cuaca Sekarang
 if (modalRefreshWeatherBtn) {
   modalRefreshWeatherBtn.addEventListener('click', () => {
-    modalRefreshWeatherBtn.textContent = '⏳ Memperbarui...';
+    const dict = i18n[currentLang] || i18n.id;
+    modalRefreshWeatherBtn.textContent = dict.weatherRefreshing;
     modalRefreshWeatherBtn.disabled = true;
     loadWeather(true).finally(() => {
-      modalRefreshWeatherBtn.textContent = 'Perbarui Cuaca Sekarang';
+      modalRefreshWeatherBtn.textContent = dict.weatherRefreshBtn;
       modalRefreshWeatherBtn.disabled = false;
       weatherModalFeedback.className = 'modal-feedback success';
-      weatherModalFeedback.textContent = '✓ Data cuaca berhasil diperbarui!';
+      weatherModalFeedback.textContent = dict.weatherSuccess;
     });
   });
 }
@@ -625,13 +928,14 @@ modalOverlay.addEventListener('click', (e) => {
 // Submit form ubah kata sandi
 modalChangePwForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  const dict = i18n[currentLang] || i18n.id;
   const oldPw     = modalOldPw.value;
   const newPw     = modalNewPw.value;
   const confirmPw = modalConfirmPw.value;
 
   if (newPw !== confirmPw) {
     modalFeedback.className = 'modal-feedback error';
-    modalFeedback.textContent = 'Konfirmasi kata sandi tidak sesuai!';
+    modalFeedback.textContent = dict.pwMismatch;
     return;
   }
 
@@ -640,7 +944,7 @@ modalChangePwForm.addEventListener('submit', (e) => {
     if (oldPw === currentPassword) {
       chrome.storage.local.set({ password: newPw }, () => {
         modalFeedback.className = 'modal-feedback success';
-        modalFeedback.textContent = 'Kata sandi berhasil diperbarui!';
+        modalFeedback.textContent = dict.pwSuccess;
         modalOldPw.value = '';
         modalNewPw.value = '';
         modalConfirmPw.value = '';
@@ -649,7 +953,7 @@ modalChangePwForm.addEventListener('submit', (e) => {
       });
     } else {
       modalFeedback.className = 'modal-feedback error';
-      modalFeedback.textContent = 'Kata sandi lama salah!';
+      modalFeedback.textContent = dict.pwOldWrong;
     }
   });
 });
@@ -683,16 +987,17 @@ window.addEventListener('keydown', (e) => {
 function updateGreeting() {
   const now = new Date();
   const hour = now.getHours() + now.getMinutes() / 60;
-  let prefix = 'Selamat Malam';
+  const dict = i18n[currentLang] || i18n.id;
+  let prefix = dict.greetingMalam;
 
   if (hour >= 4 && hour < 11) {
-    prefix = 'Selamat Pagi';
+    prefix = dict.greetingPagi;
   } else if (hour >= 11 && hour < 15) {
-    prefix = 'Selamat Siang';
+    prefix = dict.greetingSiang;
   } else if (hour >= 15 && hour < 18.5) {
-    prefix = 'Selamat Sore';
+    prefix = dict.greetingSore;
   } else {
-    prefix = 'Selamat Malam';
+    prefix = dict.greetingMalam;
   }
 
   if (greetingPrefix) {
@@ -707,9 +1012,10 @@ function updateGreeting() {
   });
 }
 
-// Dashboard: Clock, Date, and Greeting in Indonesian with Dynamic Themes
+// Dashboard: Clock, Date, and Greeting with Dynamic Themes
 function updateClockAndDate() {
   const now = new Date();
+  const dict = i18n[currentLang] || i18n.id;
 
   // 1. Clock (HH:MM:SS)
   const hours = now.getHours().toString().padStart(2, '0');
@@ -717,19 +1023,13 @@ function updateClockAndDate() {
   const seconds = now.getSeconds().toString().padStart(2, '0');
   document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
 
-  // 2. Date in Indonesian
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const months = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-  ];
-
-  const dayName = days[now.getDay()];
+  // 2. Date
+  const dayName = dict.days[now.getDay()];
   const dayNum = now.getDate();
-  const monthName = months[now.getMonth()];
+  const monthName = dict.months[now.getMonth()];
   const year = now.getFullYear();
 
-  document.getElementById('date').textContent = `${dayName}, ${dayNum} ${monthName} ${year}`;
+  document.getElementById('date').textContent = dict.formatDate(dayName, dayNum, monthName, year);
 
   // 3. Dynamic Greeting
   updateGreeting();
@@ -761,75 +1061,114 @@ function updateClockAndDate() {
 
 function getWeatherDetails(code, isDay = 1) {
   const isNight = isDay === 0;
+  const dict = i18n[currentLang] || i18n.id;
+  const label = (dict.weather && dict.weather[code]) || (currentLang === 'en' ? 'Partly Cloudy' : 'Cerah Berawan');
+  let icon = '⛅';
+
   switch (code) {
     case 0:
-      return { label: 'Cerah', icon: isNight ? '🌙' : '☀️' };
+      icon = isNight ? '🌙' : '☀️';
+      break;
     case 1:
-      return { label: 'Sebagian Cerah', icon: isNight ? '🌤️' : '🌤️' };
+      icon = isNight ? '🌤️' : '🌤️';
+      break;
     case 2:
-      return { label: 'Cerah Berawan', icon: isNight ? '☁️' : '⛅' };
+      icon = isNight ? '☁️' : '⛅';
+      break;
     case 3:
-      return { label: 'Berawan Tebal', icon: '☁️' };
+      icon = '☁️';
+      break;
     case 45:
     case 48:
-      return { label: 'Berkabut', icon: '🌫️' };
+      icon = '🌫️';
+      break;
     case 51:
     case 53:
     case 55:
-      return { label: 'Gerimis Ringan', icon: '🌦️' };
+      icon = '🌦️';
+      break;
     case 56:
     case 57:
-      return { label: 'Gerimis Dingin', icon: '🌧️' };
+      icon = '🌧️';
+      break;
     case 61:
-      return { label: 'Hujan Ringan', icon: '🌦️' };
+      icon = '🌦️';
+      break;
     case 63:
-      return { label: 'Hujan Sedang', icon: '🌧️' };
     case 65:
-      return { label: 'Hujan Lebat', icon: '🌧️' };
+      icon = '🌧️';
+      break;
     case 66:
     case 67:
-      return { label: 'Hujan Beku', icon: '🌨️' };
+      icon = '🌨️';
+      break;
     case 71:
     case 73:
     case 75:
     case 77:
-      return { label: 'Bersalju', icon: '❄️' };
+      icon = '❄️';
+      break;
     case 80:
-      return { label: 'Hujan Lokal', icon: '🌦️' };
+      icon = '🌦️';
+      break;
     case 81:
     case 82:
-      return { label: 'Hujan Deras', icon: '⛈️' };
+      icon = '⛈️';
+      break;
     case 85:
     case 86:
-      return { label: 'Hujan Salju', icon: '🌨️' };
+      icon = '🌨️';
+      break;
     case 95:
-      return { label: 'Badai Petir', icon: '⛈️' };
+      icon = '⛈️';
+      break;
     case 96:
     case 99:
-      return { label: 'Badai Petir & Es', icon: '🌩️' };
+      icon = '🌩️';
+      break;
     default:
-      return { label: 'Cerah Berawan', icon: '⛅' };
+      icon = '⛅';
+      break;
   }
+
+  return { label, icon };
 }
 
 function updateWeatherUI(cache) {
   if (!cache) return;
-  if (weatherIcon) weatherIcon.textContent = cache.icon || '🌤️';
-  if (weatherTemp) weatherTemp.textContent = cache.temp || '--°C';
-  if (weatherCondition) weatherCondition.textContent = cache.condition || 'Cerah';
-  if (weatherCity) weatherCity.textContent = cache.city || 'Indonesia';
+  const dict = i18n[currentLang] || i18n.id;
+  let condition = cache.condition;
+  let icon = cache.icon;
 
-  if (modalWeatherIcon) modalWeatherIcon.textContent = cache.icon || '🌤️';
+  if (cache.weatherCode !== undefined) {
+    const details = getWeatherDetails(cache.weatherCode, cache.isDay);
+    condition = details.label;
+    icon = details.icon;
+  }
+
+  const sourceLabel = cache.source === 'GPS Presisi' 
+    ? (currentLang === 'en' ? 'Precise GPS' : 'GPS Presisi') 
+    : (cache.source === 'Deteksi IP' ? (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP') : (cache.source || 'IP'));
+
+  const cityLabel = cache.city || dict.weatherDefaultCity;
+
+  if (weatherIcon) weatherIcon.textContent = icon || '🌤️';
+  if (weatherTemp) weatherTemp.textContent = cache.temp || '--°C';
+  if (weatherCondition) weatherCondition.textContent = condition || (currentLang === 'en' ? 'Clear' : 'Cerah');
+  if (weatherCity) weatherCity.textContent = cityLabel;
+
+  if (modalWeatherIcon) modalWeatherIcon.textContent = icon || '🌤️';
   if (modalWeatherTemp) modalWeatherTemp.textContent = cache.temp || '--°C';
-  if (modalWeatherDesc) modalWeatherDesc.textContent = cache.condition || 'Cerah';
-  if (modalWeatherLoc) modalWeatherLoc.textContent = `📍 Lokasi: ${cache.city || 'Indonesia'} (${cache.source || 'Deteksi IP'})`;
+  if (modalWeatherDesc) modalWeatherDesc.textContent = condition || (currentLang === 'en' ? 'Clear' : 'Cerah');
+  if (modalWeatherLoc) modalWeatherLoc.textContent = dict.weatherLocLabel(cityLabel, sourceLabel);
 }
 
 async function loadWeather(forceRefresh = false) {
   return new Promise((resolve) => {
-    chrome.storage.local.get(['weatherCache', 'useGpsLocation'], async (data) => {
+    chrome.storage.local.get(['weatherCache', 'useGpsLocation', 'language'], async (data) => {
       const cache = data.weatherCache;
       const useGps = !!data.useGpsLocation;
+      const lang = data.language || 'id';
       const CACHE_DURATION = 30 * 60 * 1000; // 30 menit
 
       if (!forceRefresh && cache && (Date.now() - cache.timestamp < CACHE_DURATION)) {
@@ -857,11 +1196,11 @@ async function loadWeather(forceRefresh = false) {
             source = 'GPS Presisi';
 
             try {
-              const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
+              const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=${lang}`);
               const geoData = await geoRes.json();
-              cityName = geoData.locality || geoData.city || geoData.principalSubdivision || 'Lokasi Saya';
+              cityName = geoData.locality || geoData.city || geoData.principalSubdivision || (lang === 'en' ? 'My Location' : 'Lokasi Saya');
             } catch (e) {
-              cityName = 'Lokasi Saya';
+              cityName = lang === 'en' ? 'My Location' : 'Lokasi Saya';
             }
           } catch (gpsErr) {
             console.warn('[Weather] GPS failed, falling back to IP:', gpsErr);
@@ -876,14 +1215,14 @@ async function loadWeather(forceRefresh = false) {
             const ipData = await ipRes.json();
             lat = parseFloat(ipData.latitude);
             lon = parseFloat(ipData.longitude);
-            cityName = ipData.city || ipData.region || ipData.country || 'Indonesia';
+            cityName = ipData.city || ipData.region || ipData.country || (lang === 'en' ? 'Worldwide' : 'Indonesia');
           } catch (e) {
             try {
               const ipRes2 = await fetch('https://freeipapi.com/api/json');
               const ipData2 = await ipRes2.json();
               lat = ipData2.latitude;
               lon = ipData2.longitude;
-              cityName = ipData2.cityName || ipData2.regionName || 'Indonesia';
+              cityName = ipData2.cityName || ipData2.regionName || (lang === 'en' ? 'Worldwide' : 'Indonesia');
             } catch (e2) {
               lat = -6.175;
               lon = 106.8286;
@@ -912,6 +1251,8 @@ async function loadWeather(forceRefresh = false) {
           const newCache = {
             temp,
             condition: details.label,
+            weatherCode: cw.weathercode,
+            isDay: cw.is_day,
             icon: details.icon,
             city: cityName,
             source,
@@ -932,3 +1273,4 @@ async function loadWeather(forceRefresh = false) {
     });
   });
 }
+

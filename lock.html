@@ -49,7 +49,7 @@
 
       <div id="menu-dropdown" class="menu-dropdown">
         <div class="menu-dropdown-header">
-          <span class="menu-dropdown-label">Pengaturan</span>
+          <span class="menu-dropdown-label" id="menu-header-label">Pengaturan</span>
         </div>
 
         <button id="menu-lock-btn" class="menu-item menu-item-lock">
@@ -59,7 +59,7 @@
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
           </span>
-          <span class="menu-item-label">Kunci Browser</span>
+          <span class="menu-item-label" id="menu-lock-label">Kunci Browser</span>
         </button>
 
         <button id="menu-username-btn" class="menu-item menu-item-user">
@@ -69,7 +69,7 @@
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </span>
-          <span class="menu-item-label">Ubah Nama</span>
+          <span class="menu-item-label" id="menu-user-label">Ubah Nama</span>
         </button>
 
         <button id="menu-weather-btn" class="menu-item menu-item-weather">
@@ -78,8 +78,23 @@
               <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
             </svg>
           </span>
-          <span class="menu-item-label">Pengaturan Cuaca</span>
+          <span class="menu-item-label" id="menu-weather-label">Pengaturan Cuaca</span>
         </button>
+
+        <!-- Language Switcher in Menu -->
+        <div class="menu-lang-row">
+          <span class="menu-lang-label" id="menu-lang-title">Bahasa</span>
+          <div class="lang-switch-group">
+            <button type="button" class="btn-lang active" id="btn-lang-id" data-lang="id" title="Bahasa Indonesia">
+              <span class="flag-icon">🇮🇩</span>
+              <span class="lang-text">ID</span>
+            </button>
+            <button type="button" class="btn-lang" id="btn-lang-en" data-lang="en" title="English">
+              <span class="flag-icon">🇬🇧</span>
+              <span class="lang-text">EN</span>
+            </button>
+          </div>
+        </div>
 
         <div class="menu-divider"></div>
 
@@ -90,7 +105,7 @@
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
             </svg>
           </span>
-          <span class="menu-item-label">Ubah Kata Sandi</span>
+          <span class="menu-item-label" id="menu-pw-label">Ubah Kata Sandi</span>
         </button>
 
         <div class="menu-footer">
@@ -104,13 +119,13 @@
   <div id="username-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Ubah Nama Pengguna</h3>
+        <h3 class="modal-title" id="username-modal-title">Ubah Nama Pengguna</h3>
         <button id="username-modal-close-btn" class="modal-close" title="Tutup">✕</button>
       </div>
       <form id="modal-username-form">
         <input type="text" id="modal-username-input" placeholder="Masukkan nama Anda..." required autocomplete="off" maxlength="32">
         <div id="username-modal-feedback" class="modal-feedback"></div>
-        <button type="submit" class="btn-modal-submit">Simpan Nama</button>
+        <button type="submit" class="btn-modal-submit" id="modal-username-submit">Simpan Nama</button>
       </form>
     </div>
   </div>
@@ -119,14 +134,14 @@
   <div id="weather-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Pengaturan Cuaca</h3>
+        <h3 class="modal-title" id="weather-modal-title">Pengaturan Cuaca</h3>
         <button id="weather-modal-close-btn" class="modal-close" title="Tutup">✕</button>
       </div>
       <div class="modal-weather-body">
         <div class="setting-toggle-row">
           <div class="setting-toggle-info">
-            <span class="setting-toggle-title">Lokasi Presisi (GPS Real-time)</span>
-            <span class="setting-toggle-desc">Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.</span>
+            <span class="setting-toggle-title" id="setting-toggle-title-el">Lokasi Presisi (GPS Real-time)</span>
+            <span class="setting-toggle-desc" id="setting-toggle-desc-el">Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="modal-gps-toggle">
@@ -155,7 +170,7 @@
   <div id="changepw-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Ubah Kata Sandi</h3>
+        <h3 class="modal-title" id="changepw-modal-title">Ubah Kata Sandi</h3>
         <button id="modal-close-btn" class="modal-close" title="Tutup">✕</button>
       </div>
       <form id="modal-changepw-form">
@@ -163,7 +178,7 @@
         <input type="password" id="modal-new-password" placeholder="Kata sandi baru..." required autocomplete="off">
         <input type="password" id="modal-confirm-password" placeholder="Konfirmasi kata sandi baru..." required autocomplete="off">
         <div id="modal-feedback" class="modal-feedback"></div>
-        <button type="submit" class="btn-modal-submit">Simpan Kata Sandi</button>
+        <button type="submit" class="btn-modal-submit" id="modal-changepw-submit">Simpan Kata Sandi</button>
       </form>
     </div>
   </div>

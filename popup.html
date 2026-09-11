@@ -27,6 +27,20 @@
       <a id="update-link" href="#" target="_blank" class="btn-update">Unduh</a>
     </div>
 
+    <!-- Language Switcher Bar -->
+    <div class="popup-top-bar">
+      <div class="lang-switch-group">
+        <button type="button" class="btn-lang active" id="popup-btn-lang-id" data-lang="id" title="Bahasa Indonesia">
+          <span class="flag-icon">🇮🇩</span>
+          <span class="lang-text">ID</span>
+        </button>
+        <button type="button" class="btn-lang" id="popup-btn-lang-en" data-lang="en" title="English">
+          <span class="flag-icon">🇬🇧</span>
+          <span class="lang-text">EN</span>
+        </button>
+      </div>
+    </div>
+
     <!-- HEADER -->
     <div class="header">
       <div class="icon-glow">
@@ -52,18 +66,18 @@
       <form id="popup-lock-form">
         <input type="password" id="popup-password-input" placeholder="Masukkan kata sandi..." required autocomplete="off">
         <div id="popup-error" class="error-text">Sandi salah!</div>
-        <button type="submit" class="btn-popup btn-primary">Buka Kunci</button>
+        <button type="submit" class="btn-popup btn-primary" id="popup-unlock-submit">Buka Kunci</button>
       </form>
     </div>
 
     <!-- View 2: Unlocked Actions (lock button + change password accordion) -->
     <div id="unlocked-actions" class="content-section">
-      <p class="info-text">Aktivitas browser Anda normal dan dapat diakses sepenuhnya.</p>
+      <p class="info-text" id="popup-unlocked-info">Aktivitas browser Anda normal dan dapat diakses sepenuhnya.</p>
       <button id="popup-lock-btn" class="btn-popup btn-danger">Kunci Sekarang</button>
       
       <!-- Accordion Button for Change Username -->
       <button id="accordion-username-toggle" class="btn-accordion">
-        Ubah Nama Pengguna
+        <span id="accordion-username-label">Ubah Nama Pengguna</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" id="chevron-username-icon">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -74,13 +88,13 @@
         <form id="change-username-form">
           <input type="text" id="popup-username-input" placeholder="Nama Anda..." required autocomplete="off" maxlength="32">
           <div id="change-username-feedback" class="feedback-text"></div>
-          <button type="submit" class="btn-popup btn-secondary">Simpan Nama</button>
+          <button type="submit" class="btn-popup btn-secondary" id="popup-username-submit">Simpan Nama</button>
         </form>
       </div>
 
       <!-- Accordion Button for Weather Settings -->
       <button id="accordion-weather-toggle" class="btn-accordion">
-        Pengaturan Cuaca
+        <span id="accordion-weather-label">Pengaturan Cuaca</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" id="chevron-weather-icon">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -89,7 +103,7 @@
       <!-- Accordion Panel for Weather Settings (hidden by default) -->
       <div id="accordion-weather-panel" class="accordion-panel">
         <div class="popup-toggle-row">
-          <span class="popup-toggle-label">Lokasi Presisi (GPS Real-time)</span>
+          <span class="popup-toggle-label" id="popup-weather-gps-label">Lokasi Presisi (GPS Real-time)</span>
           <label class="switch">
             <input type="checkbox" id="popup-gps-toggle">
             <span class="slider round"></span>
@@ -104,7 +118,7 @@
 
       <!-- Accordion Button for Change Password -->
       <button id="accordion-toggle" class="btn-accordion">
-        Ubah Kata Sandi
+        <span id="accordion-pw-label">Ubah Kata Sandi</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" id="chevron-icon">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -117,7 +131,7 @@
           <input type="password" id="new-password" placeholder="Kata sandi baru..." required autocomplete="off">
           <input type="password" id="confirm-password" placeholder="Konfirmasi kata sandi baru..." required autocomplete="off">
           <div id="change-pw-feedback" class="feedback-text"></div>
-          <button type="submit" class="btn-popup btn-secondary">Simpan Kata Sandi</button>
+          <button type="submit" class="btn-popup btn-secondary" id="popup-pw-submit">Simpan Kata Sandi</button>
         </form>
       </div>
     </div>
@@ -135,8 +149,6 @@
       </button>
       <div class="popup-credit">by Polma Sihotang</div>
     </div>
-
-  </div>
 
   </div>
 
