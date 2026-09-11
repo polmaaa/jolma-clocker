@@ -337,3 +337,49 @@ if (chrome.commands && chrome.commands.onCommand) {
     }
   });
 }
+
+// ============================================================
+// AUTO-LOCK SAAT MENGANGGUR (IDLE / INACTIVITY TIMER)
+// Menggunakan chrome.idle API (permission: "idle")
+// ============================================================
+
+function setupIdleLock() {
+  if (!chrome.idle) return;
+  chrome.storage.local.get('idleLockMinutes', (data) => {
+    const mins = (data && data.idleLockMinutes !== undefined) ? Number(data.idleLockMinutes) : 0;
+    if (mins > 0) {
+      const intervalSec = Math.max(15, mins * 60);
+      chrome.idle.setDetectionInterval(intervalSec);
+    }
+  });
+}
+
+// Inisialisasi idle detector
+setupIdleLock();
+
+if (chrome.idle && chrome.idle.onStateChanged) {
+  chrome.idle.onStateChanged.addListener((newState) => {
+    if (newState === 'idle' || newState === 'locked') {
+      chrome.storage.local.get('idleLockMinutes', (data) => {
+        const mins = (data && data.idleLockMinutes !== undefined) ? Number(data.idleLockMinutes) : 0;
+        if (mins > 0) {
+          const storageSession = chrome.storage.session || chrome.storage.local;
+          storageSession.get('unlocked', (session) => {
+            if (session && session.unlocked) {
+              keepScreenAwake();
+              lockBrowser(true);
+            }
+          });
+        }
+      });
+    }
+  });
+}
+
+// Dengarkan perubahan konfigurasi idleLockMinutes secara real-time
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'local' && changes.idleLockMinutes !== undefined) {
+    setupIdleLock();
+  }
+});
+

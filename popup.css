@@ -453,6 +453,23 @@ input:checked + .slider:before {
   color: var(--text-color);
 }
 
+.popup-select {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: #ffffff;
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.popup-select:focus {
+  border-color: var(--primary);
+}
+
 .popup-weather-preview {
   display: flex;
   align-items: center;

@@ -39,6 +39,15 @@ const popupWeatherIcon         = document.getElementById('popup-weather-icon');
 const popupWeatherInfo         = document.getElementById('popup-weather-info');
 const popupWeatherFeedback     = document.getElementById('popup-weather-feedback');
 
+// Accordion Elements - Auto-Lock
+const accordionAutolockToggle  = document.getElementById('accordion-autolock-toggle');
+const accordionAutolockLabel   = document.getElementById('accordion-autolock-label');
+const accordionAutolockPanel   = document.getElementById('accordion-autolock-panel');
+const chevronAutolockIcon      = document.getElementById('chevron-autolock-icon');
+const popupAutolockDesc        = document.getElementById('popup-autolock-desc');
+const popupAutolockSelect      = document.getElementById('popup-autolock-select');
+const popupAutolockFeedback    = document.getElementById('popup-autolock-feedback');
+
 // Accordion Elements - Password
 const accordionToggle      = document.getElementById('accordion-toggle');
 const accordionPwLabel     = document.getElementById('accordion-pw-label');
@@ -91,6 +100,17 @@ const i18n = {
     weatherLoading: 'Memuat cuaca...',
     weatherRequesting: 'Meminta izin lokasi...',
     weatherUnsupported: 'Geolocation tidak didukung.',
+    autolockTitle: 'Kunci Otomatis Saat Menganggur',
+    autolockDesc: 'Kunci setelah tidak aktif:',
+    autolockSaved: '✓ Pengaturan kunci otomatis disimpan.',
+    autolockOptions: {
+      0: 'Nonaktif (Off)',
+      1: '1 Menit',
+      5: '5 Menit',
+      15: '15 Menit',
+      30: '30 Menit',
+      60: '60 Menit'
+    },
     pwTitle: 'Ubah Kata Sandi',
     oldPwPlaceholder: 'Kata sandi lama...',
     newPwPlaceholder: 'Kata sandi baru...',
@@ -136,6 +156,17 @@ const i18n = {
     weatherLoading: 'Loading weather...',
     weatherRequesting: 'Requesting location permission...',
     weatherUnsupported: 'Geolocation is not supported.',
+    autolockTitle: 'Auto-Lock Inactivity Timer',
+    autolockDesc: 'Lock after inactivity:',
+    autolockSaved: '✓ Auto-lock setting saved.',
+    autolockOptions: {
+      0: 'Disabled (Off)',
+      1: '1 Minute',
+      5: '5 Minutes',
+      15: '15 Minutes',
+      30: '30 Minutes',
+      60: '60 Minutes'
+    },
     pwTitle: 'Change Password',
     oldPwPlaceholder: 'Current password...',
     newPwPlaceholder: 'New password...',
@@ -192,6 +223,20 @@ function applyTranslations(lang) {
   if (popupWeatherGpsLabel) popupWeatherGpsLabel.textContent = dict.weatherGpsLabel;
   if (popupWeatherEffectsLabel) popupWeatherEffectsLabel.textContent = dict.weatherEffectsLabel;
 
+  // Auto-Lock
+  if (accordionAutolockLabel) accordionAutolockLabel.textContent = dict.autolockTitle;
+  if (popupAutolockDesc) popupAutolockDesc.textContent = dict.autolockDesc;
+  if (popupAutolockSelect && dict.autolockOptions) {
+    const currentValue = popupAutolockSelect.value;
+    Array.from(popupAutolockSelect.options).forEach(opt => {
+      const val = parseInt(opt.value, 10);
+      if (dict.autolockOptions[val] !== undefined) {
+        opt.textContent = dict.autolockOptions[val];
+      }
+    });
+    popupAutolockSelect.value = currentValue;
+  }
+
   // Password
   if (accordionPwLabel) accordionPwLabel.textContent = dict.pwTitle;
   if (oldPasswordInput) oldPasswordInput.placeholder = dict.oldPwPlaceholder;
@@ -239,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (localVersionEl) localVersionEl.textContent = `v${localVersion}`;
 
   // Load language first
-  chrome.storage.local.get(['language', 'userName', 'useGpsLocation', 'weatherEffectsEnabled', 'weatherCache'], (data) => {
+  chrome.storage.local.get(['language', 'userName', 'useGpsLocation', 'weatherEffectsEnabled', 'weatherCache', 'idleLockMinutes'], (data) => {
     const lang = (data && data.language) || 'id';
     applyTranslations(lang);
 
@@ -251,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (popupWeatherEffectsToggle) {
       popupWeatherEffectsToggle.checked = data.weatherEffectsEnabled !== false;
+    }
+    if (popupAutolockSelect) {
+      popupAutolockSelect.value = String((data && data.idleLockMinutes !== undefined) ? data.idleLockMinutes : 0);
     }
     if (data && data.weatherCache) {
       const dict = i18n[currentLang];
@@ -323,6 +371,11 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     popupWeatherEffectsToggle.checked = changes.weatherEffectsEnabled.newValue !== false;
   }
 
+  // Sinkronisasi Auto-Lock
+  if (changes.idleLockMinutes !== undefined && popupAutolockSelect) {
+    popupAutolockSelect.value = String(changes.idleLockMinutes.newValue || 0);
+  }
+
   // Sinkronisasi state lock/unlock
   if (changes.unlocked) {
     updatePopupUI(changes.unlocked.newValue);
@@ -380,6 +433,10 @@ function updatePopupUI(isUnlocked) {
     if (accordionUsernamePanel) {
       accordionUsernamePanel.classList.remove('show');
       chevronUsernameIcon.classList.remove('rotate');
+    }
+    if (accordionAutolockPanel) {
+      accordionAutolockPanel.classList.remove('show');
+      chevronAutolockIcon.classList.remove('rotate');
     }
     clearChangePasswordForm();
   }
@@ -472,6 +529,35 @@ if (popupGpsToggle) {
 if (popupWeatherEffectsToggle) {
   popupWeatherEffectsToggle.addEventListener('change', () => {
     chrome.storage.local.set({ weatherEffectsEnabled: popupWeatherEffectsToggle.checked });
+  });
+}
+
+// ---- Auto-Lock Accordion -------------------------------------------------
+
+if (accordionAutolockToggle) {
+  accordionAutolockToggle.addEventListener('click', () => {
+    accordionAutolockPanel.classList.toggle('show');
+    chevronAutolockIcon.classList.toggle('rotate');
+    if (popupAutolockFeedback) {
+      popupAutolockFeedback.className = 'feedback-text';
+      popupAutolockFeedback.textContent = '';
+    }
+  });
+}
+
+if (popupAutolockSelect) {
+  popupAutolockSelect.addEventListener('change', () => {
+    const dict = i18n[currentLang];
+    const minutes = parseInt(popupAutolockSelect.value, 10) || 0;
+    chrome.storage.local.set({ idleLockMinutes: minutes }, () => {
+      if (popupAutolockFeedback) {
+        popupAutolockFeedback.className = 'feedback-text success';
+        popupAutolockFeedback.textContent = dict.autolockSaved || '✓ Saved';
+        setTimeout(() => {
+          if (popupAutolockFeedback) popupAutolockFeedback.textContent = '';
+        }, 3000);
+      }
+    });
   });
 }
 

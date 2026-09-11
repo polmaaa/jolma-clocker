@@ -12,7 +12,8 @@
     "power",
     "alarms",
     "downloads",
-    "scripting"
+    "scripting",
+    "idle"
   ],
   "host_permissions": [
     "<all_urls>"

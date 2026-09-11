@@ -15,10 +15,19 @@ const searchInput     = document.getElementById('search-input');
 const searchSection   = document.getElementById('search-section');
 const topBar          = document.getElementById('unlocked-top-bar');
 
+// Top Bar Action Buttons
+const focusBtn        = document.getElementById('focus-btn');
+const themeBtn        = document.getElementById('theme-btn');
+const topFocusLabel   = document.getElementById('top-focus-label');
+const topThemeLabel   = document.getElementById('top-theme-label');
+
 // Menu dropdown elements
 const menuBtn         = document.getElementById('menu-btn');
 const menuDropdown    = document.getElementById('menu-dropdown');
 const menuLockBtn     = document.getElementById('menu-lock-btn');
+const menuAutolockBtn = document.getElementById('menu-autolock-btn');
+const menuThemeBtn    = document.getElementById('menu-theme-btn');
+const menuFocusBtn    = document.getElementById('menu-focus-btn');
 const menuUsernameBtn = document.getElementById('menu-username-btn');
 const menuWeatherBtn  = document.getElementById('menu-weather-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
@@ -26,9 +35,72 @@ const btnLangId       = document.getElementById('btn-lang-id');
 const btnLangEn       = document.getElementById('btn-lang-en');
 const menuHeaderLabel = document.getElementById('menu-header-label');
 const menuLockLabel   = document.getElementById('menu-lock-label');
+const menuAutolockLabel = document.getElementById('menu-autolock-label');
+const menuThemeLabel  = document.getElementById('menu-theme-label');
+const menuFocusLabel  = document.getElementById('menu-focus-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
+
+// Daily Quotes Elements
+const dailyQuoteContainer = document.getElementById('daily-quote-container');
+const quoteTextEl         = document.getElementById('quote-text');
+const quoteAuthorEl       = document.getElementById('quote-author');
+const btnQuoteShuffle     = document.getElementById('btn-quote-shuffle');
+
+// Quick Links Elements
+const quickLinksSection   = document.getElementById('quick-links-section');
+const quickLinksGrid      = document.getElementById('quick-links-grid');
+const btnAddQuickLink     = document.getElementById('btn-add-quick-link');
+const lblAddShortcut      = document.getElementById('lbl-add-shortcut');
+const quicklinkModalOverlay   = document.getElementById('quicklink-modal-overlay');
+const quicklinkModalCloseBtn  = document.getElementById('quicklink-modal-close-btn');
+const quicklinkForm           = document.getElementById('quicklink-form');
+const quicklinkEditIndex      = document.getElementById('quicklink-edit-index');
+const quicklinkNameInput      = document.getElementById('quicklink-name-input');
+const quicklinkUrlInput       = document.getElementById('quicklink-url-input');
+const quicklinkModalFeedback  = document.getElementById('quicklink-modal-feedback');
+const quicklinkSubmitBtn      = document.getElementById('quicklink-submit-btn');
+const quicklinkDeleteBtn      = document.getElementById('quicklink-delete-btn');
+
+// Pomodoro / Focus Timer Elements
+const pomodoroModalOverlay    = document.getElementById('pomodoro-modal-overlay');
+const pomodoroModalCloseBtn   = document.getElementById('pomodoro-modal-close-btn');
+const pomodoroModalTitle      = document.getElementById('pomodoro-modal-title');
+const tabFocusLabel           = document.getElementById('tab-focus-label');
+const tabShortLabel           = document.getElementById('tab-short-label');
+const tabLongLabel            = document.getElementById('tab-long-label');
+const pomoRingProgress        = document.getElementById('pomo-ring-progress');
+const pomodoroTimeDisplay     = document.getElementById('pomodoro-time-display');
+const pomodoroModeBadge       = document.getElementById('pomodoro-mode-badge');
+const pomoStartBtn            = document.getElementById('pomo-start-btn');
+const pomoResetBtn            = document.getElementById('pomo-reset-btn');
+const pomoSettingsBtn         = document.getElementById('pomo-settings-btn');
+const pomoSettingsPanel       = document.getElementById('pomo-settings-panel');
+const inputFocusMin           = document.getElementById('input-focus-min');
+const inputShortMin           = document.getElementById('input-short-min');
+const inputLongMin            = document.getElementById('input-long-min');
+const pomoSoundToggle         = document.getElementById('pomo-sound-toggle');
+const lblFocusLen             = document.getElementById('lbl-focus-len');
+const lblShortLen             = document.getElementById('lbl-short-len');
+const lblLongLen              = document.getElementById('lbl-long-len');
+const lblSoundPomo            = document.getElementById('lbl-sound-pomo');
+
+// Theme & Wallpaper Modal Elements
+const themeModalOverlay       = document.getElementById('theme-modal-overlay');
+const themeModalCloseBtn      = document.getElementById('theme-modal-close-btn');
+const themeModalTitle         = document.getElementById('theme-modal-title');
+const themeCards              = document.querySelectorAll('.theme-card');
+const customWallUrlInput      = document.getElementById('custom-wall-url');
+const btnApplyCustomWall      = document.getElementById('btn-apply-custom-wall');
+
+// Auto-Lock Inactivity Modal Elements
+const autolockModalOverlay    = document.getElementById('autolock-modal-overlay');
+const autolockModalCloseBtn   = document.getElementById('autolock-modal-close-btn');
+const autolockModalTitle      = document.getElementById('autolock-modal-title');
+const autolockDesc            = document.getElementById('autolock-desc');
+const autolockOptionBtns      = document.querySelectorAll('.btn-autolock-opt');
+const autolockFeedback        = document.getElementById('autolock-feedback');
 
 // Weather Footer, Effects & Modal elements
 const weatherEffectsLayer     = document.getElementById('weather-effects-layer');
@@ -88,10 +160,16 @@ const i18n = {
   id: {
     menuHeader: 'Pengaturan',
     menuLock: 'Kunci Browser',
+    menuAutolock: 'Auto-Lock Saat Menganggur',
+    menuTheme: 'Wallpaper & Tema',
+    menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
     menuLangTitle: 'Bahasa',
+    topFocus: 'Fokus',
+    topTheme: 'Tema',
+    addShortcut: 'Pintasan',
 
     // Greeting
     greetingPagi: 'Selamat Pagi',
@@ -112,6 +190,60 @@ const i18n = {
     passwordPlaceholder: 'Masukkan kata sandi...',
     passwordError: 'Sandi salah. Silakan coba lagi!',
     unlockedBtn: 'Buka Kunci',
+
+    // Quotes ID
+    quotes: [
+      { text: "Waktu adalah aset paling berharga. Gunakan dengan bijak.", author: "Polma Sihotang" },
+      { text: "Masa depan tergantung pada apa yang kamu lakukan hari ini.", author: "Mahatma Gandhi" },
+      { text: "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
+      { text: "Jangan menunggu kesempatan luar biasa. Raih kesempatan biasa dan buat menjadi luar biasa.", author: "Orison Swett Marden" },
+      { text: "Kesuksesan berawal dari keputusan untuk mencoba.", author: "John F. Kennedy" },
+      { text: "Fokus pada proses, hasil terbaik akan mengikuti.", author: "Anonim" },
+      { text: "Disiplin adalah jembatan antara tujuan dan pencapaian.", author: "Jim Rohn" },
+      { text: "Hari ini adalah kesempatan untuk membangun hari esok yang kamu inginkan.", author: "Ken Poirot" }
+    ],
+
+    // Quick Links Modal
+    quicklinkAddTitle: 'Tambah Pintasan',
+    quicklinkEditTitle: 'Edit Pintasan',
+    quicklinkNamePh: 'Nama Situs (misal: YouTube)',
+    quicklinkUrlPh: 'URL (misal: https://youtube.com)',
+    quicklinkSaveBtn: 'Simpan',
+    quicklinkDeleteBtn: 'Hapus',
+    quicklinkEmptyErr: 'Nama dan URL wajib diisi!',
+    quicklinkInvalidUrl: 'Format URL tidak valid (gunakan http:// atau https://)',
+
+    // Pomodoro Modal
+    pomoTitle: 'Focus & Pomodoro Timer',
+    pomoFocusTab: '🎯 Fokus',
+    pomoShortTab: '☕ Istirahat Pendek',
+    pomoLongTab: '🌴 Istirahat Panjang',
+    pomoFocusBadge: 'Waktu Fokus',
+    pomoShortBadge: 'Istirahat Pendek',
+    pomoLongBadge: 'Istirahat Panjang',
+    pomoStart: 'Mulai',
+    pomoPause: 'Jeda',
+    pomoReset: 'Reset',
+    pomoFocusLen: 'Fokus (Menit):',
+    pomoShortLen: 'Istirahat Pendek (Menit):',
+    pomoLongLen: 'Istirahat Panjang (Menit):',
+    pomoSoundAlert: 'Suara Notifikasi:',
+
+    // Theme Modal
+    themeTitle: 'Pilih Tema & Latar Belakang',
+    themeDynamic: 'Dynamic Time',
+    themeAmoled: 'Pure AMOLED',
+    themeOcean: 'Pacific Ocean',
+    themeEmerald: 'Emerald Forest',
+    themeMountain: 'Misty Mountains',
+    themeLake: 'Golden Lake',
+    themeUrlPh: 'Tempel URL Gambar (https://...)',
+    themeApplyBtn: 'Terapkan URL',
+
+    // Auto-Lock Modal
+    autolockTitle: 'Auto-Lock Saat Menganggur',
+    autolockDesc: 'Kunci browser secara otomatis saat tidak ada aktivitas pengguna.',
+    autolockActive: (m) => m > 0 ? `✓ Kunci otomatis aktif (${m} menit tidak aktif).` : '✓ Kunci otomatis dinonaktifkan.',
 
     // Username Modal
     usernameModalTitle: 'Ubah Nama Pengguna',
@@ -183,10 +315,16 @@ const i18n = {
   en: {
     menuHeader: 'Settings',
     menuLock: 'Lock Browser',
+    menuAutolock: 'Auto-Lock Inactivity Timer',
+    menuTheme: 'Wallpaper & Theme',
+    menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
     menuLangTitle: 'Language',
+    topFocus: 'Focus',
+    topTheme: 'Theme',
+    addShortcut: 'Shortcut',
 
     // Greeting
     greetingPagi: 'Good Morning',
@@ -207,6 +345,60 @@ const i18n = {
     passwordPlaceholder: 'Enter password...',
     passwordError: 'Incorrect password. Please try again!',
     unlockedBtn: 'Unlock',
+
+    // Quotes EN
+    quotes: [
+      { text: "Time is our most valuable asset. Spend it with purpose.", author: "Polma Sihotang" },
+      { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "Do not wait for extraordinary circumstances. Take common occasions and make them great.", author: "Orison Swett Marden" },
+      { text: "Success begins with the decision to try.", author: "John F. Kennedy" },
+      { text: "Focus on the process, and the results will take care of themselves.", author: "Anonymous" },
+      { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn" },
+      { text: "Today is your opportunity to build the tomorrow you want.", author: "Ken Poirot" }
+    ],
+
+    // Quick Links Modal
+    quicklinkAddTitle: 'Add Shortcut',
+    quicklinkEditTitle: 'Edit Shortcut',
+    quicklinkNamePh: 'Site Name (e.g. YouTube)',
+    quicklinkUrlPh: 'URL (e.g. https://youtube.com)',
+    quicklinkSaveBtn: 'Save',
+    quicklinkDeleteBtn: 'Delete',
+    quicklinkEmptyErr: 'Name and URL are required!',
+    quicklinkInvalidUrl: 'Invalid URL format (use http:// or https://)',
+
+    // Pomodoro Modal
+    pomoTitle: 'Focus & Pomodoro Timer',
+    pomoFocusTab: '🎯 Focus',
+    pomoShortTab: '☕ Short Break',
+    pomoLongTab: '🌴 Long Break',
+    pomoFocusBadge: 'Focus Time',
+    pomoShortBadge: 'Short Break',
+    pomoLongBadge: 'Long Break',
+    pomoStart: 'Start',
+    pomoPause: 'Pause',
+    pomoReset: 'Reset',
+    pomoFocusLen: 'Focus (Min):',
+    pomoShortLen: 'Short Break (Min):',
+    pomoLongLen: 'Long Break (Min):',
+    pomoSoundAlert: 'Sound Alert:',
+
+    // Theme Modal
+    themeTitle: 'Choose Theme & Wallpaper',
+    themeDynamic: 'Dynamic Time',
+    themeAmoled: 'Pure AMOLED',
+    themeOcean: 'Pacific Ocean',
+    themeEmerald: 'Emerald Forest',
+    themeMountain: 'Misty Mountains',
+    themeLake: 'Golden Lake',
+    themeUrlPh: 'Paste Image URL (https://...)',
+    themeApplyBtn: 'Apply URL',
+
+    // Auto-Lock Modal
+    autolockTitle: 'Auto-Lock Inactivity Timer',
+    autolockDesc: 'Automatically locks the browser when no user activity is detected.',
+    autolockActive: (m) => m > 0 ? `✓ Auto-lock enabled (${m} min inactivity).` : '✓ Auto-lock disabled.',
 
     // Username Modal
     usernameModalTitle: 'Change Username',
@@ -285,9 +477,16 @@ function applyTranslations(lang) {
   if (btnLangId) btnLangId.classList.toggle('active', currentLang === 'id');
   if (btnLangEn) btnLangEn.classList.toggle('active', currentLang === 'en');
 
+  // Top Bar action labels
+  if (topFocusLabel) topFocusLabel.textContent = dict.topFocus;
+  if (topThemeLabel) topThemeLabel.textContent = dict.topTheme;
+
   // Menu texts
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
+  if (menuAutolockLabel) menuAutolockLabel.textContent = dict.menuAutolock;
+  if (menuThemeLabel) menuThemeLabel.textContent = dict.menuTheme;
+  if (menuFocusLabel) menuFocusLabel.textContent = dict.menuFocus;
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
@@ -296,6 +495,48 @@ function applyTranslations(lang) {
   if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
   if (passwordInput) passwordInput.placeholder = dict.passwordPlaceholder;
   if (errorMessage) errorMessage.textContent = dict.passwordError;
+
+  // Quick Links
+  if (lblAddShortcut) lblAddShortcut.textContent = dict.addShortcut;
+  if (quicklinkNameInput) quicklinkNameInput.placeholder = dict.quicklinkNamePh;
+  if (quicklinkUrlInput) quicklinkUrlInput.placeholder = dict.quicklinkUrlPh;
+  if (quicklinkSubmitBtn) quicklinkSubmitBtn.textContent = dict.quicklinkSaveBtn;
+  if (quicklinkDeleteBtn) quicklinkDeleteBtn.textContent = dict.quicklinkDeleteBtn;
+
+  // Pomodoro
+  if (pomodoroModalTitle) pomodoroModalTitle.textContent = dict.pomoTitle;
+  if (tabFocusLabel) tabFocusLabel.textContent = dict.pomoFocusTab;
+  if (tabShortLabel) tabShortLabel.textContent = dict.pomoShortTab;
+  if (tabLongLabel) tabLongLabel.textContent = dict.pomoLongTab;
+  if (lblFocusLen) lblFocusLen.textContent = dict.pomoFocusLen;
+  if (lblShortLen) lblShortLen.textContent = dict.pomoShortLen;
+  if (lblLongLen) lblLongLen.textContent = dict.pomoLongLen;
+  if (lblSoundPomo) lblSoundPomo.textContent = dict.pomoSoundAlert;
+  if (pomoResetBtn) pomoResetBtn.textContent = dict.pomoReset;
+
+  // Theme Modal
+  if (themeModalTitle) themeModalTitle.textContent = dict.themeTitle;
+  const themeNameDyn = document.getElementById('theme-name-dynamic');
+  const themeNameAmo = document.getElementById('theme-name-amoled');
+  const themeNameOce = document.getElementById('theme-name-ocean');
+  const themeNameEme = document.getElementById('theme-name-emerald');
+  const themeNameMtn = document.getElementById('theme-name-mountain');
+  const themeNameLak = document.getElementById('theme-name-lake');
+  if (themeNameDyn) themeNameDyn.textContent = dict.themeDynamic;
+  if (themeNameAmo) themeNameAmo.textContent = dict.themeAmoled;
+  if (themeNameOce) themeNameOce.textContent = dict.themeOcean;
+  if (themeNameEme) themeNameEme.textContent = dict.themeEmerald;
+  if (themeNameMtn) themeNameMtn.textContent = dict.themeMountain;
+  if (themeNameLak) themeNameLak.textContent = dict.themeLake;
+  if (customWallUrlInput) customWallUrlInput.placeholder = dict.themeUrlPh;
+  if (btnApplyCustomWall) btnApplyCustomWall.textContent = dict.themeApplyBtn;
+
+  // Auto-Lock Modal
+  if (autolockModalTitle) autolockModalTitle.textContent = dict.autolockTitle;
+  if (autolockDesc) autolockDesc.textContent = dict.autolockDesc;
+
+  // Update quote display with new language
+  updateQuoteDisplay();
 
   // Username Modal
   const usernameModalTitle = document.getElementById('username-modal-title');
@@ -452,6 +693,13 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClockAndDate();
   setInterval(updateClockAndDate, 1000);
 
+  // Initialize new feature modules
+  initDailyQuotes();
+  initQuickLinks();
+  initPomodoro();
+  initThemes();
+  initAutoLock();
+
   // CATATAN: checkUpdateStorage() dipanggil di dalam updateLockerState(true)
   // sehingga toast hanya muncul saat posisi terbuka
 
@@ -486,6 +734,8 @@ function updateLockerState(isUnlocked) {
         topBar.classList.add('active');
         if (weatherFooter) weatherFooter.classList.add('active');
         if (copyrightFooter) copyrightFooter.classList.add('active');
+        if (dailyQuoteContainer) dailyQuoteContainer.style.display = 'block';
+        if (quickLinksSection) quickLinksSection.style.display = 'flex';
         searchInput.focus();
       }, 200);
 
@@ -499,13 +749,21 @@ function updateLockerState(isUnlocked) {
     // Request keyboard lock on lock screen
     requestKeyboardLock();
 
-    // Transition to locked state — sembunyikan toast update & footer cuaca
+    // Transition to locked state — sembunyikan toast update & footer cuaca & widgets
     hideUpdateToast();
     searchSection.classList.remove('active');
     topBar.classList.remove('active');
     if (weatherFooter) weatherFooter.classList.remove('active');
     if (copyrightFooter) copyrightFooter.classList.remove('active');
+    if (dailyQuoteContainer) dailyQuoteContainer.style.display = 'none';
+    if (quickLinksSection) quickLinksSection.style.display = 'none';
     closeWeatherModal();
+    closeUsernameModal();
+    closeModal();
+    closePomodoroModal();
+    closeThemeModal();
+    closeAutoLockModal();
+    closeQuickLinkModal();
 
     setTimeout(() => {
       lockCard.classList.add('active');
@@ -705,6 +963,17 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.userName) {
     updateGreeting();
   }
+  if (changes.quickLinks) {
+    renderQuickLinks(changes.quickLinks.newValue || []);
+  }
+  if (changes.appTheme || changes.customWallpaperUrl) {
+    chrome.storage.local.get(['appTheme', 'customWallpaperUrl'], (d) => {
+      applyTheme(d.appTheme || 'dynamic', d.customWallpaperUrl || '');
+    });
+  }
+  if (changes.idleLockMinutes !== undefined) {
+    updateAutoLockUI(Number(changes.idleLockMinutes.newValue || 0));
+  }
   if (changes.weatherEffectsEnabled !== undefined) {
     chrome.storage.local.get('weatherCache', (data) => {
       if (data && data.weatherCache) {
@@ -720,7 +989,20 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   }
 });
 
-// ---- Menu Dropdown -------------------------------------------------------
+// ---- Menu Dropdown & Top Actions -----------------------------------------
+
+// Top Bar Action Buttons
+if (focusBtn) {
+  focusBtn.addEventListener('click', () => {
+    openPomodoroModal();
+  });
+}
+
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    openThemeModal();
+  });
+}
 
 // Toggle dropdown buka/tutup
 menuBtn.addEventListener('click', (e) => {
@@ -746,6 +1028,30 @@ menuLockBtn.addEventListener('click', () => {
   closeDropdown();
   chrome.runtime.sendMessage({ action: 'lockBrowser' });
 });
+
+// Opsi: Auto-Lock Timer
+if (menuAutolockBtn) {
+  menuAutolockBtn.addEventListener('click', () => {
+    closeDropdown();
+    openAutoLockModal();
+  });
+}
+
+// Opsi: Wallpaper & Theme
+if (menuThemeBtn) {
+  menuThemeBtn.addEventListener('click', () => {
+    closeDropdown();
+    openThemeModal();
+  });
+}
+
+// Opsi: Focus Timer
+if (menuFocusBtn) {
+  menuFocusBtn.addEventListener('click', () => {
+    closeDropdown();
+    openPomodoroModal();
+  });
+}
 
 // Opsi: Ubah Nama Pengguna → buka modal nama
 menuUsernameBtn.addEventListener('click', () => {
@@ -1433,4 +1739,560 @@ async function loadWeather(forceRefresh = false) {
     });
   });
 }
+
+// ============================================================
+// 1. DAILY INSPIRING QUOTES MODULE
+// ============================================================
+let currentQuoteIndex = 0;
+
+function initDailyQuotes() {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+  const dict = i18n[currentLang] || i18n.en;
+  currentQuoteIndex = dayOfYear % (dict.quotes ? dict.quotes.length : 1);
+  updateQuoteDisplay();
+
+  if (btnQuoteShuffle) {
+    btnQuoteShuffle.addEventListener('click', shuffleQuote);
+  }
+}
+
+function updateQuoteDisplay() {
+  const dict = i18n[currentLang] || i18n.en;
+  if (!dict.quotes || !quoteTextEl || !quoteAuthorEl) return;
+  const quote = dict.quotes[currentQuoteIndex % dict.quotes.length];
+  quoteTextEl.style.opacity = '0';
+  setTimeout(() => {
+    quoteTextEl.textContent = `"${quote.text}"`;
+    quoteAuthorEl.textContent = `— ${quote.author}`;
+    quoteTextEl.style.opacity = '0.85';
+  }, 150);
+}
+
+function shuffleQuote() {
+  const dict = i18n[currentLang] || i18n.en;
+  if (!dict.quotes) return;
+  let nextIndex = Math.floor(Math.random() * dict.quotes.length);
+  if (nextIndex === currentQuoteIndex && dict.quotes.length > 1) {
+    nextIndex = (nextIndex + 1) % dict.quotes.length;
+  }
+  currentQuoteIndex = nextIndex;
+  updateQuoteDisplay();
+}
+
+// ============================================================
+// 2. MINIMALIST QUICK LINKS MODULE
+// ============================================================
+const DEFAULT_QUICK_LINKS = [
+  { name: 'Google', url: 'https://www.google.com' },
+  { name: 'YouTube', url: 'https://www.youtube.com' },
+  { name: 'GitHub', url: 'https://github.com' },
+  { name: 'ChatGPT', url: 'https://chatgpt.com' },
+  { name: 'Gmail', url: 'https://mail.google.com' },
+  { name: 'Wikipedia', url: 'https://www.wikipedia.org' }
+];
+
+let quickLinksList = [];
+
+function initQuickLinks() {
+  chrome.storage.local.get('quickLinks', (data) => {
+    quickLinksList = (data && Array.isArray(data.quickLinks) && data.quickLinks.length > 0)
+      ? data.quickLinks
+      : DEFAULT_QUICK_LINKS;
+    
+    if (!data || !data.quickLinks) {
+      chrome.storage.local.set({ quickLinks: quickLinksList });
+    }
+    renderQuickLinks(quickLinksList);
+  });
+
+  if (btnAddQuickLink) {
+    btnAddQuickLink.addEventListener('click', openAddQuickLinkModal);
+  }
+  if (quicklinkModalCloseBtn) {
+    quicklinkModalCloseBtn.addEventListener('click', closeQuickLinkModal);
+  }
+  if (quicklinkModalOverlay) {
+    quicklinkModalOverlay.addEventListener('click', (e) => {
+      if (e.target === quicklinkModalOverlay) closeQuickLinkModal();
+    });
+  }
+  if (quicklinkForm) {
+    quicklinkForm.addEventListener('submit', handleQuickLinkSubmit);
+  }
+  if (quicklinkDeleteBtn) {
+    quicklinkDeleteBtn.addEventListener('click', handleQuickLinkDelete);
+  }
+}
+
+function getFaviconUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return `https://www.google.com/s2/favicons?domain=${parsed.hostname}&sz=64`;
+  } catch (e) {
+    return 'icons/icon-32.png';
+  }
+}
+
+function renderQuickLinks(links) {
+  if (!quickLinksGrid) return;
+  quickLinksGrid.innerHTML = '';
+
+  links.forEach((item, index) => {
+    const linkEl = document.createElement('a');
+    linkEl.className = 'quick-link-item';
+    linkEl.href = item.url;
+    linkEl.target = '_blank';
+    linkEl.rel = 'noopener noreferrer';
+    linkEl.title = `${item.name} (${item.url})`;
+
+    const iconBox = document.createElement('div');
+    iconBox.className = 'quick-link-icon-box';
+
+    const iconImg = document.createElement('img');
+    iconImg.className = 'quick-link-icon';
+    iconImg.src = getFaviconUrl(item.url);
+    iconImg.alt = item.name;
+    iconImg.onerror = () => { iconImg.src = 'icons/icon-32.png'; };
+
+    iconBox.appendChild(iconImg);
+
+    const titleEl = document.createElement('span');
+    titleEl.className = 'quick-link-title';
+    titleEl.textContent = item.name;
+
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'quick-link-edit-btn';
+    editBtn.title = 'Edit';
+    editBtn.innerHTML = '✎';
+    editBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openEditQuickLinkModal(index);
+    });
+
+    linkEl.appendChild(iconBox);
+    linkEl.appendChild(titleEl);
+    linkEl.appendChild(editBtn);
+    quickLinksGrid.appendChild(linkEl);
+  });
+}
+
+function openAddQuickLinkModal() {
+  const dict = i18n[currentLang] || i18n.en;
+  quicklinkEditIndex.value = '-1';
+  quicklinkNameInput.value = '';
+  quicklinkUrlInput.value = '';
+  quicklinkModalFeedback.className = 'modal-feedback';
+  quicklinkModalFeedback.textContent = '';
+  quicklinkModalTitle.textContent = dict.quicklinkAddTitle;
+  quicklinkDeleteBtn.style.display = 'none';
+  quicklinkModalOverlay.classList.add('open');
+  quicklinkNameInput.focus();
+}
+
+function openEditQuickLinkModal(index) {
+  const dict = i18n[currentLang] || i18n.en;
+  const item = quickLinksList[index];
+  if (!item) return;
+  quicklinkEditIndex.value = String(index);
+  quicklinkNameInput.value = item.name;
+  quicklinkUrlInput.value = item.url;
+  quicklinkModalFeedback.className = 'modal-feedback';
+  quicklinkModalFeedback.textContent = '';
+  quicklinkModalTitle.textContent = dict.quicklinkEditTitle;
+  quicklinkDeleteBtn.style.display = 'inline-block';
+  quicklinkModalOverlay.classList.add('open');
+  quicklinkNameInput.focus();
+}
+
+function closeQuickLinkModal() {
+  if (quicklinkModalOverlay) quicklinkModalOverlay.classList.remove('open');
+  if (quicklinkModalFeedback) quicklinkModalFeedback.textContent = '';
+}
+
+function handleQuickLinkSubmit(e) {
+  e.preventDefault();
+  const dict = i18n[currentLang] || i18n.en;
+  const idx = parseInt(quicklinkEditIndex.value, 10);
+  const name = quicklinkNameInput.value.trim();
+  let url = quicklinkUrlInput.value.trim();
+
+  if (!name || !url) {
+    quicklinkModalFeedback.className = 'modal-feedback error';
+    quicklinkModalFeedback.textContent = dict.quicklinkEmptyErr;
+    return;
+  }
+
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = 'https://' + url;
+  }
+
+  try {
+    new URL(url);
+  } catch (err) {
+    quicklinkModalFeedback.className = 'modal-feedback error';
+    quicklinkModalFeedback.textContent = dict.quicklinkInvalidUrl;
+    return;
+  }
+
+  const updatedLinks = [...quickLinksList];
+  if (idx >= 0 && idx < updatedLinks.length) {
+    updatedLinks[idx] = { name, url };
+  } else {
+    updatedLinks.push({ name, url });
+  }
+
+  quickLinksList = updatedLinks;
+  chrome.storage.local.set({ quickLinks: updatedLinks }, () => {
+    renderQuickLinks(updatedLinks);
+    closeQuickLinkModal();
+  });
+}
+
+function handleQuickLinkDelete() {
+  const idx = parseInt(quicklinkEditIndex.value, 10);
+  if (idx >= 0 && idx < quickLinksList.length) {
+    const updatedLinks = quickLinksList.filter((_, i) => i !== idx);
+    quickLinksList = updatedLinks;
+    chrome.storage.local.set({ quickLinks: updatedLinks }, () => {
+      renderQuickLinks(updatedLinks);
+      closeQuickLinkModal();
+    });
+  }
+}
+
+// ============================================================
+// 3. POMODORO & FOCUS TIMER MODULE
+// ============================================================
+let pomoState = {
+  mode: 'focus',
+  running: false,
+  secondsLeft: 25 * 60,
+  totalSeconds: 25 * 60,
+  focusMin: 25,
+  shortMin: 5,
+  longMin: 15,
+  soundAlert: true
+};
+let pomoInterval = null;
+
+function initPomodoro() {
+  chrome.storage.local.get('pomodoroConfig', (data) => {
+    if (data && data.pomodoroConfig) {
+      pomoState = { ...pomoState, ...data.pomodoroConfig };
+    }
+    if (inputFocusMin) inputFocusMin.value = pomoState.focusMin;
+    if (inputShortMin) inputShortMin.value = pomoState.shortMin;
+    if (inputLongMin) inputLongMin.value = pomoState.longMin;
+    if (pomoSoundToggle) pomoSoundToggle.checked = pomoState.soundAlert !== false;
+    setPomoMode(pomoState.mode || 'focus', false);
+  });
+
+  if (pomodoroModalCloseBtn) {
+    pomodoroModalCloseBtn.addEventListener('click', closePomodoroModal);
+  }
+  if (pomodoroModalOverlay) {
+    pomodoroModalOverlay.addEventListener('click', (e) => {
+      if (e.target === pomodoroModalOverlay) closePomodoroModal();
+    });
+  }
+
+  document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const mode = tab.dataset.mode;
+      setPomoMode(mode, true);
+    });
+  });
+
+  if (pomoStartBtn) {
+    pomoStartBtn.addEventListener('click', togglePomoTimer);
+  }
+  if (pomoResetBtn) {
+    pomoResetBtn.addEventListener('click', resetPomoTimer);
+  }
+  if (pomoSettingsBtn) {
+    pomoSettingsBtn.addEventListener('click', () => {
+      pomoSettingsPanel.classList.toggle('open');
+    });
+  }
+
+  [inputFocusMin, inputShortMin, inputLongMin, pomoSoundToggle].forEach((el) => {
+    if (el) {
+      el.addEventListener('change', () => {
+        pomoState.focusMin = Math.max(1, parseInt(inputFocusMin.value, 10) || 25);
+        pomoState.shortMin = Math.max(1, parseInt(inputShortMin.value, 10) || 5);
+        pomoState.longMin = Math.max(1, parseInt(inputLongMin.value, 10) || 15);
+        pomoState.soundAlert = !!pomoSoundToggle.checked;
+        chrome.storage.local.set({
+          pomodoroConfig: {
+            focusMin: pomoState.focusMin,
+            shortMin: pomoState.shortMin,
+            longMin: pomoState.longMin,
+            soundAlert: pomoState.soundAlert
+          }
+        });
+        if (!pomoState.running) {
+          setPomoMode(pomoState.mode, false);
+        }
+      });
+    }
+  });
+}
+
+function openPomodoroModal() {
+  if (pomodoroModalOverlay) pomodoroModalOverlay.classList.add('open');
+}
+
+function closePomodoroModal() {
+  if (pomodoroModalOverlay) pomodoroModalOverlay.classList.remove('open');
+}
+
+function setPomoMode(mode, autoReset = true) {
+  pomoState.mode = mode;
+  document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
+    tab.classList.toggle('active', tab.dataset.mode === mode);
+  });
+
+  let minutes = pomoState.focusMin;
+  if (mode === 'shortBreak') minutes = pomoState.shortMin;
+  if (mode === 'longBreak') minutes = pomoState.longMin;
+
+  if (autoReset || !pomoState.running) {
+    if (pomoInterval) {
+      clearInterval(pomoInterval);
+      pomoInterval = null;
+    }
+    pomoState.running = false;
+    pomoState.totalSeconds = minutes * 60;
+    pomoState.secondsLeft = pomoState.totalSeconds;
+    if (pomoStartBtn) {
+      const dict = i18n[currentLang] || i18n.en;
+      pomoStartBtn.textContent = dict.pomoStart || 'Start';
+      pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
+    }
+  }
+
+  updatePomoDisplay();
+}
+
+function updatePomoDisplay() {
+  const dict = i18n[currentLang] || i18n.en;
+  const mins = Math.floor(pomoState.secondsLeft / 60);
+  const secs = pomoState.secondsLeft % 60;
+  const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+  if (pomodoroTimeDisplay) pomodoroTimeDisplay.textContent = timeStr;
+
+  if (pomodoroModeBadge) {
+    if (pomoState.mode === 'focus') pomodoroModeBadge.textContent = dict.pomoFocusBadge || 'Focus Time';
+    else if (pomoState.mode === 'shortBreak') pomodoroModeBadge.textContent = dict.pomoShortBadge || 'Short Break';
+    else pomodoroModeBadge.textContent = dict.pomoLongBadge || 'Long Break';
+  }
+
+  if (pomoRingProgress) {
+    const circumference = 2 * Math.PI * 88;
+    const fraction = pomoState.totalSeconds > 0 ? (pomoState.secondsLeft / pomoState.totalSeconds) : 0;
+    const offset = circumference * (1 - fraction);
+    pomoRingProgress.style.strokeDashoffset = String(offset);
+  }
+}
+
+function togglePomoTimer() {
+  const dict = i18n[currentLang] || i18n.en;
+  if (pomoState.running) {
+    clearInterval(pomoInterval);
+    pomoInterval = null;
+    pomoState.running = false;
+    pomoStartBtn.textContent = dict.pomoStart || 'Start';
+    pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
+  } else {
+    pomoState.running = true;
+    pomoStartBtn.textContent = dict.pomoPause || 'Pause';
+    pomoStartBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+
+    pomoInterval = setInterval(() => {
+      if (pomoState.secondsLeft > 0) {
+        pomoState.secondsLeft--;
+        updatePomoDisplay();
+      } else {
+        clearInterval(pomoInterval);
+        pomoInterval = null;
+        pomoState.running = false;
+        pomoStartBtn.textContent = dict.pomoStart || 'Start';
+        pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
+        playPomoChime();
+      }
+    }, 1000);
+  }
+}
+
+function resetPomoTimer() {
+  setPomoMode(pomoState.mode, true);
+}
+
+function playPomoChime() {
+  if (!pomoState.soundAlert) return;
+  try {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.15);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.15 + 0.6);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + idx * 0.15);
+      osc.stop(audioCtx.currentTime + idx * 0.15 + 0.6);
+    });
+  } catch (e) {
+    console.warn('[Pomodoro] Audio alert error:', e);
+  }
+}
+
+// ============================================================
+// 4. WALLPAPER & THEMES MODULE
+// ============================================================
+let currentTheme = 'dynamic';
+
+function initThemes() {
+  chrome.storage.local.get(['appTheme', 'customWallpaperUrl'], (data) => {
+    currentTheme = data.appTheme || 'dynamic';
+    applyTheme(currentTheme, data.customWallpaperUrl || '');
+  });
+
+  if (themeModalCloseBtn) {
+    themeModalCloseBtn.addEventListener('click', closeThemeModal);
+  }
+  if (themeModalOverlay) {
+    themeModalOverlay.addEventListener('click', (e) => {
+      if (e.target === themeModalOverlay) closeThemeModal();
+    });
+  }
+
+  themeCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const themeKey = card.dataset.theme;
+      applyTheme(themeKey);
+      chrome.storage.local.set({ appTheme: themeKey });
+    });
+  });
+
+  if (btnApplyCustomWall && customWallUrlInput) {
+    btnApplyCustomWall.addEventListener('click', () => {
+      const url = customWallUrlInput.value.trim();
+      if (url) {
+        applyTheme('custom', url);
+        chrome.storage.local.set({ appTheme: 'custom', customWallpaperUrl: url });
+      }
+    });
+  }
+}
+
+function openThemeModal() {
+  if (themeModalOverlay) themeModalOverlay.classList.add('open');
+}
+
+function closeThemeModal() {
+  if (themeModalOverlay) themeModalOverlay.classList.remove('open');
+}
+
+function applyTheme(themeKey, customUrl = '') {
+  currentTheme = themeKey;
+  
+  document.body.classList.remove(
+    'theme-bg-amoled',
+    'theme-bg-ocean',
+    'theme-bg-emerald',
+    'theme-bg-nature-mountain',
+    'theme-bg-nature-lake',
+    'theme-bg-custom'
+  );
+
+  themeCards.forEach((card) => {
+    card.classList.toggle('active', card.dataset.theme === themeKey);
+  });
+
+  const bgGradientEl = document.querySelector('.bg-gradient');
+
+  if (themeKey === 'amoled') {
+    document.body.classList.add('theme-bg-amoled');
+  } else if (themeKey === 'ocean') {
+    document.body.classList.add('theme-bg-ocean');
+  } else if (themeKey === 'emerald') {
+    document.body.classList.add('theme-bg-emerald');
+  } else if (themeKey === 'nature-mountain') {
+    document.body.classList.add('theme-bg-nature-mountain');
+  } else if (themeKey === 'nature-lake') {
+    document.body.classList.add('theme-bg-nature-lake');
+  } else if (themeKey === 'custom' && customUrl) {
+    document.body.classList.add('theme-bg-custom');
+    if (bgGradientEl) {
+      bgGradientEl.style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('${customUrl}')`;
+    }
+  } else {
+    if (bgGradientEl) {
+      bgGradientEl.style.backgroundImage = '';
+    }
+  }
+}
+
+// ============================================================
+// 5. AUTO-LOCK INACTIVITY TIMER MODULE
+// ============================================================
+let idleMinutesSetting = 0;
+
+function initAutoLock() {
+  chrome.storage.local.get('idleLockMinutes', (data) => {
+    idleMinutesSetting = (data && data.idleLockMinutes !== undefined) ? Number(data.idleLockMinutes) : 0;
+    updateAutoLockUI(idleMinutesSetting);
+  });
+
+  if (autolockModalCloseBtn) {
+    autolockModalCloseBtn.addEventListener('click', closeAutoLockModal);
+  }
+  if (autolockModalOverlay) {
+    autolockModalOverlay.addEventListener('click', (e) => {
+      if (e.target === autolockModalOverlay) closeAutoLockModal();
+    });
+  }
+
+  autolockOptionBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mins = Number(btn.dataset.mins || 0);
+      setIdleDuration(mins);
+    });
+  });
+}
+
+function openAutoLockModal() {
+  if (autolockModalOverlay) autolockModalOverlay.classList.add('open');
+}
+
+function closeAutoLockModal() {
+  if (autolockModalOverlay) autolockModalOverlay.classList.remove('open');
+  if (autolockFeedback) autolockFeedback.textContent = '';
+}
+
+function updateAutoLockUI(mins) {
+  idleMinutesSetting = mins;
+  autolockOptionBtns.forEach((btn) => {
+    btn.classList.toggle('active', Number(btn.dataset.mins) === mins);
+  });
+}
+
+function setIdleDuration(mins) {
+  const dict = i18n[currentLang] || i18n.en;
+  chrome.storage.local.set({ idleLockMinutes: mins }, () => {
+    updateAutoLockUI(mins);
+    if (autolockFeedback) {
+      autolockFeedback.className = 'modal-feedback success';
+      autolockFeedback.textContent = dict.autolockActive(mins);
+    }
+  });
+}
+
 
