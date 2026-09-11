@@ -4,14 +4,12 @@
   "version": "0.2.1",
   "author": "Polma Sihotang",
   "description": "Jolma CLocker (Chrome Locker) - Pengaman browser modern dengan proteksi kata sandi, auto-fullscreen, dan shortcut instan. Dibuat oleh Polma Sihotang.",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqFp58TOYvqyCY748pUe0zg+7Dsf8A7pbc0dseFYzAWDlybpOjHlnfwXtpQYvWic9Li7dRIUGR5Tlcqw3Un6o+vENucjuvr6tg2DW2TL1c+qw5ahQsj9JpnkV7o1yr/qbP2Hq15qkCU03nLKDLJ1Sj3rjbVcTwoOKLF2ajb5o/7jS/yqqxYWMkfXSUr28Ai/BwE7wsBzwFhYI0JqK+Pb3f4CS7TDeaM5/E0DIOp2KLAR3/df6I4m9jBtjpPcLdRsmvDBDkVvRBhu8ZmYx210TR4oDMAYb5m0ktvVCTPZvFdAncYd3pi5Lil31Ukhy88RvTZLDHcYUbL3tsWqRIY1KLQIDAQAB",
   "permissions": [
     "storage",
     "tabs",
     "webNavigation",
     "power",
     "alarms",
-    "downloads",
     "scripting",
     "idle"
   ],

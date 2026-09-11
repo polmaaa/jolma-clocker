@@ -818,35 +818,11 @@ function hideUpdateToast() {
 // Tombol tutup toast
 updateToastClose.addEventListener('click', hideUpdateToast);
 
-// Tombol unduh — download in-page via chrome.downloads (tidak redirect)
+// Tombol unduh update
 updateToastLink.addEventListener('click', (e) => {
   e.preventDefault();
-  const version = updateToast.dataset.version || 'latest';
-  const zipUrl  = 'https://github.com/polmaaa/jolma-clocker/archive/refs/heads/main.zip';
-
-  // Tampilkan status downloading di tombol
-  updateToastLink.textContent = '⏳ Mengunduh...';
-  updateToastLink.style.pointerEvents = 'none';
-
-  chrome.downloads.download({
-    url: zipUrl,
-    filename: `krompol-locker-v${version}.zip`,
-    saveAs: false   // Langsung simpan ke folder Downloads
-  }, (downloadId) => {
-    if (chrome.runtime.lastError || !downloadId) {
-      updateToastLink.textContent = '✗ Gagal';
-      setTimeout(() => {
-        updateToastLink.textContent = 'Unduh';
-        updateToastLink.style.pointerEvents = '';
-      }, 2000);
-    } else {
-      updateToastLink.textContent = '✓ Tersimpan!';
-      setTimeout(() => {
-        updateToastLink.textContent = 'Unduh';
-        updateToastLink.style.pointerEvents = '';
-      }, 3000);
-    }
-  });
+  const targetUrl = updateToast.dataset.downloadUrl || 'https://github.com/polmaaa/jolma-clocker';
+  window.open(targetUrl, '_blank');
 });
 
 // Cek storage update — HANYA dipanggil saat unlocked
