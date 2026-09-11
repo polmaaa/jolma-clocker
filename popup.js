@@ -18,6 +18,15 @@ const changeUsernameForm       = document.getElementById('change-username-form')
 const popupUsernameInput       = document.getElementById('popup-username-input');
 const changeUsernameFeedback   = document.getElementById('change-username-feedback');
 
+// Accordion Elements - Weather
+const accordionWeatherToggle  = document.getElementById('accordion-weather-toggle');
+const accordionWeatherPanel   = document.getElementById('accordion-weather-panel');
+const chevronWeatherIcon      = document.getElementById('chevron-weather-icon');
+const popupGpsToggle          = document.getElementById('popup-gps-toggle');
+const popupWeatherIcon        = document.getElementById('popup-weather-icon');
+const popupWeatherInfo        = document.getElementById('popup-weather-info');
+const popupWeatherFeedback    = document.getElementById('popup-weather-feedback');
+
 // Accordion Elements - Password
 const accordionToggle      = document.getElementById('accordion-toggle');
 const accordionPanel       = document.getElementById('accordion-panel');
@@ -45,9 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (localVersionEl) localVersionEl.textContent = `v${localVersion}`;
 
   // Load saved user name
-  chrome.storage.local.get('userName', (data) => {
+  chrome.storage.local.get(['userName', 'useGpsLocation', 'weatherCache'], (data) => {
     if (popupUsernameInput) {
       popupUsernameInput.value = (data && data.userName && data.userName.trim()) || 'Polma Sihotang';
+    }
+    if (popupGpsToggle) {
+      popupGpsToggle.checked = !!(data && data.useGpsLocation);
+    }
+    if (data && data.weatherCache) {
+      if (popupWeatherIcon) popupWeatherIcon.textContent = data.weatherCache.icon || '🌤️';
+      if (popupWeatherInfo) popupWeatherInfo.textContent = `${data.weatherCache.temp || '--°C'} • ${data.weatherCache.condition || 'Cerah'} (${data.weatherCache.city || 'Indonesia'})`;
     }
   });
 
@@ -179,6 +195,58 @@ if (changeUsernameForm) {
       changeUsernameFeedback.className = 'feedback-text success';
       changeUsernameFeedback.textContent = 'Nama berhasil diperbarui!';
     });
+  });
+}
+
+// ---- Weather Settings Accordion ------------------------------------------
+
+if (accordionWeatherToggle) {
+  accordionWeatherToggle.addEventListener('click', () => {
+    accordionWeatherPanel.classList.toggle('show');
+    chevronWeatherIcon.classList.toggle('rotate');
+  });
+}
+
+if (popupGpsToggle) {
+  popupGpsToggle.addEventListener('change', () => {
+    const isGps = popupGpsToggle.checked;
+    popupWeatherFeedback.className = 'feedback-text';
+    popupWeatherFeedback.textContent = '';
+
+    if (isGps) {
+      if (!navigator.geolocation) {
+        popupGpsToggle.checked = false;
+        popupWeatherFeedback.className = 'feedback-text error';
+        popupWeatherFeedback.textContent = 'Geolocation tidak didukung.';
+        return;
+      }
+
+      popupWeatherFeedback.className = 'feedback-text';
+      popupWeatherFeedback.style.display = 'block';
+      popupWeatherFeedback.style.color = 'var(--primary)';
+      popupWeatherFeedback.textContent = 'Meminta izin lokasi...';
+
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          chrome.storage.local.set({ useGpsLocation: true, weatherCache: null }, () => {
+            popupWeatherFeedback.className = 'feedback-text success';
+            popupWeatherFeedback.textContent = '✓ Lokasi presisi GPS aktif!';
+          });
+        },
+        () => {
+          popupGpsToggle.checked = false;
+          chrome.storage.local.set({ useGpsLocation: false, weatherCache: null });
+          popupWeatherFeedback.className = 'feedback-text error';
+          popupWeatherFeedback.textContent = 'Izin lokasi ditolak/gagal.';
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    } else {
+      chrome.storage.local.set({ useGpsLocation: false, weatherCache: null }, () => {
+        popupWeatherFeedback.className = 'feedback-text success';
+        popupWeatherFeedback.textContent = '✓ Menggunakan deteksi IP otomatis.';
+      });
+    }
   });
 }
 

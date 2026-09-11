@@ -20,7 +20,25 @@ const menuBtn         = document.getElementById('menu-btn');
 const menuDropdown    = document.getElementById('menu-dropdown');
 const menuLockBtn     = document.getElementById('menu-lock-btn');
 const menuUsernameBtn = document.getElementById('menu-username-btn');
+const menuWeatherBtn  = document.getElementById('menu-weather-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
+
+// Weather Footer & Modal elements
+const weatherFooter           = document.getElementById('weather-footer');
+const weatherBtn              = document.getElementById('weather-btn');
+const weatherIcon             = document.getElementById('weather-icon');
+const weatherTemp             = document.getElementById('weather-temp');
+const weatherCondition        = document.getElementById('weather-condition');
+const weatherCity             = document.getElementById('weather-city');
+const weatherModalOverlay     = document.getElementById('weather-modal-overlay');
+const weatherModalCloseBtn    = document.getElementById('weather-modal-close-btn');
+const modalGpsToggle          = document.getElementById('modal-gps-toggle');
+const modalWeatherIcon        = document.getElementById('modal-weather-icon');
+const modalWeatherTemp        = document.getElementById('modal-weather-temp');
+const modalWeatherDesc        = document.getElementById('modal-weather-desc');
+const modalWeatherLoc         = document.getElementById('modal-weather-loc');
+const weatherModalFeedback    = document.getElementById('weather-modal-feedback');
+const modalRefreshWeatherBtn  = document.getElementById('modal-refresh-weather-btn');
 
 // Modal "Ubah Nama Pengguna" elements
 const usernameModalOverlay   = document.getElementById('username-modal-overlay');
@@ -172,8 +190,12 @@ function updateLockerState(isUnlocked) {
       setTimeout(() => {
         searchSection.classList.add('active');
         topBar.classList.add('active');
+        if (weatherFooter) weatherFooter.classList.add('active');
         searchInput.focus();
       }, 200);
+
+      // Muat data cuaca terkini
+      loadWeather();
 
       // Cek & tampilkan toast update hanya saat terbuka
       checkUpdateStorage();
@@ -182,10 +204,12 @@ function updateLockerState(isUnlocked) {
     // Request keyboard lock on lock screen
     requestKeyboardLock();
 
-    // Transition to locked state — sembunyikan toast update
+    // Transition to locked state — sembunyikan toast update & footer cuaca
     hideUpdateToast();
     searchSection.classList.remove('active');
     topBar.classList.remove('active');
+    if (weatherFooter) weatherFooter.classList.remove('active');
+    closeWeatherModal();
 
     setTimeout(() => {
       lockCard.classList.add('active');
@@ -417,11 +441,24 @@ menuUsernameBtn.addEventListener('click', () => {
   openUsernameModal();
 });
 
+// Opsi: Pengaturan Cuaca → buka modal cuaca
+menuWeatherBtn.addEventListener('click', () => {
+  closeDropdown();
+  openWeatherModal();
+});
+
 // Opsi: Ubah Kata Sandi → buka modal sandi
 menuChangePwBtn.addEventListener('click', () => {
   closeDropdown();
   openModal();
 });
+
+// Klik bar cuaca di footer → buka modal cuaca
+if (weatherBtn) {
+  weatherBtn.addEventListener('click', () => {
+    openWeatherModal();
+  });
+}
 
 // ---- Modal Ubah Nama Pengguna --------------------------------------------
 
@@ -463,6 +500,100 @@ modalUsernameForm.addEventListener('submit', (e) => {
     setTimeout(closeUsernameModal, 1200);
   });
 });
+
+// ---- Modal Pengaturan Cuaca ----------------------------------------------
+
+function openWeatherModal() {
+  chrome.storage.local.get(['useGpsLocation', 'weatherCache'], (data) => {
+    modalGpsToggle.checked = !!data.useGpsLocation;
+    if (data.weatherCache) {
+      modalWeatherIcon.textContent = data.weatherCache.icon || '🌤️';
+      modalWeatherTemp.textContent = data.weatherCache.temp || '--°C';
+      modalWeatherDesc.textContent = data.weatherCache.condition || 'Memuat...';
+      modalWeatherLoc.textContent = `📍 Lokasi: ${data.weatherCache.city || 'Indonesia'} (${data.weatherCache.source || 'Deteksi IP'})`;
+    }
+    weatherModalFeedback.className = 'modal-feedback';
+    weatherModalFeedback.textContent = '';
+    weatherModalOverlay.classList.add('open');
+  });
+}
+
+function closeWeatherModal() {
+  weatherModalOverlay.classList.remove('open');
+  weatherModalFeedback.className = 'modal-feedback';
+  weatherModalFeedback.textContent = '';
+}
+
+if (weatherModalCloseBtn) {
+  weatherModalCloseBtn.addEventListener('click', closeWeatherModal);
+}
+
+if (weatherModalOverlay) {
+  weatherModalOverlay.addEventListener('click', (e) => {
+    if (e.target === weatherModalOverlay) closeWeatherModal();
+  });
+}
+
+// Toggle GPS Real-time vs IP Geolocation
+if (modalGpsToggle) {
+  modalGpsToggle.addEventListener('change', () => {
+    const isGps = modalGpsToggle.checked;
+    weatherModalFeedback.className = 'modal-feedback';
+    weatherModalFeedback.textContent = '';
+
+    if (isGps) {
+      if (!navigator.geolocation) {
+        modalGpsToggle.checked = false;
+        weatherModalFeedback.className = 'modal-feedback error';
+        weatherModalFeedback.textContent = 'Geolocation tidak didukung browser ini.';
+        return;
+      }
+
+      weatherModalFeedback.className = 'modal-feedback';
+      weatherModalFeedback.style.display = 'block';
+      weatherModalFeedback.style.color = 'var(--primary)';
+      weatherModalFeedback.textContent = 'Meminta izin lokasi perangkat...';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          chrome.storage.local.set({ useGpsLocation: true }, () => {
+            weatherModalFeedback.className = 'modal-feedback success';
+            weatherModalFeedback.textContent = '✓ Lokasi presisi GPS aktif!';
+            loadWeather(true);
+          });
+        },
+        (err) => {
+          modalGpsToggle.checked = false;
+          chrome.storage.local.set({ useGpsLocation: false });
+          weatherModalFeedback.className = 'modal-feedback error';
+          weatherModalFeedback.textContent = 'Izin lokasi ditolak/gagal. Beralih ke deteksi IP.';
+          loadWeather(true);
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    } else {
+      chrome.storage.local.set({ useGpsLocation: false }, () => {
+        weatherModalFeedback.className = 'modal-feedback success';
+        weatherModalFeedback.textContent = '✓ Menggunakan deteksi IP otomatis.';
+        loadWeather(true);
+      });
+    }
+  });
+}
+
+// Tombol Perbarui Cuaca Sekarang
+if (modalRefreshWeatherBtn) {
+  modalRefreshWeatherBtn.addEventListener('click', () => {
+    modalRefreshWeatherBtn.textContent = '⏳ Memperbarui...';
+    modalRefreshWeatherBtn.disabled = true;
+    loadWeather(true).finally(() => {
+      modalRefreshWeatherBtn.textContent = 'Perbarui Cuaca Sekarang';
+      modalRefreshWeatherBtn.disabled = false;
+      weatherModalFeedback.className = 'modal-feedback success';
+      weatherModalFeedback.textContent = '✓ Data cuaca berhasil diperbarui!';
+    });
+  });
+}
 
 // ---- Modal Ubah Kata Sandi -----------------------------------------------
 
@@ -619,4 +750,182 @@ function updateClockAndDate() {
     document.body.classList.remove('theme-pagi', 'theme-siang', 'theme-sore', 'theme-malam');
     document.body.classList.add(themeClass);
   }
+}
+
+// ============================================================
+// WEATHER API & CACHING LOGIC
+// ============================================================
+
+function getWeatherDetails(code, isDay = 1) {
+  const isNight = isDay === 0;
+  switch (code) {
+    case 0:
+      return { label: 'Cerah', icon: isNight ? '🌙' : '☀️' };
+    case 1:
+      return { label: 'Sebagian Cerah', icon: isNight ? '🌤️' : '🌤️' };
+    case 2:
+      return { label: 'Cerah Berawan', icon: isNight ? '☁️' : '⛅' };
+    case 3:
+      return { label: 'Berawan Tebal', icon: '☁️' };
+    case 45:
+    case 48:
+      return { label: 'Berkabut', icon: '🌫️' };
+    case 51:
+    case 53:
+    case 55:
+      return { label: 'Gerimis Ringan', icon: '🌦️' };
+    case 56:
+    case 57:
+      return { label: 'Gerimis Dingin', icon: '🌧️' };
+    case 61:
+      return { label: 'Hujan Ringan', icon: '🌦️' };
+    case 63:
+      return { label: 'Hujan Sedang', icon: '🌧️' };
+    case 65:
+      return { label: 'Hujan Lebat', icon: '🌧️' };
+    case 66:
+    case 67:
+      return { label: 'Hujan Beku', icon: '🌨️' };
+    case 71:
+    case 73:
+    case 75:
+    case 77:
+      return { label: 'Bersalju', icon: '❄️' };
+    case 80:
+      return { label: 'Hujan Lokal', icon: '🌦️' };
+    case 81:
+    case 82:
+      return { label: 'Hujan Deras', icon: '⛈️' };
+    case 85:
+    case 86:
+      return { label: 'Hujan Salju', icon: '🌨️' };
+    case 95:
+      return { label: 'Badai Petir', icon: '⛈️' };
+    case 96:
+    case 99:
+      return { label: 'Badai Petir & Es', icon: '🌩️' };
+    default:
+      return { label: 'Cerah Berawan', icon: '⛅' };
+  }
+}
+
+function updateWeatherUI(cache) {
+  if (!cache) return;
+  if (weatherIcon) weatherIcon.textContent = cache.icon || '🌤️';
+  if (weatherTemp) weatherTemp.textContent = cache.temp || '--°C';
+  if (weatherCondition) weatherCondition.textContent = cache.condition || 'Cerah';
+  if (weatherCity) weatherCity.textContent = cache.city || 'Indonesia';
+
+  if (modalWeatherIcon) modalWeatherIcon.textContent = cache.icon || '🌤️';
+  if (modalWeatherTemp) modalWeatherTemp.textContent = cache.temp || '--°C';
+  if (modalWeatherDesc) modalWeatherDesc.textContent = cache.condition || 'Cerah';
+  if (modalWeatherLoc) modalWeatherLoc.textContent = `📍 Lokasi: ${cache.city || 'Indonesia'} (${cache.source || 'Deteksi IP'})`;
+}
+
+async function loadWeather(forceRefresh = false) {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['weatherCache', 'useGpsLocation'], async (data) => {
+      const cache = data.weatherCache;
+      const useGps = !!data.useGpsLocation;
+      const CACHE_DURATION = 30 * 60 * 1000; // 30 menit
+
+      if (!forceRefresh && cache && (Date.now() - cache.timestamp < CACHE_DURATION)) {
+        updateWeatherUI(cache);
+        resolve(cache);
+        return;
+      }
+
+      // Jika ada cache lama tapi sudah expired, tampilkan dulu sembari fetch background
+      if (cache) {
+        updateWeatherUI(cache);
+      }
+
+      try {
+        let lat, lon, cityName, source;
+
+        // Opsi B: GPS Realtime jika diaktifkan user
+        if (useGps && navigator.geolocation) {
+          try {
+            const pos = await new Promise((res, rej) => {
+              navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000, enableHighAccuracy: true });
+            });
+            lat = pos.coords.latitude;
+            lon = pos.coords.longitude;
+            source = 'GPS Presisi';
+
+            try {
+              const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
+              const geoData = await geoRes.json();
+              cityName = geoData.locality || geoData.city || geoData.principalSubdivision || 'Lokasi Saya';
+            } catch (e) {
+              cityName = 'Lokasi Saya';
+            }
+          } catch (gpsErr) {
+            console.warn('[Weather] GPS failed, falling back to IP:', gpsErr);
+          }
+        }
+
+        // Opsi A: Fallback ke IP Geolocation jika GPS tidak aktif / gagal
+        if (!lat || !lon) {
+          source = 'Deteksi IP';
+          try {
+            const ipRes = await fetch('https://get.geojs.io/v1/ip/geo.json');
+            const ipData = await ipRes.json();
+            lat = parseFloat(ipData.latitude);
+            lon = parseFloat(ipData.longitude);
+            cityName = ipData.city || ipData.region || ipData.country || 'Indonesia';
+          } catch (e) {
+            try {
+              const ipRes2 = await fetch('https://freeipapi.com/api/json');
+              const ipData2 = await ipRes2.json();
+              lat = ipData2.latitude;
+              lon = ipData2.longitude;
+              cityName = ipData2.cityName || ipData2.regionName || 'Indonesia';
+            } catch (e2) {
+              lat = -6.175;
+              lon = 106.8286;
+              cityName = 'Jakarta';
+              source = 'Default';
+            }
+          }
+        }
+
+        if (!lat || !lon) {
+          lat = -6.175;
+          lon = 106.8286;
+          cityName = 'Jakarta';
+          source = 'Default';
+        }
+
+        // Ambil data cuaca dari Open-Meteo API
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+        const weatherData = await weatherRes.json();
+
+        if (weatherData && weatherData.current_weather) {
+          const cw = weatherData.current_weather;
+          const details = getWeatherDetails(cw.weathercode, cw.is_day);
+          const temp = `${Math.round(cw.temperature)}°C`;
+
+          const newCache = {
+            temp,
+            condition: details.label,
+            icon: details.icon,
+            city: cityName,
+            source,
+            timestamp: Date.now()
+          };
+
+          chrome.storage.local.set({ weatherCache: newCache }, () => {
+            updateWeatherUI(newCache);
+            resolve(newCache);
+          });
+        } else {
+          resolve(null);
+        }
+      } catch (err) {
+        console.error('[Weather] Fetch failed:', err);
+        resolve(null);
+      }
+    });
+  });
 }

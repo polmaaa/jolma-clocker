@@ -78,6 +78,30 @@
         </form>
       </div>
 
+      <!-- Accordion Button for Weather Settings -->
+      <button id="accordion-weather-toggle" class="btn-accordion">
+        Pengaturan Cuaca
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" id="chevron-weather-icon">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+
+      <!-- Accordion Panel for Weather Settings (hidden by default) -->
+      <div id="accordion-weather-panel" class="accordion-panel">
+        <div class="popup-toggle-row">
+          <span class="popup-toggle-label">Lokasi Presisi (GPS Real-time)</span>
+          <label class="switch">
+            <input type="checkbox" id="popup-gps-toggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div id="popup-weather-preview" class="popup-weather-preview">
+          <span id="popup-weather-icon">🌤️</span>
+          <span id="popup-weather-info">Memuat cuaca...</span>
+        </div>
+        <div id="popup-weather-feedback" class="feedback-text"></div>
+      </div>
+
       <!-- Accordion Button for Change Password -->
       <button id="accordion-toggle" class="btn-accordion">
         Ubah Kata Sandi
