@@ -115,20 +115,17 @@
             <span class="menu-item-label" id="menu-pw-label">Ubah Kata Sandi</span>
           </button>
 
-          <!-- Donasi / Dukung Pengembang via Saweria -->
-          <a href="https://saweria.co/jolmaaa" target="_blank" rel="noopener noreferrer" id="menu-donate-btn" class="menu-item menu-item-donate" title="Dukung Pengembang via Saweria">
+          <!-- Menu: Tentang Aplikasi (About) -->
+          <button id="menu-about-btn" class="menu-item menu-item-about">
             <span class="menu-item-icon-wrap">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                <line x1="6" y1="1" x2="6" y2="4"></line>
-                <line x1="10" y1="1" x2="10" y2="4"></line>
-                <line x1="14" y1="1" x2="14" y2="4"></line>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
             </span>
-            <span class="menu-item-label" id="menu-donate-label">Dukung Pengembang</span>
-            <span class="menu-donate-badge">☕</span>
-          </a>
+            <span class="menu-item-label" id="menu-about-label">Tentang Aplikasi</span>
+          </button>
 
           <div class="menu-divider"></div>
 
@@ -321,6 +318,104 @@
         <div id="modal-feedback" class="modal-feedback"></div>
         <button type="submit" class="btn-modal-submit" id="modal-changepw-submit">Simpan Kata Sandi</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal: Tentang Aplikasi (About) -->
+  <div id="about-modal-overlay" class="modal-overlay">
+    <div class="modal-card modal-card-about">
+      <div class="modal-header">
+        <h3 class="modal-title" id="about-modal-title">Tentang Aplikasi</h3>
+        <button id="about-modal-close-btn" class="modal-close" title="Tutup">✕</button>
+      </div>
+      <div class="modal-about-body">
+        <div class="about-hero">
+          <div class="about-logo-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="about-logo-icon">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h4 class="about-app-name">Jolma CLocker</h4>
+          <span class="about-app-tagline" id="about-tagline">Minimalist Privacy Browser Locker & Smart Dashboard</span>
+          <span class="about-version-badge" id="about-version">v0.2.1</span>
+        </div>
+
+        <div class="about-section">
+          <h5 class="about-section-title" id="about-purpose-title">🎯 Tujuan & Fungsi</h5>
+          <p class="about-desc" id="about-purpose-desc">
+            Jolma CLocker dirancang untuk menjaga privasi browser saat Anda meninggalkan komputer atau bekerja di ruang publik, sekaligus menyajikan dashboard new tab yang minimalis, aesthetic, dan produktif.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h5 class="about-section-title" id="about-features-title">✨ Fitur Utama</h5>
+          <ul class="about-features-list">
+            <li>
+              <span class="about-feat-icon">🔒</span>
+              <div class="about-feat-content">
+                <strong id="about-f1-title">Kunci Layar & Shortcut Instan</strong>
+                <p id="about-f1-desc">Kunci seketika dengan <code>CTRL+L</code> / tombol kunci melayang dari halaman web mana pun.</p>
+              </div>
+            </li>
+            <li>
+              <span class="about-feat-icon">⏱️</span>
+              <div class="about-feat-content">
+                <strong id="about-f2-title">Auto-Lock Inactivity Timer</strong>
+                <p id="about-f2-desc">Mengunci browser secara otomatis saat tidak ada aktivitas pengguna.</p>
+              </div>
+            </li>
+            <li>
+              <span class="about-feat-icon">🌤️</span>
+              <div class="about-feat-content">
+                <strong id="about-f3-title">Cuaca Real-time & Efek Visual</strong>
+                <p id="about-f3-desc">Deteksi cuaca berbasis GPS/IP dengan efek atmosfer dinamis (hujan, awan, kabut, dll).</p>
+              </div>
+            </li>
+            <li>
+              <span class="about-feat-icon">📁</span>
+              <div class="about-feat-content">
+                <strong id="about-f4-title">Pintasan & Folder Minimalis</strong>
+                <p id="about-f4-desc">Akses cepat ke website favorit bergaya macOS Dock & Stack Popover.</p>
+              </div>
+            </li>
+            <li>
+              <span class="about-feat-icon">💬</span>
+              <div class="about-feat-content">
+                <strong id="about-f5-title">Kutipan Inspirasi Harian</strong>
+                <p id="about-f5-desc">Menampilkan kutipan motivasi yang berganti dan dapat diacak sewaktu-waktu.</p>
+              </div>
+            </li>
+            <li>
+              <span class="about-feat-icon">🎨</span>
+              <div class="about-feat-content">
+                <strong id="about-f6-title">Tema Dinamis 4 Waktu</strong>
+                <p id="about-f6-desc">Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-support-box">
+          <div class="about-support-info">
+            <span class="about-support-title" id="about-support-title">☕ Dukung Pengembang</span>
+            <span class="about-support-desc" id="about-support-desc">Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.</span>
+          </div>
+          <a href="https://saweria.co/jolmaaa" target="_blank" rel="noopener noreferrer" class="btn-about-saweria" id="btn-about-saweria">
+            <span>Saweria</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="saweria-external-icon">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+
+        <div class="about-footer-meta">
+          <span id="about-dev-by">Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong></span>
+          <span class="about-copyright">© 2026 Jolma CLocker • All Rights Reserved</span>
+        </div>
+      </div>
     </div>
   </div>
 

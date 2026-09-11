@@ -31,8 +31,8 @@ const menuAutolockLabel = document.getElementById('menu-autolock-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
-const menuDonateBtn   = document.getElementById('menu-donate-btn');
-const menuDonateLabel = document.getElementById('menu-donate-label');
+const menuAboutBtn    = document.getElementById('menu-about-btn');
+const menuAboutLabel  = document.getElementById('menu-about-label');
 
 // Feature Toggles Elements (ON / OFF segmented switch pills)
 const pillGroupFloating       = document.getElementById('pill-group-floating');
@@ -126,6 +126,10 @@ const modalNewPw        = document.getElementById('modal-new-password');
 const modalConfirmPw    = document.getElementById('modal-confirm-password');
 const modalFeedback     = document.getElementById('modal-feedback');
 
+// Modal "Tentang Aplikasi" (About) elements
+const aboutModalOverlay  = document.getElementById('about-modal-overlay');
+const aboutModalCloseBtn = document.getElementById('about-modal-close-btn');
+
 // Greeting Elements
 const greetingPrefix = document.getElementById('greeting-prefix');
 const greetingName   = document.getElementById('greeting-name');
@@ -153,7 +157,7 @@ const i18n = {
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
-    menuDonate: 'Dukung Pengembang',
+    menuAbout: 'Tentang Aplikasi',
     menuLangTitle: 'Bahasa',
     addShortcut: 'Pintasan',
 
@@ -282,7 +286,29 @@ const i18n = {
     pwSaveBtn: 'Simpan Kata Sandi',
     pwSuccess: 'Kata sandi berhasil diperbarui!',
     pwMismatch: 'Konfirmasi kata sandi tidak sesuai!',
-    pwOldWrong: 'Kata sandi lama salah!'
+    pwOldWrong: 'Kata sandi lama salah!',
+
+    // About Modal ID
+    aboutModalTitle: 'Tentang Aplikasi',
+    aboutTagline: 'Minimalist Privacy Browser Locker & Smart Dashboard',
+    aboutPurposeTitle: '🎯 Tujuan & Fungsi',
+    aboutPurposeDesc: 'Jolma CLocker dirancang untuk menjaga privasi browser saat Anda meninggalkan komputer atau bekerja di ruang publik, sekaligus menyajikan dashboard new tab yang minimalis, aesthetic, dan produktif.',
+    aboutFeaturesTitle: '✨ Fitur Utama',
+    aboutF1Title: 'Kunci Layar & Shortcut Instan',
+    aboutF1Desc: 'Kunci seketika dengan <code>CTRL+L</code> / tombol kunci melayang dari halaman web mana pun.',
+    aboutF2Title: 'Auto-Lock Saat Menganggur',
+    aboutF2Desc: 'Mengunci browser secara otomatis saat tidak ada aktivitas pengguna.',
+    aboutF3Title: 'Cuaca Real-time & Efek Visual',
+    aboutF3Desc: 'Deteksi cuaca berbasis GPS/IP dengan efek atmosfer dinamis (hujan, awan, kabut, dll).',
+    aboutF4Title: 'Pintasan & Folder Minimalis',
+    aboutF4Desc: 'Akses cepat ke website favorit bergaya macOS Dock & Stack Popover.',
+    aboutF5Title: 'Kutipan Inspirasi Harian',
+    aboutF5Desc: 'Menampilkan kutipan motivasi yang berganti dan dapat diacak sewaktu-waktu.',
+    aboutF6Title: 'Tema Dinamis 4 Waktu',
+    aboutF6Desc: 'Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.',
+    aboutSupportTitle: '☕ Dukung Pengembang',
+    aboutSupportDesc: 'Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.',
+    aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>'
   },
   en: {
     menuHeader: 'Settings',
@@ -294,7 +320,7 @@ const i18n = {
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
-    menuDonate: 'Support Developer',
+    menuAbout: 'About Application',
     menuLangTitle: 'Language',
     addShortcut: 'Shortcut',
 
@@ -423,7 +449,29 @@ const i18n = {
     pwSaveBtn: 'Save Password',
     pwSuccess: 'Password updated successfully!',
     pwMismatch: 'Password confirmation does not match!',
-    pwOldWrong: 'Incorrect current password!'
+    pwOldWrong: 'Incorrect current password!',
+
+    // About Modal EN
+    aboutModalTitle: 'About Application',
+    aboutTagline: 'Minimalist Privacy Browser Locker & Smart Dashboard',
+    aboutPurposeTitle: '🎯 Purpose & Function',
+    aboutPurposeDesc: 'Jolma CLocker is designed to protect your browser privacy when stepping away from your computer or working in public spaces, while delivering a sleek, aesthetic, and productive new tab dashboard.',
+    aboutFeaturesTitle: '✨ Key Features',
+    aboutF1Title: 'Instant Lock & Shortcuts',
+    aboutF1Desc: 'Lock instantly with <code>CTRL+L</code> / floating lock button from any webpage.',
+    aboutF2Title: 'Auto-Lock Inactivity Timer',
+    aboutF2Desc: 'Automatically locks the browser after a set period of user inactivity.',
+    aboutF3Title: 'Real-time Weather & Atmospheric Effects',
+    aboutF3Desc: 'GPS/IP-based weather forecasting with dynamic atmospheric effects (rain, clouds, fog, etc.).',
+    aboutF4Title: 'Minimalist Shortcuts & Folders',
+    aboutF4Desc: 'Quick access to your favorite sites with macOS-inspired Dock & Stack Popovers.',
+    aboutF5Title: 'Daily Inspiring Quotes',
+    aboutF5Desc: 'Displays motivational quotes updated daily and shuffleable anytime.',
+    aboutF6Title: 'Dynamic 4-Time Theme Engine',
+    aboutF6Desc: 'Aesthetic background adapts smoothly to Morning, Afternoon, Evening, and Night.',
+    aboutSupportTitle: '☕ Support Developer',
+    aboutSupportDesc: 'If you enjoy using this extension, you can support further development via Saweria.',
+    aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>'
   }
 };
 
@@ -445,7 +493,7 @@ function applyTranslations(lang) {
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
-  if (menuDonateLabel) menuDonateLabel.textContent = dict.menuDonate;
+  if (menuAboutLabel) menuAboutLabel.textContent = dict.menuAbout;
 
   // Search & Lock Form Placeholders
   if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
@@ -499,6 +547,49 @@ function applyTranslations(lang) {
   if (modalNewPw) modalNewPw.placeholder = dict.newPwPlaceholder;
   if (modalConfirmPw) modalConfirmPw.placeholder = dict.confirmPwPlaceholder;
   if (modalChangepwSubmit) modalChangepwSubmit.textContent = dict.pwSaveBtn;
+
+  // About Modal
+  const aboutModalTitle = document.getElementById('about-modal-title');
+  const aboutTagline = document.getElementById('about-tagline');
+  const aboutPurposeTitle = document.getElementById('about-purpose-title');
+  const aboutPurposeDesc = document.getElementById('about-purpose-desc');
+  const aboutFeaturesTitle = document.getElementById('about-features-title');
+  const aboutF1Title = document.getElementById('about-f1-title');
+  const aboutF1Desc = document.getElementById('about-f1-desc');
+  const aboutF2Title = document.getElementById('about-f2-title');
+  const aboutF2Desc = document.getElementById('about-f2-desc');
+  const aboutF3Title = document.getElementById('about-f3-title');
+  const aboutF3Desc = document.getElementById('about-f3-desc');
+  const aboutF4Title = document.getElementById('about-f4-title');
+  const aboutF4Desc = document.getElementById('about-f4-desc');
+  const aboutF5Title = document.getElementById('about-f5-title');
+  const aboutF5Desc = document.getElementById('about-f5-desc');
+  const aboutF6Title = document.getElementById('about-f6-title');
+  const aboutF6Desc = document.getElementById('about-f6-desc');
+  const aboutSupportTitle = document.getElementById('about-support-title');
+  const aboutSupportDesc = document.getElementById('about-support-desc');
+  const aboutDevBy = document.getElementById('about-dev-by');
+
+  if (aboutModalTitle && dict.aboutModalTitle) aboutModalTitle.textContent = dict.aboutModalTitle;
+  if (aboutTagline && dict.aboutTagline) aboutTagline.textContent = dict.aboutTagline;
+  if (aboutPurposeTitle && dict.aboutPurposeTitle) aboutPurposeTitle.textContent = dict.aboutPurposeTitle;
+  if (aboutPurposeDesc && dict.aboutPurposeDesc) aboutPurposeDesc.textContent = dict.aboutPurposeDesc;
+  if (aboutFeaturesTitle && dict.aboutFeaturesTitle) aboutFeaturesTitle.textContent = dict.aboutFeaturesTitle;
+  if (aboutF1Title && dict.aboutF1Title) aboutF1Title.textContent = dict.aboutF1Title;
+  if (aboutF1Desc && dict.aboutF1Desc) aboutF1Desc.innerHTML = dict.aboutF1Desc;
+  if (aboutF2Title && dict.aboutF2Title) aboutF2Title.textContent = dict.aboutF2Title;
+  if (aboutF2Desc && dict.aboutF2Desc) aboutF2Desc.textContent = dict.aboutF2Desc;
+  if (aboutF3Title && dict.aboutF3Title) aboutF3Title.textContent = dict.aboutF3Title;
+  if (aboutF3Desc && dict.aboutF3Desc) aboutF3Desc.textContent = dict.aboutF3Desc;
+  if (aboutF4Title && dict.aboutF4Title) aboutF4Title.textContent = dict.aboutF4Title;
+  if (aboutF4Desc && dict.aboutF4Desc) aboutF4Desc.textContent = dict.aboutF4Desc;
+  if (aboutF5Title && dict.aboutF5Title) aboutF5Title.textContent = dict.aboutF5Title;
+  if (aboutF5Desc && dict.aboutF5Desc) aboutF5Desc.textContent = dict.aboutF5Desc;
+  if (aboutF6Title && dict.aboutF6Title) aboutF6Title.textContent = dict.aboutF6Title;
+  if (aboutF6Desc && dict.aboutF6Desc) aboutF6Desc.textContent = dict.aboutF6Desc;
+  if (aboutSupportTitle && dict.aboutSupportTitle) aboutSupportTitle.textContent = dict.aboutSupportTitle;
+  if (aboutSupportDesc && dict.aboutSupportDesc) aboutSupportDesc.textContent = dict.aboutSupportDesc;
+  if (aboutDevBy && dict.aboutDevBy) aboutDevBy.innerHTML = dict.aboutDevBy;
 
   // Update Clock, Greeting, and Weather display immediately
   updateClockAndDate();
@@ -808,6 +899,7 @@ function updateLockerState(isUnlocked) {
     closeModal();
     closeAutoLockModal();
     closeQuickLinkModal();
+    closeAboutModal();
 
     setTimeout(() => {
       lockCard.classList.add('active');
@@ -1102,10 +1194,31 @@ menuChangePwBtn.addEventListener('click', () => {
   openModal();
 });
 
-// Opsi: Dukung Pengembang / Donasi Saweria → tutup dropdown saat link diklik
-if (menuDonateBtn) {
-  menuDonateBtn.addEventListener('click', () => {
+// Opsi: Tentang Aplikasi (About) → buka modal about
+if (menuAboutBtn) {
+  menuAboutBtn.addEventListener('click', () => {
     closeDropdown();
+    openAboutModal();
+  });
+}
+
+function openAboutModal() {
+  if (aboutModalOverlay) aboutModalOverlay.classList.add('open');
+}
+
+function closeAboutModal() {
+  if (aboutModalOverlay) aboutModalOverlay.classList.remove('open');
+}
+
+if (aboutModalCloseBtn) {
+  aboutModalCloseBtn.addEventListener('click', closeAboutModal);
+}
+
+if (aboutModalOverlay) {
+  aboutModalOverlay.addEventListener('click', (e) => {
+    if (e.target === aboutModalOverlay) {
+      closeAboutModal();
+    }
   });
 }
 
