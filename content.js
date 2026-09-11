@@ -47,16 +47,23 @@
 
   function checkAndRender() {
     try {
-      chrome.runtime.sendMessage({ action: 'getLockState' }, (response) => {
-        if (chrome.runtime.lastError) {
-          fallbackStorageCheck();
+      chrome.storage.local.get('floatingLockBtnEnabled', (settings) => {
+        if (settings && settings.floatingLockBtnEnabled === false) {
+          removeFloatingButton();
           return;
         }
-        if (response && response.unlocked) {
-          renderFloatingButton();
-        } else {
-          removeFloatingButton();
-        }
+
+        chrome.runtime.sendMessage({ action: 'getLockState' }, (response) => {
+          if (chrome.runtime.lastError) {
+            fallbackStorageCheck();
+            return;
+          }
+          if (response && response.unlocked) {
+            renderFloatingButton();
+          } else {
+            removeFloatingButton();
+          }
+        });
       });
     } catch (e) {
       fallbackStorageCheck();
@@ -66,23 +73,37 @@
 
   function fallbackStorageCheck() {
     try {
-      const storage = chrome.storage.session || chrome.storage.local;
-      storage.get('unlocked', (data) => {
-        if (chrome.runtime.lastError) return;
-        if (data && data.unlocked) {
-          renderFloatingButton();
-        } else {
+      chrome.storage.local.get('floatingLockBtnEnabled', (settings) => {
+        if (settings && settings.floatingLockBtnEnabled === false) {
           removeFloatingButton();
+          return;
         }
+
+        const storage = chrome.storage.session || chrome.storage.local;
+        storage.get('unlocked', (data) => {
+          if (chrome.runtime.lastError) return;
+          if (data && data.unlocked) {
+            renderFloatingButton();
+          } else {
+            removeFloatingButton();
+          }
+        });
       });
     } catch (e) {}
   }
 
   try {
     chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (changes.floatingLockBtnEnabled !== undefined) {
+        if (changes.floatingLockBtnEnabled.newValue === false) {
+          removeFloatingButton();
+        } else {
+          checkAndRender();
+        }
+      }
       if (changes.unlocked) {
         if (changes.unlocked.newValue) {
-          renderFloatingButton();
+          checkAndRender();
         } else {
           removeFloatingButton();
         }

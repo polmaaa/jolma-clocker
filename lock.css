@@ -599,18 +599,22 @@ body.theme-malam .menu-divider {
   transition: all 0.15s ease;
 }
 
-/* Kunci Browser — merah aksen */
-.menu-item-lock .menu-item-icon-wrap {
+/* Tombol Kunci Melayang & Kunci Browser — merah aksen */
+.menu-item-lock .menu-item-icon-wrap,
+.menu-item-floating-lock .menu-item-icon-wrap {
   background: rgba(239, 68, 68, 0.08);
 }
-.menu-item-lock:hover .menu-item-icon-wrap {
+.menu-item-lock:hover .menu-item-icon-wrap,
+.menu-item-floating-lock:hover .menu-item-icon-wrap {
   background: rgba(239, 68, 68, 0.16);
   transform: scale(1.06);
 }
-.menu-item-lock .menu-item-icon {
+.menu-item-lock .menu-item-icon,
+.menu-item-floating-lock .menu-item-icon {
   stroke: #ef4444;
 }
-.menu-item-lock:hover {
+.menu-item-lock:hover,
+.menu-item-floating-lock:hover {
   background: rgba(239, 68, 68, 0.05);
   color: #dc2626;
 }
@@ -1402,8 +1406,10 @@ body.theme-malam .menu-dropdown-label { color: #a78bfa; }
 body.theme-malam .menu-item { color: #f1f5f9; }
 body.theme-malam .menu-item:hover { background: rgba(139, 92, 246, 0.12); color: #ffffff; }
 body.theme-malam .menu-item-lock .menu-item-icon-wrap,
+body.theme-malam .menu-item-floating-lock .menu-item-icon-wrap,
 body.theme-malam .menu-item-locknow .menu-item-icon-wrap { background: rgba(239, 68, 68, 0.18); }
 body.theme-malam .menu-item-lock .menu-item-icon,
+body.theme-malam .menu-item-floating-lock .menu-item-icon,
 body.theme-malam .menu-item-locknow .menu-item-icon { stroke: #f87171; }
 body.theme-malam .menu-item-locknow:hover { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
 body.theme-malam .menu-item-shortcuts .menu-item-icon-wrap { background: rgba(16, 185, 129, 0.18); }

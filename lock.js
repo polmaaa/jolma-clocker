@@ -33,13 +33,13 @@ const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
 
 // Feature Toggles Elements (ON / OFF switches)
-const toggleBrowserLock       = document.getElementById('toggle-browser-lock');
+const toggleFloatingLockBtn   = document.getElementById('toggle-floating-lock-btn');
 const toggleQuickLinks        = document.getElementById('toggle-quick-links');
 const toggleQuotes            = document.getElementById('toggle-quotes');
-const menuToggleLockRow       = document.getElementById('menu-toggle-lock-row');
+const menuToggleFloatingRow   = document.getElementById('menu-toggle-floating-row');
 const menuToggleShortcutsRow  = document.getElementById('menu-toggle-shortcuts-row');
 const menuToggleQuotesRow     = document.getElementById('menu-toggle-quotes-row');
-const menuLockToggleLabel     = document.getElementById('menu-lock-toggle-label');
+const menuFloatingLockLabel   = document.getElementById('menu-floating-lock-label');
 const menuShortcutsToggleLabel= document.getElementById('menu-shortcuts-toggle-label');
 const menuQuotesToggleLabel   = document.getElementById('menu-quotes-toggle-label');
 
@@ -143,7 +143,7 @@ let currentLang = 'en';
 const i18n = {
   id: {
     menuHeader: 'Pengaturan',
-    menuLockToggle: 'Kunci Browser',
+    menuFloatingLock: 'Tombol Kunci Melayang',
     menuShortcutsToggle: 'Pintasan',
     menuQuotesToggle: 'Kutipan Hari Ini',
     menuLock: 'Kunci Layar Sekarang',
@@ -283,7 +283,7 @@ const i18n = {
   },
   en: {
     menuHeader: 'Settings',
-    menuLockToggle: 'Lock Browser',
+    menuFloatingLock: 'Floating Lock Button',
     menuShortcutsToggle: 'Shortcuts',
     menuQuotesToggle: 'Daily Quotes',
     menuLock: 'Lock Screen Now',
@@ -433,7 +433,7 @@ function applyTranslations(lang) {
 
   // Menu texts
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
-  if (menuLockToggleLabel) menuLockToggleLabel.textContent = dict.menuLockToggle;
+  if (menuFloatingLockLabel) menuFloatingLockLabel.textContent = dict.menuFloatingLock;
   if (menuShortcutsToggleLabel) menuShortcutsToggleLabel.textContent = dict.menuShortcutsToggle;
   if (menuQuotesToggleLabel) menuQuotesToggleLabel.textContent = dict.menuQuotesToggle;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
@@ -609,16 +609,15 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 // Synchronous state tracking for instant event blocking
 let isCurrentlyUnlocked = false;
 
-// Feature Toggles Management (Browser Lock, Shortcuts, Daily Quotes)
+// Feature Toggles Management (Floating Lock Button, Shortcuts, Daily Quotes)
 function initFeatureToggles() {
-  chrome.storage.local.get(['browserLockEnabled', 'quickLinksEnabled', 'quotesEnabled'], (data) => {
-    const isLockEnabled = data.browserLockEnabled !== false;
+  chrome.storage.local.get(['floatingLockBtnEnabled', 'quickLinksEnabled', 'quotesEnabled'], (data) => {
+    const isFloatingEnabled = data.floatingLockBtnEnabled !== false;
     const isLinksEnabled = data.quickLinksEnabled !== false;
     const isQuotesEnabled = data.quotesEnabled !== false;
 
-    if (toggleBrowserLock) {
-      toggleBrowserLock.checked = isLockEnabled;
-      updateMenuLockBtnState(isLockEnabled);
+    if (toggleFloatingLockBtn) {
+      toggleFloatingLockBtn.checked = isFloatingEnabled;
     }
     if (toggleQuickLinks) {
       toggleQuickLinks.checked = isLinksEnabled;
@@ -630,18 +629,11 @@ function initFeatureToggles() {
     }
   });
 
-  // 1. Toggle Browser Lock listener
-  if (toggleBrowserLock) {
-    toggleBrowserLock.addEventListener('change', () => {
-      const enabled = toggleBrowserLock.checked;
-      chrome.storage.local.set({ browserLockEnabled: enabled }, () => {
-        updateMenuLockBtnState(enabled);
-        if (!enabled) {
-          const storageSession = chrome.storage.session || chrome.storage.local;
-          storageSession.set({ unlocked: true });
-          chrome.storage.local.set({ unlocked: true });
-        }
-      });
+  // 1. Toggle Floating Lock Button listener
+  if (toggleFloatingLockBtn) {
+    toggleFloatingLockBtn.addEventListener('change', () => {
+      const enabled = toggleFloatingLockBtn.checked;
+      chrome.storage.local.set({ floatingLockBtnEnabled: enabled });
     });
   }
 
@@ -666,12 +658,12 @@ function initFeatureToggles() {
   }
 
   // Row clicks to toggle switch smoothly when clicking anywhere on item label/icon
-  if (menuToggleLockRow) {
-    menuToggleLockRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
+  if (menuToggleFloatingRow) {
+    menuToggleFloatingRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (toggleBrowserLock) {
-        toggleBrowserLock.checked = !toggleBrowserLock.checked;
-        toggleBrowserLock.dispatchEvent(new Event('change'));
+      if (toggleFloatingLockBtn) {
+        toggleFloatingLockBtn.checked = !toggleFloatingLockBtn.checked;
+        toggleFloatingLockBtn.dispatchEvent(new Event('change'));
       }
     });
   }
@@ -694,16 +686,6 @@ function initFeatureToggles() {
         toggleQuotes.dispatchEvent(new Event('change'));
       }
     });
-  }
-}
-
-function updateMenuLockBtnState(isLockEnabled) {
-  if (!menuLockBtn) return;
-  menuLockBtn.classList.toggle('disabled', !isLockEnabled);
-  if (!isLockEnabled) {
-    menuLockBtn.title = currentLang === 'en' ? 'Browser Lock feature is disabled' : 'Fitur Kunci Browser dinonaktifkan';
-  } else {
-    menuLockBtn.title = currentLang === 'en' ? 'Lock Screen Now' : 'Kunci Layar Sekarang';
   }
 }
 
@@ -752,20 +734,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuickLinks();
   initAutoLock();
 
-  // Verify session lock state & feature enabled status
-  chrome.storage.local.get(['browserLockEnabled'], (lockData) => {
-    if (lockData && lockData.browserLockEnabled === false) {
-      const storageSession = chrome.storage.session || chrome.storage.local;
-      storageSession.set({ unlocked: true });
-      chrome.storage.local.set({ unlocked: true });
-      updateLockerState(true);
-    } else {
-      const storageSession = chrome.storage.session || chrome.storage.local;
-      storageSession.get('unlocked', (session) => {
-        const isUnlocked = !!(session && session.unlocked);
-        updateLockerState(isUnlocked);
-      });
-    }
+  // Verify session lock state
+  const storageSession = chrome.storage.session || chrome.storage.local;
+  storageSession.get('unlocked', (session) => {
+    const isUnlocked = !!(session && session.unlocked);
+    updateLockerState(isUnlocked);
   });
 });
 
@@ -1020,10 +993,9 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.unlocked) {
     updateLockerState(changes.unlocked.newValue);
   }
-  if (changes.browserLockEnabled !== undefined) {
-    const isLockEnabled = changes.browserLockEnabled.newValue !== false;
-    if (toggleBrowserLock) toggleBrowserLock.checked = isLockEnabled;
-    updateMenuLockBtnState(isLockEnabled);
+  if (changes.floatingLockBtnEnabled !== undefined) {
+    const isFloatingEnabled = changes.floatingLockBtnEnabled.newValue !== false;
+    if (toggleFloatingLockBtn) toggleFloatingLockBtn.checked = isFloatingEnabled;
   }
   if (changes.quickLinksEnabled !== undefined) {
     const isLinksEnabled = changes.quickLinksEnabled.newValue !== false;
@@ -1091,13 +1063,8 @@ function closeDropdown() {
 // Opsi: Kunci Layar Sekarang (Action Button)
 if (menuLockBtn) {
   menuLockBtn.addEventListener('click', () => {
-    chrome.storage.local.get('browserLockEnabled', (data) => {
-      if (data && data.browserLockEnabled === false) {
-        return; // Tombol nonaktif jika fitur kunci browser dimatikan
-      }
-      closeDropdown();
-      chrome.runtime.sendMessage({ action: 'lockBrowser' });
-    });
+    closeDropdown();
+    chrome.runtime.sendMessage({ action: 'lockBrowser' });
   });
 }
 
