@@ -1876,7 +1876,7 @@ body.theme-siang .weather-snowflake {
 
 .daily-quote-container {
   position: fixed;
-  bottom: 50px; /* Dinaikkan sedikit agar lebih proporsional dari footer bawah */
+  bottom: 65px; /* Dinaikkan lebih tinggi agar proporsional dan tidak menempel ke bawah */
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
