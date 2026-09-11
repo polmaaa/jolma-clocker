@@ -1797,14 +1797,46 @@ function openDockFolderPopover(folderIndex, targetElement) {
   // Activate Popover
   dockFolderPopover.classList.add('active');
 
-  // Position Popover directly above clicked target folder
+  // Position Popover directly below clicked target folder with pixel-perfect alignment
   if (targetElement) {
-    const dockContainer = document.getElementById('quick-links-dock');
-    if (dockContainer) {
-      const dockRect = dockContainer.getBoundingClientRect();
+    const section = document.getElementById('quick-links-section');
+    if (section) {
+      const sectionRect = section.getBoundingClientRect();
       const targetRect = targetElement.getBoundingClientRect();
-      const targetCenter = (targetRect.left + targetRect.width / 2) - dockRect.left;
-      dockFolderPopover.style.left = `${targetCenter}px`;
+      const folderCenterX = (targetRect.left + targetRect.width / 2) - sectionRect.left;
+      
+      const popoverWidth = dockFolderPopover.offsetWidth || 220;
+      const sectionWidth = sectionRect.width;
+      
+      let idealLeft = folderCenterX;
+      const minLeft = popoverWidth / 2 + 10;
+      const maxLeft = sectionWidth - popoverWidth / 2 - 10;
+      
+      if (sectionWidth > popoverWidth) {
+        if (idealLeft < minLeft) {
+          dockFolderPopover.style.left = `${minLeft}px`;
+          if (dockPopoverArrow) {
+            const arrowOffset = (folderCenterX - minLeft) + (popoverWidth / 2);
+            dockPopoverArrow.style.left = `${arrowOffset}px`;
+          }
+        } else if (idealLeft > maxLeft) {
+          dockFolderPopover.style.left = `${maxLeft}px`;
+          if (dockPopoverArrow) {
+            const arrowOffset = (folderCenterX - maxLeft) + (popoverWidth / 2);
+            dockPopoverArrow.style.left = `${arrowOffset}px`;
+          }
+        } else {
+          dockFolderPopover.style.left = `${idealLeft}px`;
+          if (dockPopoverArrow) {
+            dockPopoverArrow.style.left = '50%';
+          }
+        }
+      } else {
+        dockFolderPopover.style.left = '50%';
+        if (dockPopoverArrow) {
+          dockPopoverArrow.style.left = '50%';
+        }
+      }
     }
   }
 }
