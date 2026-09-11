@@ -106,49 +106,61 @@ function shouldCloseTab(url) {
 
 // Helper: Evaluates tab state and redirects/closes tabs if locked
 function handleTabState(tabId, url) {
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.get('unlocked', (session) => {
-    if (session && session.unlocked) {
-      return; // Do nothing if already unlocked
+  chrome.storage.local.get('browserLockEnabled', (lockData) => {
+    if (lockData && lockData.browserLockEnabled === false) {
+      return; // Browser lock disabled
     }
 
-    // If it's already our lock page, do nothing
-    if (url && url.startsWith(chrome.runtime.getURL('lock.html'))) {
-      return;
-    }
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.get('unlocked', (session) => {
+      if (session && session.unlocked) {
+        return; // Do nothing if already unlocked
+      }
 
-    // Close sensitive internal pages to prevent bypasses (e.g., chrome://settings)
-    if (url && shouldCloseTab(url)) {
-      chrome.tabs.remove(tabId).catch(() => {});
-      return;
-    }
+      // If it's already our lock page, do nothing
+      if (url && url.startsWith(chrome.runtime.getURL('lock.html'))) {
+        return;
+      }
 
-    // Redirect any web page or empty/new tab to the lock page
-    const lockUrl = chrome.runtime.getURL('lock.html') + (url && url !== 'chrome://newtab/' && url !== 'about:blank' ? '?originalUrl=' + encodeURIComponent(url) : '');
-    chrome.tabs.update(tabId, { url: lockUrl }).catch(() => {});
+      // Close sensitive internal pages to prevent bypasses (e.g., chrome://settings)
+      if (url && shouldCloseTab(url)) {
+        chrome.tabs.remove(tabId).catch(() => {});
+        return;
+      }
+
+      // Redirect any web page or empty/new tab to the lock page
+      const lockUrl = chrome.runtime.getURL('lock.html') + (url && url !== 'chrome://newtab/' && url !== 'about:blank' ? '?originalUrl=' + encodeURIComponent(url) : '');
+      chrome.tabs.update(tabId, { url: lockUrl }).catch(() => {});
+    });
   });
 }
 
 // Locks the browser session and redirects all open tabs
 // enterFullscreen parameter determines if the window should enter fullscreen (only true when user clicks lock button)
 function lockBrowser(enterFullscreen = false) {
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.set({ unlocked: false }, () => {
-    chrome.storage.local.set({ unlocked: false });
-
-    // Masuk mode Fullscreen otomatis HANYA jika dipicu oleh klik tombol gembok
-    if (enterFullscreen) {
-      chrome.windows.getAll({ windowTypes: ['normal'] }, (windows) => {
-        for (const win of windows) {
-          chrome.windows.update(win.id, { state: 'fullscreen' }).catch(() => {});
-        }
-      });
+  chrome.storage.local.get('browserLockEnabled', (lockData) => {
+    if (lockData && lockData.browserLockEnabled === false) {
+      return; // Browser lock disabled
     }
 
-    chrome.tabs.query({}, (tabs) => {
-      for (const tab of tabs) {
-        handleTabState(tab.id, tab.url);
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.set({ unlocked: false }, () => {
+      chrome.storage.local.set({ unlocked: false });
+
+      // Masuk mode Fullscreen otomatis HANYA jika dipicu oleh klik tombol gembok
+      if (enterFullscreen) {
+        chrome.windows.getAll({ windowTypes: ['normal'] }, (windows) => {
+          for (const win of windows) {
+            chrome.windows.update(win.id, { state: 'fullscreen' }).catch(() => {});
+          }
+        });
       }
+
+      chrome.tabs.query({}, (tabs) => {
+        for (const tab of tabs) {
+          handleTabState(tab.id, tab.url);
+        }
+      });
     });
   });
 }
@@ -218,28 +230,38 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
 
 // Perform browser lockdown on startup + cek update (tanpa paksa fullscreen)
 chrome.runtime.onStartup.addListener(() => {
-  keepScreenAwake(); // Cegah sleep saat Chrome dibuka
-  lockBrowser(false);
-  checkForUpdates(); // Cek update saat browser dibuka
+  chrome.storage.local.get('browserLockEnabled', (data) => {
+    if (data && data.browserLockEnabled === false) {
+      const storageSession = chrome.storage.session || chrome.storage.local;
+      storageSession.set({ unlocked: true });
+      chrome.storage.local.set({ unlocked: true });
+    } else {
+      keepScreenAwake(); // Cegah sleep saat Chrome dibuka
+      lockBrowser(false);
+    }
+    checkForUpdates(); // Cek update saat browser dibuka
+  });
 });
 
 // Perform browser lockdown on installation, set default password, setup alarm
 chrome.runtime.onInstalled.addListener(() => {
-  keepScreenAwake(); // Cegah sleep sejak ekstensi pertama kali dimuat
-
   // Set up alarm periodik untuk cek update setiap 6 jam
   chrome.alarms.create(UPDATE_ALARM_NAME, {
     delayInMinutes: 1,                          // Cek pertama kali 1 menit setelah install
     periodInMinutes: UPDATE_CHECK_INTERVAL_HOURS * 60
   });
 
-  chrome.storage.local.get('password', (data) => {
+  chrome.storage.local.get(['password', 'browserLockEnabled'], (data) => {
+    const isLockEnabled = !data || data.browserLockEnabled !== false;
+    if (isLockEnabled) {
+      keepScreenAwake(); // Cegah sleep sejak ekstensi pertama kali dimuat
+    }
     if (!data || !data.password) {
-      chrome.storage.local.set({ password: 'ganteng' }, () => {
-        lockBrowser(false);
+      chrome.storage.local.set({ password: 'ganteng', browserLockEnabled: true }, () => {
+        if (isLockEnabled) lockBrowser(false);
       });
     } else {
-      lockBrowser(false);
+      if (isLockEnabled) lockBrowser(false);
     }
   });
 });
@@ -288,10 +310,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'lockBrowser') {
-    // Saat tombol gembok ditekan, aktifkan keep-awake dan MASUK FULLSCREEN
-    keepScreenAwake();
-    lockBrowser(true);
-    sendResponse({ success: true });
+    chrome.storage.local.get('browserLockEnabled', (data) => {
+      if (data && data.browserLockEnabled === false) {
+        sendResponse({ success: false, error: 'Browser lock is disabled' });
+        return;
+      }
+      // Saat tombol gembok ditekan, aktifkan keep-awake dan MASUK FULLSCREEN
+      keepScreenAwake();
+      lockBrowser(true);
+      sendResponse({ success: true });
+    });
     return true;
   }
 
@@ -332,8 +360,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 if (chrome.commands && chrome.commands.onCommand) {
   chrome.commands.onCommand.addListener((command) => {
     if (command === 'lock-browser-command') {
-      keepScreenAwake();
-      lockBrowser(true);
+      chrome.storage.local.get('browserLockEnabled', (data) => {
+        if (data && data.browserLockEnabled === false) return;
+        keepScreenAwake();
+        lockBrowser(true);
+      });
     }
   });
 }
@@ -345,7 +376,8 @@ if (chrome.commands && chrome.commands.onCommand) {
 
 function setupIdleLock() {
   if (!chrome.idle) return;
-  chrome.storage.local.get('idleLockMinutes', (data) => {
+  chrome.storage.local.get(['idleLockMinutes', 'browserLockEnabled'], (data) => {
+    if (data && data.browserLockEnabled === false) return;
     const mins = (data && data.idleLockMinutes !== undefined) ? Number(data.idleLockMinutes) : 0;
     if (mins > 0) {
       const intervalSec = Math.max(15, mins * 60);
@@ -360,7 +392,8 @@ setupIdleLock();
 if (chrome.idle && chrome.idle.onStateChanged) {
   chrome.idle.onStateChanged.addListener((newState) => {
     if (newState === 'idle' || newState === 'locked') {
-      chrome.storage.local.get('idleLockMinutes', (data) => {
+      chrome.storage.local.get(['idleLockMinutes', 'browserLockEnabled'], (data) => {
+        if (data && data.browserLockEnabled === false) return;
         const mins = (data && data.idleLockMinutes !== undefined) ? Number(data.idleLockMinutes) : 0;
         if (mins > 0) {
           const storageSession = chrome.storage.session || chrome.storage.local;

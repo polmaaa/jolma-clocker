@@ -32,6 +32,17 @@ const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
 
+// Feature Toggles Elements (ON / OFF switches)
+const toggleBrowserLock       = document.getElementById('toggle-browser-lock');
+const toggleQuickLinks        = document.getElementById('toggle-quick-links');
+const toggleQuotes            = document.getElementById('toggle-quotes');
+const menuToggleLockRow       = document.getElementById('menu-toggle-lock-row');
+const menuToggleShortcutsRow  = document.getElementById('menu-toggle-shortcuts-row');
+const menuToggleQuotesRow     = document.getElementById('menu-toggle-quotes-row');
+const menuLockToggleLabel     = document.getElementById('menu-lock-toggle-label');
+const menuShortcutsToggleLabel= document.getElementById('menu-shortcuts-toggle-label');
+const menuQuotesToggleLabel   = document.getElementById('menu-quotes-toggle-label');
+
 // Daily Quotes Elements
 const dailyQuoteContainer = document.getElementById('daily-quote-container');
 const quoteBadgeLabel     = document.getElementById('quote-badge-label');
@@ -132,7 +143,10 @@ let currentLang = 'en';
 const i18n = {
   id: {
     menuHeader: 'Pengaturan',
-    menuLock: 'Kunci Browser',
+    menuLockToggle: 'Kunci Browser',
+    menuShortcutsToggle: 'Pintasan',
+    menuQuotesToggle: 'Kutipan Hari Ini',
+    menuLock: 'Kunci Layar Sekarang',
     menuAutolock: 'Auto-Lock Saat Menganggur',
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
@@ -269,7 +283,10 @@ const i18n = {
   },
   en: {
     menuHeader: 'Settings',
-    menuLock: 'Lock Browser',
+    menuLockToggle: 'Lock Browser',
+    menuShortcutsToggle: 'Shortcuts',
+    menuQuotesToggle: 'Daily Quotes',
+    menuLock: 'Lock Screen Now',
     menuAutolock: 'Auto-Lock Inactivity Timer',
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
@@ -416,6 +433,9 @@ function applyTranslations(lang) {
 
   // Menu texts
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
+  if (menuLockToggleLabel) menuLockToggleLabel.textContent = dict.menuLockToggle;
+  if (menuShortcutsToggleLabel) menuShortcutsToggleLabel.textContent = dict.menuShortcutsToggle;
+  if (menuQuotesToggleLabel) menuQuotesToggleLabel.textContent = dict.menuQuotesToggle;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
   if (menuAutolockLabel) menuAutolockLabel.textContent = dict.menuAutolock;
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
@@ -589,6 +609,129 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 // Synchronous state tracking for instant event blocking
 let isCurrentlyUnlocked = false;
 
+// Feature Toggles Management (Browser Lock, Shortcuts, Daily Quotes)
+function initFeatureToggles() {
+  chrome.storage.local.get(['browserLockEnabled', 'quickLinksEnabled', 'quotesEnabled'], (data) => {
+    const isLockEnabled = data.browserLockEnabled !== false;
+    const isLinksEnabled = data.quickLinksEnabled !== false;
+    const isQuotesEnabled = data.quotesEnabled !== false;
+
+    if (toggleBrowserLock) {
+      toggleBrowserLock.checked = isLockEnabled;
+      updateMenuLockBtnState(isLockEnabled);
+    }
+    if (toggleQuickLinks) {
+      toggleQuickLinks.checked = isLinksEnabled;
+      applyQuickLinksVisibility(isLinksEnabled);
+    }
+    if (toggleQuotes) {
+      toggleQuotes.checked = isQuotesEnabled;
+      applyQuotesVisibility(isQuotesEnabled);
+    }
+  });
+
+  // 1. Toggle Browser Lock listener
+  if (toggleBrowserLock) {
+    toggleBrowserLock.addEventListener('change', () => {
+      const enabled = toggleBrowserLock.checked;
+      chrome.storage.local.set({ browserLockEnabled: enabled }, () => {
+        updateMenuLockBtnState(enabled);
+        if (!enabled) {
+          const storageSession = chrome.storage.session || chrome.storage.local;
+          storageSession.set({ unlocked: true });
+          chrome.storage.local.set({ unlocked: true });
+        }
+      });
+    });
+  }
+
+  // 2. Toggle Quick Links listener
+  if (toggleQuickLinks) {
+    toggleQuickLinks.addEventListener('change', () => {
+      const enabled = toggleQuickLinks.checked;
+      chrome.storage.local.set({ quickLinksEnabled: enabled }, () => {
+        applyQuickLinksVisibility(enabled);
+      });
+    });
+  }
+
+  // 3. Toggle Quotes listener
+  if (toggleQuotes) {
+    toggleQuotes.addEventListener('change', () => {
+      const enabled = toggleQuotes.checked;
+      chrome.storage.local.set({ quotesEnabled: enabled }, () => {
+        applyQuotesVisibility(enabled);
+      });
+    });
+  }
+
+  // Row clicks to toggle switch smoothly when clicking anywhere on item label/icon
+  if (menuToggleLockRow) {
+    menuToggleLockRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (toggleBrowserLock) {
+        toggleBrowserLock.checked = !toggleBrowserLock.checked;
+        toggleBrowserLock.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+
+  if (menuToggleShortcutsRow) {
+    menuToggleShortcutsRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (toggleQuickLinks) {
+        toggleQuickLinks.checked = !toggleQuickLinks.checked;
+        toggleQuickLinks.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+
+  if (menuToggleQuotesRow) {
+    menuToggleQuotesRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (toggleQuotes) {
+        toggleQuotes.checked = !toggleQuotes.checked;
+        toggleQuotes.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+}
+
+function updateMenuLockBtnState(isLockEnabled) {
+  if (!menuLockBtn) return;
+  menuLockBtn.classList.toggle('disabled', !isLockEnabled);
+  if (!isLockEnabled) {
+    menuLockBtn.title = currentLang === 'en' ? 'Browser Lock feature is disabled' : 'Fitur Kunci Browser dinonaktifkan';
+  } else {
+    menuLockBtn.title = currentLang === 'en' ? 'Lock Screen Now' : 'Kunci Layar Sekarang';
+  }
+}
+
+function applyQuickLinksVisibility(show) {
+  if (quickLinksSection) {
+    if (show && isCurrentlyUnlocked) {
+      quickLinksSection.style.display = 'flex';
+    } else {
+      quickLinksSection.style.display = 'none';
+      if (typeof closeDockFolderPopover === 'function') {
+        closeDockFolderPopover();
+      }
+    }
+  }
+}
+
+function applyQuotesVisibility(show) {
+  if (dailyQuoteContainer) {
+    if (show && isCurrentlyUnlocked) {
+      dailyQuoteContainer.classList.add('active');
+      dailyQuoteContainer.style.display = 'flex';
+    } else {
+      dailyQuoteContainer.classList.remove('active');
+      dailyQuoteContainer.style.display = 'none';
+    }
+  }
+}
+
 // ---- Initialize view state on load ----------------------------------------
 
 // Initialize view state on load
@@ -604,18 +747,25 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateClockAndDate, 1000);
 
   // Initialize new feature modules
+  initFeatureToggles();
   initDailyQuotes();
   initQuickLinks();
   initAutoLock();
 
-  // CATATAN: checkUpdateStorage() dipanggil di dalam updateLockerState(true)
-  // sehingga toast hanya muncul saat posisi terbuka
-
-  // Verify session lock state
-  const storageSession = chrome.storage.session || chrome.storage.local;
-  storageSession.get('unlocked', (session) => {
-    const isUnlocked = !!(session && session.unlocked);
-    updateLockerState(isUnlocked);
+  // Verify session lock state & feature enabled status
+  chrome.storage.local.get(['browserLockEnabled'], (lockData) => {
+    if (lockData && lockData.browserLockEnabled === false) {
+      const storageSession = chrome.storage.session || chrome.storage.local;
+      storageSession.set({ unlocked: true });
+      chrome.storage.local.set({ unlocked: true });
+      updateLockerState(true);
+    } else {
+      const storageSession = chrome.storage.session || chrome.storage.local;
+      storageSession.get('unlocked', (session) => {
+        const isUnlocked = !!(session && session.unlocked);
+        updateLockerState(isUnlocked);
+      });
+    }
   });
 });
 
@@ -642,11 +792,15 @@ function updateLockerState(isUnlocked) {
         topBar.classList.add('active');
         if (weatherFooter) weatherFooter.classList.add('active');
         if (copyrightFooter) copyrightFooter.classList.add('active');
-        if (dailyQuoteContainer) {
-          dailyQuoteContainer.classList.add('active');
-          dailyQuoteContainer.style.display = 'flex';
-        }
-        if (quickLinksSection) quickLinksSection.style.display = 'flex';
+
+        // Check feature toggles for Quotes and Quick Links
+        chrome.storage.local.get(['quickLinksEnabled', 'quotesEnabled'], (feat) => {
+          const showLinks = feat && feat.quickLinksEnabled !== false;
+          const showQuotes = feat && feat.quotesEnabled !== false;
+          applyQuotesVisibility(showQuotes);
+          applyQuickLinksVisibility(showLinks);
+        });
+
         searchInput.focus();
       }, 200);
 
@@ -666,11 +820,8 @@ function updateLockerState(isUnlocked) {
     topBar.classList.remove('active');
     if (weatherFooter) weatherFooter.classList.remove('active');
     if (copyrightFooter) copyrightFooter.classList.remove('active');
-    if (dailyQuoteContainer) {
-      dailyQuoteContainer.classList.remove('active');
-      dailyQuoteContainer.style.display = 'none';
-    }
-    if (quickLinksSection) quickLinksSection.style.display = 'none';
+    applyQuotesVisibility(false);
+    applyQuickLinksVisibility(false);
     closeWeatherModal();
     closeUsernameModal();
     closeModal();
@@ -869,6 +1020,21 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.unlocked) {
     updateLockerState(changes.unlocked.newValue);
   }
+  if (changes.browserLockEnabled !== undefined) {
+    const isLockEnabled = changes.browserLockEnabled.newValue !== false;
+    if (toggleBrowserLock) toggleBrowserLock.checked = isLockEnabled;
+    updateMenuLockBtnState(isLockEnabled);
+  }
+  if (changes.quickLinksEnabled !== undefined) {
+    const isLinksEnabled = changes.quickLinksEnabled.newValue !== false;
+    if (toggleQuickLinks) toggleQuickLinks.checked = isLinksEnabled;
+    applyQuickLinksVisibility(isLinksEnabled);
+  }
+  if (changes.quotesEnabled !== undefined) {
+    const isQuotesEnabled = changes.quotesEnabled.newValue !== false;
+    if (toggleQuotes) toggleQuotes.checked = isQuotesEnabled;
+    applyQuotesVisibility(isQuotesEnabled);
+  }
   if (changes.language) {
     applyTranslations(changes.language.newValue);
   }
@@ -922,11 +1088,18 @@ function closeDropdown() {
   menuBtn.classList.remove('active');
 }
 
-// Opsi: Kunci Browser
-menuLockBtn.addEventListener('click', () => {
-  closeDropdown();
-  chrome.runtime.sendMessage({ action: 'lockBrowser' });
-});
+// Opsi: Kunci Layar Sekarang (Action Button)
+if (menuLockBtn) {
+  menuLockBtn.addEventListener('click', () => {
+    chrome.storage.local.get('browserLockEnabled', (data) => {
+      if (data && data.browserLockEnabled === false) {
+        return; // Tombol nonaktif jika fitur kunci browser dimatikan
+      }
+      closeDropdown();
+      chrome.runtime.sendMessage({ action: 'lockBrowser' });
+    });
+  });
+}
 
 // Opsi: Auto-Lock Timer
 if (menuAutolockBtn) {
