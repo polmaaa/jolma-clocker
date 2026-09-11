@@ -344,7 +344,7 @@ function showUpdateBanner(version, url) {
   if (updateVersionLabel) updateVersionLabel.textContent = dict.updateVersion(version);
   if (updateLink) {
     updateLink.textContent = dict.downloadBtn;
-    updateLink.href = url || 'https://github.com/polmaaa/polock';
+    updateLink.href = url || 'https://github.com/polmaaa/jolma-clocker';
   }
   updateBanner.classList.add('visible');
 }

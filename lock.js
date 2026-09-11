@@ -806,7 +806,7 @@ if (btnLangEn) {
 function showUpdateToast(version, url) {
   updateToastVer.textContent = `Versi ${version} tersedia`;
   // Simpan URL dan versi untuk keperluan download
-  updateToast.dataset.downloadUrl = url || 'https://github.com/polmaaa/polock/archive/refs/heads/main.zip';
+  updateToast.dataset.downloadUrl = url || 'https://github.com/polmaaa/jolma-clocker/archive/refs/heads/main.zip';
   updateToast.dataset.version = version;
   updateToast.classList.add('visible');
 }
@@ -822,7 +822,7 @@ updateToastClose.addEventListener('click', hideUpdateToast);
 updateToastLink.addEventListener('click', (e) => {
   e.preventDefault();
   const version = updateToast.dataset.version || 'latest';
-  const zipUrl  = 'https://github.com/polmaaa/polock/archive/refs/heads/main.zip';
+  const zipUrl  = 'https://github.com/polmaaa/jolma-clocker/archive/refs/heads/main.zip';
 
   // Tampilkan status downloading di tombol
   updateToastLink.textContent = '⏳ Mengunduh...';

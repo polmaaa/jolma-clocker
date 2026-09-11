@@ -1,5 +1,5 @@
 {
   "version": "0.2.1",
   "releaseNotes": "v0.2.1 — Notifikasi update hanya tampil saat browser terbuka, dan unduhan berjalan langsung di halaman (tidak redirect ke GitHub).",
-  "downloadUrl": "https://github.com/polmaaa/polock"
+  "downloadUrl": "https://github.com/polmaaa/jolma-clocker"
 }

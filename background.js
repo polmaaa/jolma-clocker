@@ -22,7 +22,7 @@ function releaseScreenAwake() {
 // ============================================================
 
 const VERSION_CHECK_URL =
-  'https://raw.githubusercontent.com/polmaaa/polock/main/version.json';
+  'https://raw.githubusercontent.com/polmaaa/jolma-clocker/main/version.json';
 const UPDATE_ALARM_NAME = 'krompol-update-check';
 const UPDATE_CHECK_INTERVAL_HOURS = 6; // Cek setiap 6 jam
 
@@ -75,7 +75,7 @@ async function checkForUpdates() {
         updateAvailable: true,
         updateVersion: remoteVersion,
         updateNotes: remoteData.releaseNotes || '',
-        updateUrl: remoteData.downloadUrl || 'https://github.com/polmaaa/polock'
+        updateUrl: remoteData.downloadUrl || 'https://github.com/polmaaa/jolma-clocker'
       });
     } else {
       // Sudah versi terbaru, hapus flag update
