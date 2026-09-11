@@ -1,6 +1,6 @@
-# Polock - Browser Security Guard 🔒
+# Jolma CLocker - Browser Security Guard 🔒
 
-**Polock** (v0.2.1) adalah ekstensi Google Chrome (Manifest V3) modern, elegan, dan estetik yang berfungsi untuk mengamankan seluruh sesi browsing Anda melalui proteksi kata sandi, auto-fullscreen lock, serta shortcut instan.
+**Jolma CLocker** (*Jolma Chrome Locker* v0.2.1) adalah ekstensi Google Chrome (Manifest V3) modern, elegan, dan estetik yang berfungsi untuk mengamankan seluruh sesi browsing Anda melalui proteksi kata sandi, auto-fullscreen lock, serta shortcut instan.
 
 Dibuat & dikembangkan oleh: **Polma Sihotang**
 
@@ -40,13 +40,13 @@ Dibuat & dikembangkan oleh: **Polma Sihotang**
 
 1. Klon atau unduh repositori ini ke komputer Anda:
    ```bash
-   git clone https://github.com/polmaaa/polock.git
+   git clone https://github.com/polmaaa/jolma-clocker.git
    ```
 2. Buka browser **Google Chrome** dan navigasikan ke alamat **`chrome://extensions/`**.
 3. Di pojok kanan atas, aktifkan tombol toggle **Developer mode** ke posisi **ON**.
 4. Di pojok kiri atas, klik tombol **Load unpacked**.
-5. Pilih folder repositori `polock` yang telah diunduh, lalu klik **Select Folder**.
-6. Ekstensi **Polock - Browser Security Guard** kini aktif!
+5. Pilih folder repositori `jolma-clocker` yang telah diunduh, lalu klik **Select Folder**.
+6. Ekstensi **Jolma CLocker - Browser Security Guard** kini aktif!
 
 ---
 
