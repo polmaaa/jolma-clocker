@@ -206,17 +206,49 @@
     </div>
   </div>
 
-  <!-- Modal: Add / Edit Quick Link -->
+  <!-- Modal: Folder Viewer -->
+  <div id="folder-modal-overlay" class="modal-overlay">
+    <div class="modal-card folder-modal-card">
+      <div class="modal-header">
+        <div class="folder-header-title-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="folder-header-svg">
+            <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+          </svg>
+          <h3 class="modal-title" id="folder-modal-title">Folder</h3>
+        </div>
+        <button id="folder-modal-close-btn" class="modal-close" title="Tutup">✕</button>
+      </div>
+      <div id="folder-items-grid" class="quick-links-grid folder-links-grid">
+        <!-- Rendered dynamically via lock.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Quick Link or Folder -->
   <div id="quicklink-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="quicklink-modal-title">Tambah Pintasan</h3>
         <button id="quicklink-modal-close-btn" class="modal-close" title="Close">✕</button>
       </div>
+
+      <!-- Type Selector Tabs (Only visible when creating at root level) -->
+      <div id="quicklink-type-tabs" class="quicklink-type-tabs">
+        <button type="button" class="btn-type-tab active" id="btn-type-link" data-type="link">🔗 Tautan</button>
+        <button type="button" class="btn-type-tab" id="btn-type-folder" data-type="folder">📁 Folder</button>
+      </div>
+
       <form id="quicklink-form" novalidate>
         <input type="hidden" id="quicklink-edit-index" value="-1">
-        <input type="text" id="quicklink-name-input" placeholder="Nama Situs (misal: YouTube)" required autocomplete="off" maxlength="24">
-        <input type="text" id="quicklink-url-input" placeholder="URL (misal: youtube.com atau https://...)" required autocomplete="off">
+        <input type="hidden" id="quicklink-parent-folder-index" value="-1">
+        <input type="hidden" id="quicklink-selected-type" value="link">
+
+        <input type="text" id="quicklink-name-input" placeholder="Nama Situs / Folder (misal: YouTube)" required autocomplete="off" maxlength="24">
+        
+        <div id="quicklink-url-group">
+          <input type="text" id="quicklink-url-input" placeholder="URL (misal: youtube.com atau https://...)" required autocomplete="off">
+        </div>
+
         <div id="quicklink-modal-feedback" class="modal-feedback"></div>
         <div class="modal-btn-row">
           <button type="submit" class="btn-modal-submit" id="quicklink-submit-btn">Simpan</button>

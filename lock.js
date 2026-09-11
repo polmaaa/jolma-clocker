@@ -39,7 +39,7 @@ const quoteTextEl         = document.getElementById('quote-text');
 const quoteAuthorEl       = document.getElementById('quote-author');
 const btnQuoteShuffle     = document.getElementById('btn-quote-shuffle');
 
-// Quick Links Elements
+// Quick Links & Folder Elements
 const quickLinksSection   = document.getElementById('quick-links-section');
 const quickLinksGrid      = document.getElementById('quick-links-grid');
 const btnAddQuickLink     = document.getElementById('btn-add-quick-link');
@@ -47,13 +47,25 @@ const lblAddShortcut      = document.getElementById('lbl-add-shortcut');
 const quicklinkModalOverlay   = document.getElementById('quicklink-modal-overlay');
 const quicklinkModalCloseBtn  = document.getElementById('quicklink-modal-close-btn');
 const quicklinkModalTitle     = document.getElementById('quicklink-modal-title');
+const quicklinkTypeTabs       = document.getElementById('quicklink-type-tabs');
+const btnTypeLink             = document.getElementById('btn-type-link');
+const btnTypeFolder           = document.getElementById('btn-type-folder');
 const quicklinkForm           = document.getElementById('quicklink-form');
 const quicklinkEditIndex      = document.getElementById('quicklink-edit-index');
+const quicklinkParentFolderIndex = document.getElementById('quicklink-parent-folder-index');
+const quicklinkSelectedType   = document.getElementById('quicklink-selected-type');
 const quicklinkNameInput      = document.getElementById('quicklink-name-input');
+const quicklinkUrlGroup       = document.getElementById('quicklink-url-group');
 const quicklinkUrlInput       = document.getElementById('quicklink-url-input');
 const quicklinkModalFeedback  = document.getElementById('quicklink-modal-feedback');
 const quicklinkSubmitBtn      = document.getElementById('quicklink-submit-btn');
 const quicklinkDeleteBtn      = document.getElementById('quicklink-delete-btn');
+
+// Folder Viewer Modal Elements
+const folderModalOverlay      = document.getElementById('folder-modal-overlay');
+const folderModalCloseBtn     = document.getElementById('folder-modal-close-btn');
+const folderModalTitle        = document.getElementById('folder-modal-title');
+const folderItemsGrid         = document.getElementById('folder-items-grid');
 
 // Auto-Lock Inactivity Modal Elements
 const autolockModalOverlay    = document.getElementById('autolock-modal-overlay');
@@ -162,15 +174,24 @@ const i18n = {
       { text: "Hari ini adalah kesempatan untuk membangun hari esok yang kamu inginkan.", author: "Ken Poirot" }
     ],
 
-    // Quick Links Modal
+    // Quick Links & Folder Modal
     quicklinkAddTitle: 'Tambah Pintasan',
     quicklinkEditTitle: 'Edit Pintasan',
+    quicklinkAddFolderTitle: 'Tambah Folder Baru',
+    quicklinkEditFolderTitle: 'Edit Folder',
+    quicklinkAddInFolderTitle: 'Tambah Pintasan ke Folder',
+    quicklinkTypeLink: '🔗 Tautan',
+    quicklinkTypeFolder: '📁 Folder',
     quicklinkNamePh: 'Nama Situs (misal: YouTube)',
-    quicklinkUrlPh: 'URL (misal: https://youtube.com)',
+    quicklinkFolderNamePh: 'Nama Folder (misal: Kerja, Sosmed)',
+    quicklinkUrlPh: 'URL (misal: youtube.com atau https://...)',
     quicklinkSaveBtn: 'Simpan',
     quicklinkDeleteBtn: 'Hapus',
     quicklinkEmptyErr: 'Nama dan URL wajib diisi!',
+    quicklinkFolderEmptyErr: 'Nama folder tidak boleh kosong!',
     quicklinkInvalidUrl: 'Format URL tidak valid (gunakan http:// atau https://)',
+    folderModalDefaultTitle: 'Folder',
+    folderAddShortcut: '+ Pintasan',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Saat Menganggur',
@@ -288,15 +309,24 @@ const i18n = {
       { text: "Today is your opportunity to build the tomorrow you want.", author: "Ken Poirot" }
     ],
 
-    // Quick Links Modal
+    // Quick Links & Folder Modal
     quicklinkAddTitle: 'Add Shortcut',
     quicklinkEditTitle: 'Edit Shortcut',
+    quicklinkAddFolderTitle: 'Add New Folder',
+    quicklinkEditFolderTitle: 'Edit Folder',
+    quicklinkAddInFolderTitle: 'Add Shortcut to Folder',
+    quicklinkTypeLink: '🔗 Link',
+    quicklinkTypeFolder: '📁 Folder',
     quicklinkNamePh: 'Site Name (e.g. YouTube)',
+    quicklinkFolderNamePh: 'Folder Name (e.g. Work, Social)',
     quicklinkUrlPh: 'URL (e.g. https://youtube.com)',
     quicklinkSaveBtn: 'Save',
     quicklinkDeleteBtn: 'Delete',
     quicklinkEmptyErr: 'Name and URL are required!',
+    quicklinkFolderEmptyErr: 'Folder name is required!',
     quicklinkInvalidUrl: 'Invalid URL format (use http:// or https://)',
+    folderModalDefaultTitle: 'Folder',
+    folderAddShortcut: '+ Shortcut',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Inactivity Timer',
@@ -380,9 +410,6 @@ function applyTranslations(lang) {
   if (btnLangId) btnLangId.classList.toggle('active', currentLang === 'id');
   if (btnLangEn) btnLangEn.classList.toggle('active', currentLang === 'en');
 
-  // Top Bar action labels
-  if (topFocusLabel) topFocusLabel.textContent = dict.topFocus;
-
   // Menu texts
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
@@ -396,8 +423,10 @@ function applyTranslations(lang) {
   if (passwordInput) passwordInput.placeholder = dict.passwordPlaceholder;
   if (errorMessage) errorMessage.textContent = dict.passwordError;
 
-  // Quick Links
+  // Quick Links & Folder
   if (lblAddShortcut) lblAddShortcut.textContent = dict.addShortcut;
+  if (btnTypeLink) btnTypeLink.textContent = dict.quicklinkTypeLink;
+  if (btnTypeFolder) btnTypeFolder.textContent = dict.quicklinkTypeFolder;
   if (quicklinkNameInput) quicklinkNameInput.placeholder = dict.quicklinkNamePh;
   if (quicklinkUrlInput) quicklinkUrlInput.placeholder = dict.quicklinkUrlPh;
   if (quicklinkSubmitBtn) quicklinkSubmitBtn.textContent = dict.quicklinkSaveBtn;
@@ -413,6 +442,9 @@ function applyTranslations(lang) {
   updateQuoteDisplay();
   if (quickLinksList && quickLinksList.length > 0) {
     renderQuickLinks(quickLinksList);
+  }
+  if (currentOpenFolderIndex >= 0) {
+    renderFolderItems(currentOpenFolderIndex);
   }
 
   // Username Modal
@@ -1634,23 +1666,24 @@ function shuffleQuote() {
 
 // ============================================================
 // ============================================================
-// 2. MINIMALIST QUICK LINKS MODULE
+// 2. MINIMALIST QUICK LINKS & FOLDERS MODULE
 // ============================================================
 const DEFAULT_QUICK_LINKS = [
-  { name: 'Google', url: 'https://www.google.com' },
-  { name: 'YouTube', url: 'https://www.youtube.com' },
-  { name: 'GitHub', url: 'https://github.com' },
-  { name: 'ChatGPT', url: 'https://chatgpt.com' },
-  { name: 'Gmail', url: 'https://mail.google.com' },
-  { name: 'Wikipedia', url: 'https://www.wikipedia.org' }
+  { type: 'link', name: 'Google', url: 'https://www.google.com' },
+  { type: 'link', name: 'YouTube', url: 'https://www.youtube.com' },
+  { type: 'link', name: 'GitHub', url: 'https://github.com' },
+  { type: 'link', name: 'ChatGPT', url: 'https://chatgpt.com' },
+  { type: 'link', name: 'Gmail', url: 'https://mail.google.com' },
+  { type: 'link', name: 'Wikipedia', url: 'https://www.wikipedia.org' }
 ];
 
 let quickLinksList = [];
+let currentOpenFolderIndex = -1;
 
 function initQuickLinks() {
   chrome.storage.local.get('quickLinks', (data) => {
     quickLinksList = (data && Array.isArray(data.quickLinks) && data.quickLinks.length > 0)
-      ? data.quickLinks
+      ? normalizeQuickLinks(data.quickLinks)
       : DEFAULT_QUICK_LINKS;
     
     if (!data || !data.quickLinks) {
@@ -1659,6 +1692,7 @@ function initQuickLinks() {
     renderQuickLinks(quickLinksList);
   });
 
+  // Modal: Quicklink/Folder Add & Edit
   if (quicklinkModalCloseBtn) {
     quicklinkModalCloseBtn.addEventListener('click', closeQuickLinkModal);
   }
@@ -1673,6 +1707,42 @@ function initQuickLinks() {
   if (quicklinkDeleteBtn) {
     quicklinkDeleteBtn.addEventListener('click', handleQuickLinkDelete);
   }
+
+  // Type Selector Tabs (Link vs Folder)
+  if (btnTypeLink) {
+    btnTypeLink.addEventListener('click', () => setQuicklinkType('link'));
+  }
+  if (btnTypeFolder) {
+    btnTypeFolder.addEventListener('click', () => setQuicklinkType('folder'));
+  }
+
+  // Modal: Folder Viewer
+  if (folderModalCloseBtn) {
+    folderModalCloseBtn.addEventListener('click', closeFolderModal);
+  }
+  if (folderModalOverlay) {
+    folderModalOverlay.addEventListener('click', (e) => {
+      if (e.target === folderModalOverlay) closeFolderModal();
+    });
+  }
+}
+
+// Ensure every item has a valid type ('link' or 'folder')
+function normalizeQuickLinks(list) {
+  return list.map((item) => {
+    if (item.type === 'folder') {
+      return {
+        type: 'folder',
+        name: item.name || 'Folder',
+        items: Array.isArray(item.items) ? item.items.map(child => ({ type: 'link', name: child.name, url: child.url })) : []
+      };
+    }
+    return {
+      type: 'link',
+      name: item.name || 'Link',
+      url: item.url || 'https://google.com'
+    };
+  });
 }
 
 function getFaviconUrl(url) {
@@ -1684,64 +1754,139 @@ function getFaviconUrl(url) {
   }
 }
 
+function setQuicklinkType(type) {
+  if (quicklinkSelectedType) quicklinkSelectedType.value = type;
+  if (btnTypeLink) btnTypeLink.classList.toggle('active', type === 'link');
+  if (btnTypeFolder) btnTypeFolder.classList.toggle('active', type === 'folder');
+
+  const dict = i18n[currentLang] || i18n.en;
+  if (type === 'folder') {
+    if (quicklinkUrlGroup) quicklinkUrlGroup.style.display = 'none';
+    if (quicklinkNameInput) quicklinkNameInput.placeholder = dict.quicklinkFolderNamePh;
+  } else {
+    if (quicklinkUrlGroup) quicklinkUrlGroup.style.display = 'block';
+    if (quicklinkNameInput) quicklinkNameInput.placeholder = dict.quicklinkNamePh;
+  }
+}
+
 function renderQuickLinks(links) {
   if (!quickLinksGrid) return;
   quickLinksGrid.innerHTML = '';
   const dict = i18n[currentLang] || i18n.en;
 
-  // 1. Render all shortcut items
+  // 1. Render all root items (links and folders)
   links.forEach((item, index) => {
     const itemWrap = document.createElement('div');
     itemWrap.className = 'quick-link-item';
 
-    // Link clickable wrapper (icon + text)
-    const linkEl = document.createElement('a');
-    linkEl.className = 'quick-link-link';
-    linkEl.href = item.url;
-    linkEl.target = '_blank';
-    linkEl.rel = 'noopener noreferrer';
-    linkEl.title = `${item.name} (${item.url})`;
+    if (item.type === 'folder') {
+      // Folder Item
+      itemWrap.title = `${item.name} (${item.items ? item.items.length : 0} items)`;
+      
+      const iconBox = document.createElement('div');
+      iconBox.className = 'quick-link-icon-box quick-link-folder-box';
 
-    const iconBox = document.createElement('div');
-    iconBox.className = 'quick-link-icon-box';
+      if (item.items && item.items.length > 0) {
+        const miniGrid = document.createElement('div');
+        miniGrid.className = 'folder-mini-grid';
+        const previewItems = item.items.slice(0, 4);
+        previewItems.forEach((child) => {
+          const miniImg = document.createElement('img');
+          miniImg.className = 'folder-mini-icon';
+          miniImg.src = getFaviconUrl(child.url);
+          miniImg.alt = child.name;
+          miniImg.onerror = () => { miniImg.src = 'icons/icon-32.png'; };
+          miniGrid.appendChild(miniImg);
+        });
+        iconBox.appendChild(miniGrid);
+      } else {
+        iconBox.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="folder-svg-icon">
+            <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+          </svg>
+        `;
+      }
 
-    const iconImg = document.createElement('img');
-    iconImg.className = 'quick-link-icon';
-    iconImg.src = getFaviconUrl(item.url);
-    iconImg.alt = item.name;
-    iconImg.onerror = () => { iconImg.src = 'icons/icon-32.png'; };
+      const titleEl = document.createElement('span');
+      titleEl.className = 'quick-link-title';
+      titleEl.textContent = item.name;
 
-    iconBox.appendChild(iconImg);
+      itemWrap.appendChild(iconBox);
+      itemWrap.appendChild(titleEl);
 
-    const titleEl = document.createElement('span');
-    titleEl.className = 'quick-link-title';
-    titleEl.textContent = item.name;
+      itemWrap.addEventListener('click', (e) => {
+        if (e.target.closest('.quick-link-edit-btn')) return;
+        openFolderModal(index);
+      });
 
-    linkEl.appendChild(iconBox);
-    linkEl.appendChild(titleEl);
+      // Edit button for folder
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'quick-link-edit-btn';
+      editBtn.title = `Edit: ${item.name}`;
+      editBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="edit-pencil-icon">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+        </svg>
+      `;
+      editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openEditQuickLinkModal(index, -1);
+      });
 
-    // Edit button as dedicated overlay control
-    const editBtn = document.createElement('button');
-    editBtn.type = 'button';
-    editBtn.className = 'quick-link-edit-btn';
-    editBtn.title = `Edit: ${item.name}`;
-    editBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="edit-pencil-icon">
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-      </svg>
-    `;
-    editBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openEditQuickLinkModal(index);
-    });
+      itemWrap.appendChild(editBtn);
+    } else {
+      // Direct Link Item
+      const linkEl = document.createElement('a');
+      linkEl.className = 'quick-link-link';
+      linkEl.href = item.url;
+      linkEl.target = '_blank';
+      linkEl.rel = 'noopener noreferrer';
+      linkEl.title = `${item.name} (${item.url})`;
 
-    itemWrap.appendChild(linkEl);
-    itemWrap.appendChild(editBtn);
+      const iconBox = document.createElement('div');
+      iconBox.className = 'quick-link-icon-box';
+
+      const iconImg = document.createElement('img');
+      iconImg.className = 'quick-link-icon';
+      iconImg.src = getFaviconUrl(item.url);
+      iconImg.alt = item.name;
+      iconImg.onerror = () => { iconImg.src = 'icons/icon-32.png'; };
+
+      iconBox.appendChild(iconImg);
+
+      const titleEl = document.createElement('span');
+      titleEl.className = 'quick-link-title';
+      titleEl.textContent = item.name;
+
+      linkEl.appendChild(iconBox);
+      linkEl.appendChild(titleEl);
+
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'quick-link-edit-btn';
+      editBtn.title = `Edit: ${item.name}`;
+      editBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="edit-pencil-icon">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+        </svg>
+      `;
+      editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openEditQuickLinkModal(index, -1);
+      });
+
+      itemWrap.appendChild(linkEl);
+      itemWrap.appendChild(editBtn);
+    }
+
     quickLinksGrid.appendChild(itemWrap);
   });
 
-  // 2. Render Add button in the exact same grid geometry for 100% horizontal alignment
+  // 2. Render Add button on main bar
   const addWrap = document.createElement('div');
   addWrap.className = 'quick-link-item quick-link-add-item';
   addWrap.id = 'btn-add-quick-link';
@@ -1758,35 +1903,166 @@ function renderQuickLinks(links) {
   addWrap.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    openAddQuickLinkModal();
+    openAddQuickLinkModal(-1);
   });
   quickLinksGrid.appendChild(addWrap);
 }
 
-function openAddQuickLinkModal() {
+// Folder Viewer Modal Functions
+function openFolderModal(folderIndex) {
+  currentOpenFolderIndex = folderIndex;
+  const folder = quickLinksList[folderIndex];
+  if (!folder || folder.type !== 'folder') return;
+
+  if (folderModalTitle) {
+    folderModalTitle.textContent = folder.name || 'Folder';
+  }
+
+  renderFolderItems(folderIndex);
+  if (folderModalOverlay) folderModalOverlay.classList.add('open');
+}
+
+function closeFolderModal() {
+  if (folderModalOverlay) folderModalOverlay.classList.remove('open');
+  currentOpenFolderIndex = -1;
+}
+
+function renderFolderItems(folderIndex) {
+  if (!folderItemsGrid) return;
+  folderItemsGrid.innerHTML = '';
+  const folder = quickLinksList[folderIndex];
+  if (!folder || !folder.items) return;
+  const dict = i18n[currentLang] || i18n.en;
+
+  // 1. Render each child item
+  folder.items.forEach((child, childIndex) => {
+    const itemWrap = document.createElement('div');
+    itemWrap.className = 'quick-link-item';
+
+    const linkEl = document.createElement('a');
+    linkEl.className = 'quick-link-link';
+    linkEl.href = child.url;
+    linkEl.target = '_blank';
+    linkEl.rel = 'noopener noreferrer';
+    linkEl.title = `${child.name} (${child.url})`;
+
+    const iconBox = document.createElement('div');
+    iconBox.className = 'quick-link-icon-box';
+
+    const iconImg = document.createElement('img');
+    iconImg.className = 'quick-link-icon';
+    iconImg.src = getFaviconUrl(child.url);
+    iconImg.alt = child.name;
+    iconImg.onerror = () => { iconImg.src = 'icons/icon-32.png'; };
+
+    iconBox.appendChild(iconImg);
+
+    const titleEl = document.createElement('span');
+    titleEl.className = 'quick-link-title';
+    titleEl.textContent = child.name;
+
+    linkEl.appendChild(iconBox);
+    linkEl.appendChild(titleEl);
+
+    // Edit button for item inside folder
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'quick-link-edit-btn';
+    editBtn.title = `Edit: ${child.name}`;
+    editBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="edit-pencil-icon">
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+      </svg>
+    `;
+    editBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openEditQuickLinkModal(childIndex, folderIndex);
+    });
+
+    itemWrap.appendChild(linkEl);
+    itemWrap.appendChild(editBtn);
+    folderItemsGrid.appendChild(itemWrap);
+  });
+
+  // 2. Render Add button inside folder
+  const addWrap = document.createElement('div');
+  addWrap.className = 'quick-link-item quick-link-add-item';
+  addWrap.title = dict.quicklinkAddInFolderTitle || 'Tambah Pintasan';
+  addWrap.innerHTML = `
+    <div class="quick-link-icon-box quick-link-add-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="add-link-icon">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </div>
+    <span class="quick-link-title">${dict.folderAddShortcut || '+ Pintasan'}</span>
+  `;
+  addWrap.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openAddQuickLinkModal(folderIndex);
+  });
+  folderItemsGrid.appendChild(addWrap);
+}
+
+// Add / Edit Modal Functions
+function openAddQuickLinkModal(parentFolderIndex = -1) {
   const dict = i18n[currentLang] || i18n.en;
   quicklinkEditIndex.value = '-1';
+  quicklinkParentFolderIndex.value = String(parentFolderIndex);
   quicklinkNameInput.value = '';
   quicklinkUrlInput.value = '';
   quicklinkModalFeedback.className = 'modal-feedback';
   quicklinkModalFeedback.textContent = '';
-  quicklinkModalTitle.textContent = dict.quicklinkAddTitle;
   quicklinkDeleteBtn.style.display = 'none';
+
+  if (parentFolderIndex >= 0) {
+    // Adding inside a folder: only link type allowed
+    if (quicklinkTypeTabs) quicklinkTypeTabs.style.display = 'none';
+    setQuicklinkType('link');
+    quicklinkModalTitle.textContent = dict.quicklinkAddInFolderTitle || 'Tambah Pintasan ke Folder';
+  } else {
+    // Adding at root: can choose link or folder
+    if (quicklinkTypeTabs) quicklinkTypeTabs.style.display = 'flex';
+    setQuicklinkType('link');
+    quicklinkModalTitle.textContent = dict.quicklinkAddTitle;
+  }
+
   quicklinkModalOverlay.classList.add('open');
   setTimeout(() => quicklinkNameInput.focus(), 50);
 }
 
-function openEditQuickLinkModal(index) {
+function openEditQuickLinkModal(index, parentFolderIndex = -1) {
   const dict = i18n[currentLang] || i18n.en;
-  const item = quickLinksList[index];
-  if (!item) return;
   quicklinkEditIndex.value = String(index);
-  quicklinkNameInput.value = item.name;
-  quicklinkUrlInput.value = item.url;
+  quicklinkParentFolderIndex.value = String(parentFolderIndex);
+  if (quicklinkTypeTabs) quicklinkTypeTabs.style.display = 'none';
+
+  let item = null;
+  if (parentFolderIndex >= 0) {
+    const folder = quickLinksList[parentFolderIndex];
+    if (folder && folder.items) item = folder.items[index];
+  } else {
+    item = quickLinksList[index];
+  }
+
+  if (!item) return;
+
+  quicklinkNameInput.value = item.name || '';
   quicklinkModalFeedback.className = 'modal-feedback';
   quicklinkModalFeedback.textContent = '';
-  quicklinkModalTitle.textContent = dict.quicklinkEditTitle;
   quicklinkDeleteBtn.style.display = 'inline-block';
+
+  if (item.type === 'folder') {
+    setQuicklinkType('folder');
+    quicklinkModalTitle.textContent = dict.quicklinkEditFolderTitle || 'Edit Folder';
+  } else {
+    setQuicklinkType('link');
+    quicklinkUrlInput.value = item.url || '';
+    quicklinkModalTitle.textContent = dict.quicklinkEditTitle;
+  }
+
   quicklinkModalOverlay.classList.add('open');
   setTimeout(() => quicklinkNameInput.focus(), 50);
 }
@@ -1800,35 +2076,74 @@ function handleQuickLinkSubmit(e) {
   e.preventDefault();
   const dict = i18n[currentLang] || i18n.en;
   const idx = parseInt(quicklinkEditIndex.value, 10);
+  const parentFolderIdx = parseInt(quicklinkParentFolderIndex.value, 10);
+  const type = quicklinkSelectedType.value || 'link';
   const name = quicklinkNameInput.value.trim();
-  let url = quicklinkUrlInput.value.trim();
 
-  if (!name || !url) {
-    quicklinkModalFeedback.className = 'modal-feedback error';
-    quicklinkModalFeedback.textContent = dict.quicklinkEmptyErr;
-    return;
-  }
+  if (type === 'folder') {
+    if (!name) {
+      quicklinkModalFeedback.className = 'modal-feedback error';
+      quicklinkModalFeedback.textContent = dict.quicklinkFolderEmptyErr || 'Nama folder wajib diisi!';
+      return;
+    }
 
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    url = 'https://' + url;
-  }
-
-  try {
-    new URL(url);
-  } catch (err) {
-    quicklinkModalFeedback.className = 'modal-feedback error';
-    quicklinkModalFeedback.textContent = dict.quicklinkInvalidUrl;
-    return;
-  }
-
-  if (idx >= 0 && idx < quickLinksList.length) {
-    quickLinksList[idx] = { name, url };
+    if (idx >= 0 && idx < quickLinksList.length) {
+      // Update existing folder
+      quickLinksList[idx].name = name;
+    } else {
+      // Create new folder
+      quickLinksList.push({
+        type: 'folder',
+        name,
+        items: []
+      });
+    }
   } else {
-    quickLinksList.push({ name, url });
+    // Link type
+    let url = quicklinkUrlInput.value.trim();
+    if (!name || !url) {
+      quicklinkModalFeedback.className = 'modal-feedback error';
+      quicklinkModalFeedback.textContent = dict.quicklinkEmptyErr;
+      return;
+    }
+
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+
+    try {
+      new URL(url);
+    } catch (err) {
+      quicklinkModalFeedback.className = 'modal-feedback error';
+      quicklinkModalFeedback.textContent = dict.quicklinkInvalidUrl;
+      return;
+    }
+
+    if (parentFolderIdx >= 0 && parentFolderIdx < quickLinksList.length) {
+      // Adding/editing inside a folder
+      const folder = quickLinksList[parentFolderIdx];
+      if (folder && folder.items) {
+        if (idx >= 0 && idx < folder.items.length) {
+          folder.items[idx] = { type: 'link', name, url };
+        } else {
+          folder.items.push({ type: 'link', name, url });
+        }
+      }
+    } else {
+      // Adding/editing at root level
+      if (idx >= 0 && idx < quickLinksList.length) {
+        quickLinksList[idx] = { type: 'link', name, url };
+      } else {
+        quickLinksList.push({ type: 'link', name, url });
+      }
+    }
   }
 
   chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
     renderQuickLinks(quickLinksList);
+    if (parentFolderIdx >= 0) {
+      renderFolderItems(parentFolderIdx);
+    }
     closeQuickLinkModal();
   });
 }
@@ -1839,12 +2154,31 @@ function handleQuickLinkDelete(e) {
     e.stopPropagation();
   }
   const idx = parseInt(quicklinkEditIndex.value, 10);
-  if (idx >= 0 && idx < quickLinksList.length) {
-    quickLinksList.splice(idx, 1);
-    chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
-      renderQuickLinks(quickLinksList);
-      closeQuickLinkModal();
-    });
+  const parentFolderIdx = parseInt(quicklinkParentFolderIndex.value, 10);
+
+  if (parentFolderIdx >= 0 && parentFolderIdx < quickLinksList.length) {
+    // Deleting item inside a folder
+    const folder = quickLinksList[parentFolderIdx];
+    if (folder && folder.items && idx >= 0 && idx < folder.items.length) {
+      folder.items.splice(idx, 1);
+      chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
+        renderQuickLinks(quickLinksList);
+        renderFolderItems(parentFolderIdx);
+        closeQuickLinkModal();
+      });
+    }
+  } else {
+    // Deleting root item (link or folder)
+    if (idx >= 0 && idx < quickLinksList.length) {
+      quickLinksList.splice(idx, 1);
+      chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
+        renderQuickLinks(quickLinksList);
+        closeQuickLinkModal();
+        if (currentOpenFolderIndex === idx) {
+          closeFolderModal();
+        }
+      });
+    }
   }
 }
 

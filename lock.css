@@ -1954,6 +1954,115 @@ body.theme-malam .quick-link-add-item:hover .quick-link-add-box {
   display: none;
 }
 
+/* ---- Quick Links Folder & Type Selector Styles ---- */
+
+.quicklink-type-tabs {
+  display: flex;
+  background: rgba(15, 23, 42, 0.06);
+  padding: 3px;
+  border-radius: 12px;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+body.theme-malam .quicklink-type-tabs {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-type-tab {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-type-tab.active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+body.theme-malam .btn-type-tab.active {
+  background: rgba(139, 92, 246, 0.35);
+  color: #ffffff;
+}
+
+/* Folder Icon Box on Grid */
+.quick-link-folder-box {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.folder-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5px;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  align-items: center;
+  justify-items: center;
+}
+
+.folder-mini-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  object-fit: contain;
+}
+
+.folder-svg-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--primary);
+  opacity: 0.85;
+}
+
+body.theme-malam .folder-svg-icon {
+  color: #a78bfa;
+}
+
+/* Folder Viewer Modal */
+.folder-modal-card {
+  width: 420px;
+  max-width: 90vw;
+  padding: 22px 24px;
+}
+
+.folder-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.folder-header-svg {
+  width: 18px;
+  height: 18px;
+  color: var(--primary);
+}
+
+body.theme-malam .folder-header-svg {
+  color: #a78bfa;
+}
+
+.folder-links-grid {
+  margin-top: 14px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 4px;
+  justify-content: flex-start;
+}
+
 /* ============================================================
    AUTO-LOCK INACTIVITY MODAL
    ============================================================ */
