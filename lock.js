@@ -71,6 +71,7 @@ const quicklinkNameInput      = document.getElementById('quicklink-name-input');
 const quicklinkUrlGroup       = document.getElementById('quicklink-url-group');
 const quicklinkUrlInput       = document.getElementById('quicklink-url-input');
 const quicklinkModalFeedback  = document.getElementById('quicklink-modal-feedback');
+const quicklinkSubmitBtn      = document.getElementById('quicklink-submit-btn');
 const quicklinkDeleteBtn      = document.getElementById('quicklink-delete-btn');
 
 // Floating Dock Folder Popover Elements
