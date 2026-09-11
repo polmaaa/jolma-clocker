@@ -306,6 +306,8 @@ const i18n = {
     aboutF5Desc: 'Menampilkan kutipan motivasi yang berganti dan dapat diacak sewaktu-waktu.',
     aboutF6Title: 'Tema Dinamis 4 Waktu',
     aboutF6Desc: 'Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.',
+    aboutF7Title: 'Anti-Sleep & Keep Awake',
+    aboutF7Desc: 'Mencegah layar dan laptop masuk mode sleep/mati otomatis saat browser sedang terkunci.',
     aboutContactTitle: '📬 Bantuan & Request Pengembangan',
     aboutContactDesc: 'Punya saran fitur, pertanyaan, atau ingin request pengembangan khusus? Hubungi saya melalui:',
     aboutSupportTitle: '☕ Dukung Pengembang',
@@ -471,6 +473,8 @@ const i18n = {
     aboutF5Desc: 'Displays motivational quotes updated daily and shuffleable anytime.',
     aboutF6Title: 'Dynamic 4-Time Theme Engine',
     aboutF6Desc: 'Aesthetic background adapts smoothly to Morning, Afternoon, Evening, and Night.',
+    aboutF7Title: 'Anti-Sleep & Keep Awake',
+    aboutF7Desc: 'Prevents display and laptop from automatically sleeping or locking while browser is locked.',
     aboutContactTitle: '📬 Support & Feature Requests',
     aboutContactDesc: 'Have questions, feature suggestions, or custom development requests? Feel free to reach out:',
     aboutSupportTitle: '☕ Support Developer',
@@ -570,6 +574,8 @@ function applyTranslations(lang) {
   const aboutF5Desc = document.getElementById('about-f5-desc');
   const aboutF6Title = document.getElementById('about-f6-title');
   const aboutF6Desc = document.getElementById('about-f6-desc');
+  const aboutF7Title = document.getElementById('about-f7-title');
+  const aboutF7Desc = document.getElementById('about-f7-desc');
   const aboutContactTitle = document.getElementById('about-contact-title');
   const aboutContactDesc = document.getElementById('about-contact-desc');
   const aboutSupportTitle = document.getElementById('about-support-title');
@@ -593,6 +599,8 @@ function applyTranslations(lang) {
   if (aboutF5Desc && dict.aboutF5Desc) aboutF5Desc.textContent = dict.aboutF5Desc;
   if (aboutF6Title && dict.aboutF6Title) aboutF6Title.textContent = dict.aboutF6Title;
   if (aboutF6Desc && dict.aboutF6Desc) aboutF6Desc.textContent = dict.aboutF6Desc;
+  if (aboutF7Title && dict.aboutF7Title) aboutF7Title.textContent = dict.aboutF7Title;
+  if (aboutF7Desc && dict.aboutF7Desc) aboutF7Desc.textContent = dict.aboutF7Desc;
   if (aboutContactTitle && dict.aboutContactTitle) aboutContactTitle.textContent = dict.aboutContactTitle;
   if (aboutContactDesc && dict.aboutContactDesc) aboutContactDesc.textContent = dict.aboutContactDesc;
   if (aboutSupportTitle && dict.aboutSupportTitle) aboutSupportTitle.textContent = dict.aboutSupportTitle;
