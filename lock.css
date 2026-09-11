@@ -1664,7 +1664,7 @@ body.theme-siang .weather-snowflake {
 
 .daily-quote-container {
   position: fixed;
-  bottom: 26px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   width: auto;
@@ -1761,7 +1761,7 @@ body.theme-malam .btn-quote-shuffle:hover {
 @media (max-width: 900px) {
   .daily-quote-container {
     max-width: calc(100% - 32px);
-    bottom: 36px;
+    bottom: 48px;
     padding: 0 8px;
   }
   .quote-text {
@@ -2032,35 +2032,69 @@ body.theme-malam .folder-svg-icon {
   color: #a78bfa;
 }
 
-/* Folder Viewer Modal */
-.folder-modal-card {
-  width: 420px;
-  max-width: 90vw;
-  padding: 22px 24px;
-}
-
-.folder-header-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.folder-header-svg {
-  width: 18px;
-  height: 18px;
+/* Back button for inline Folder view */
+.quick-link-back-box {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1.5px solid rgba(124, 58, 237, 0.28);
   color: var(--primary);
 }
 
-body.theme-malam .folder-header-svg {
-  color: #a78bfa;
+.quick-link-back-item:hover .quick-link-back-box {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px -2px rgba(124, 58, 237, 0.35);
 }
 
-.folder-links-grid {
-  margin-top: 14px;
-  max-height: 280px;
-  overflow-y: auto;
-  padding: 4px;
-  justify-content: flex-start;
+body.theme-malam .quick-link-back-box {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #c4b5fd;
+}
+
+body.theme-malam .quick-link-back-item:hover .quick-link-back-box {
+  background: rgba(139, 92, 246, 0.9);
+  color: #ffffff;
+  border-color: rgba(139, 92, 246, 0.9);
+  box-shadow: 0 6px 16px -2px rgba(139, 92, 246, 0.45);
+}
+
+.back-link-icon {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+}
+
+/* Quick Links In-Place Slide Animations */
+@keyframes quickLinksSlideForward {
+  0% {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes quickLinksSlideBackward {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.quick-links-grid.slide-forward {
+  animation: quickLinksSlideForward 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.quick-links-grid.slide-backward {
+  animation: quickLinksSlideBackward 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ============================================================
