@@ -194,9 +194,9 @@ const i18n = {
     updateToastFailed: '✗ Gagal',
     updateToastSaved: '✓ Tersimpan!',
 
-    // Quotes ID
+    // Quotes ID (Expanded Curated Pool for Instant Rotation)
     quoteBadge: 'Kutipan Hari Ini',
-    quoteShuffleTitle: 'Kutipan Lain',
+    quoteShuffleTitle: 'Ganti Kutipan',
     quoteLoading: 'Memuat kutipan...',
     quoteUnknownAuthor: 'Anonim',
     quotes: [
@@ -214,7 +214,14 @@ const i18n = {
       { text: "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas.", author: "Henry Ford" },
       { text: "Kunci menuju kebahagiaan adalah memiliki impian; kunci menuju kesuksesan adalah mewujudkannya.", author: "James Allen" },
       { text: "Kerja keras mengalahkan bakat ketika bakat tidak bekerja keras.", author: "Tim Notke" },
-      { text: "Keberanian bukanlah ketiadaan rasa takut, tetapi kemenangan atas rasa takut itu.", author: "Nelson Mandela" }
+      { text: "Keberanian bukanlah ketiadaan rasa takut, tetapi kemenangan atas rasa takut itu.", author: "Nelson Mandela" },
+      { text: "Hidup yang tidak dipertaruhkan tidak akan pernah dimenangkan.", author: "Sutan Sjahrir" },
+      { text: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.", author: "Nelson Mandela" },
+      { text: "Jangan biarkan hari kemarin merenggut terlalu banyak hal hari ini.", author: "Will Rogers" },
+      { text: "Sederhana dalam sikap, kaya dalam karya.", author: "Anonim" },
+      { text: "Lakukan apa yang bisa kamu lakukan, dengan apa yang kamu miliki, di mana pun kamu berada.", author: "Theodore Roosevelt" },
+      { text: "Ketekunan adalah kerja keras yang kamu lakukan setelah kamu lelah melakukan kerja keras yang sudah kamu lakukan.", author: "Newt Gingrich" },
+      { text: "Setiap langkah kecil membawamu lebih dekat ke tujuan besarmu.", author: "Anonim" }
     ],
 
     // Quick Links & Folder Modal
@@ -332,7 +339,7 @@ const i18n = {
     aboutF4Title: 'Pintasan & Folder Minimalis',
     aboutF4Desc: 'Akses cepat ke website favorit bergaya macOS Dock & Stack Popover.',
     aboutF5Title: 'Kutipan Inspirasi Harian',
-    aboutF5Desc: 'Menampilkan kutipan motivasi yang diambil secara online dan dapat diacak sewaktu-waktu.',
+    aboutF5Desc: 'Menampilkan kutipan motivasi yang berganti otomatis dan dapat diacak sewaktu-waktu.',
     aboutF6Title: 'Tema Dinamis 4 Waktu',
     aboutF6Desc: 'Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.',
     aboutF7Title: 'Anti-Sleep & Keep Awake',
@@ -398,7 +405,7 @@ const i18n = {
     updateToastFailed: '✗ Failed',
     updateToastSaved: '✓ Saved!',
 
-    // Quotes EN
+    // Quotes EN (Expanded Curated Pool for Instant Rotation)
     quoteBadge: 'Daily Quote',
     quoteShuffleTitle: 'Shuffle Quote',
     quoteLoading: 'Loading quote...',
@@ -417,7 +424,14 @@ const i18n = {
       { text: "Never stop learning, because life never stops teaching.", author: "Anonymous" },
       { text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford" },
       { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
-      { text: "Courage is not the absence of fear, but the triumph over it.", author: "Nelson Mandela" }
+      { text: "Courage is not the absence of fear, but the triumph over it.", author: "Nelson Mandela" },
+      { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+      { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+      { text: "Quality is not an act, it is a habit.", author: "Aristotle" },
+      { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+      { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+      { text: "Your limitation—it's only your imagination.", author: "Anonymous" },
+      { text: "Great things never come from comfort zones.", author: "Anonymous" }
     ],
 
     // Quick Links & Folder Modal
@@ -535,7 +549,7 @@ const i18n = {
     aboutF4Title: 'Minimalist Shortcuts & Folders',
     aboutF4Desc: 'Quick access to your favorite sites with macOS-inspired Dock & Stack Popovers.',
     aboutF5Title: 'Daily Inspiring Quotes',
-    aboutF5Desc: 'Displays motivational quotes fetched online in real-time and shuffleable anytime.',
+    aboutF5Desc: 'Displays motivational quotes that rotate automatically and can be shuffled anytime.',
     aboutF6Title: 'Dynamic 4-Time Theme Engine',
     aboutF6Desc: 'Aesthetic background adapts smoothly to Morning, Afternoon, Evening, and Night.',
     aboutF7Title: 'Anti-Sleep & Keep Awake',
@@ -557,7 +571,7 @@ const i18n = {
 };
 
 function applyTranslations(lang) {
-  currentLang = (lang === 'id') ? 'id' : 'en';
+  currentLang = (lang === 'id' || lang === 'in') ? 'id' : 'en';
   const dict = i18n[currentLang];
 
   // Update Language switcher buttons state
@@ -633,10 +647,9 @@ function applyTranslations(lang) {
     else if (mins === 60) btn.textContent = dict.autolock60Min;
   });
 
-  // Quotes
+  // Quotes Badge & Shuffle Tooltip
   if (quoteBadgeLabel && dict.quoteBadge) quoteBadgeLabel.textContent = dict.quoteBadge;
   if (btnQuoteShuffle && dict.quoteShuffleTitle) btnQuoteShuffle.title = dict.quoteShuffleTitle;
-  updateQuoteDisplay();
 
   if (quickLinksList && quickLinksList.length > 0) {
     renderQuickLinks(quickLinksList);
@@ -751,9 +764,11 @@ function applyTranslations(lang) {
 }
 
 function setLanguage(lang) {
-  currentLang = (lang === 'id') ? 'id' : 'en';
+  currentLang = (lang === 'id' || lang === 'in') ? 'id' : 'en';
   chrome.storage.local.set({ language: currentLang }, () => {
     applyTranslations(currentLang);
+    // Immediately display a new quote in the selected language
+    shuffleQuote(true);
   });
 }
 
@@ -2047,6 +2062,8 @@ async function loadWeather(forceRefresh = false) {
 // ============================================================
 let activeQuote = null;
 let isFetchingQuote = false;
+let quoteRotationTimer = null;
+const QUOTE_AUTO_ROTATE_INTERVAL_MS = 30000; // Auto-rotate every 30 seconds
 
 // Translates English text to Indonesian via Google Translate API
 async function translateQuoteToIndonesian(text) {
@@ -2056,7 +2073,10 @@ async function translateQuoteToIndonesian(text) {
     if (!res.ok) throw new Error('Translation failed');
     const data = await res.json();
     if (data && Array.isArray(data[0])) {
-      return data[0].map(item => item[0]).join('');
+      const translated = data[0].map(item => item[0]).join('');
+      if (translated && translated.trim().length > 0) {
+        return translated.trim();
+      }
     }
   } catch (err) {
     console.warn('[Quote Translation] Offline or translation failed:', err);
@@ -2066,7 +2086,8 @@ async function translateQuoteToIndonesian(text) {
 
 // Fetches a new quote online from multiple public REST endpoints with graceful offline fallback
 async function fetchOnlineQuote(lang = currentLang) {
-  const dict = i18n[lang] || i18n.en;
+  const normalizedLang = (lang === 'id' || lang === 'in') ? 'id' : 'en';
+  const dict = i18n[normalizedLang] || i18n.en;
   let rawText = '';
   let author = '';
 
@@ -2100,7 +2121,7 @@ async function fetchOnlineQuote(lang = currentLang) {
           const data3 = await res3.json();
           if (data3 && data3.slip && data3.slip.advice) {
             rawText = data3.slip.advice.trim();
-            author = dict.quoteUnknownAuthor || 'Wisdom';
+            author = dict.quoteUnknownAuthor || (normalizedLang === 'id' ? 'Kata Mutiara' : 'Wisdom');
           }
         }
       } catch (e3) {
@@ -2111,14 +2132,18 @@ async function fetchOnlineQuote(lang = currentLang) {
 
   // If online fetching succeeded
   if (rawText) {
-    let displayText = rawText;
-    if (lang === 'id') {
+    if (normalizedLang === 'id') {
       const translated = await translateQuoteToIndonesian(rawText);
       if (translated) {
-        displayText = translated;
+        return { text: translated, rawEnText: rawText, author: author, source: 'online' };
+      } else {
+        // Fallback strictly to Indonesian curated pool if translation fails
+        const idList = i18n.id.quotes;
+        const picked = idList[Math.floor(Math.random() * idList.length)];
+        return { text: picked.text, rawEnText: rawText, author: picked.author, source: 'fallback_id' };
       }
     }
-    return { text: displayText, rawEnText: rawText, author: author, source: 'online' };
+    return { text: rawText, rawEnText: rawText, author: author, source: 'online' };
   }
 
   // Graceful offline fallback: pick randomly from curated local quotes bank
@@ -2134,26 +2159,30 @@ function initDailyQuotes() {
     });
   }
 
-  // Check cached quote in storage for instantaneous render
-  const cacheKey = `cachedQuote_${currentLang}`;
-  chrome.storage.local.get([cacheKey, 'lastQuoteFetchTime'], (data) => {
-    if (data && data[cacheKey]) {
-      activeQuote = data[cacheKey];
-      renderQuoteUI(activeQuote, false);
-      // If cached quote is older than 6 hours, fetch a fresh one in the background
-      const sixHours = 6 * 60 * 60 * 1000;
-      if (!data.lastQuoteFetchTime || (Date.now() - data.lastQuoteFetchTime > sixHours)) {
-        shuffleQuote(false);
-      }
-    } else {
-      // First load or no cache: pick initial local quote & fetch fresh online
-      const dict = i18n[currentLang] || i18n.en;
-      const initial = dict.quotes[Math.floor(Math.random() * dict.quotes.length)];
-      activeQuote = initial;
-      renderQuoteUI(initial, false);
-      shuffleQuote(false);
-    }
-  });
+  // Immediately display a new random quote from local pool on each new tab / refresh
+  const dict = i18n[currentLang] || i18n.en;
+  if (dict.quotes && dict.quotes.length > 0) {
+    const initial = dict.quotes[Math.floor(Math.random() * dict.quotes.length)];
+    activeQuote = initial;
+    renderQuoteUI(initial, false);
+  }
+
+  // Start periodic auto-rotation timer without needing page refresh
+  startQuoteRotationTimer();
+
+  // Concurrently fetch a fresh quote from online API in background
+  setTimeout(() => {
+    shuffleQuote(false);
+  }, 1200);
+}
+
+function startQuoteRotationTimer() {
+  if (quoteRotationTimer) {
+    clearInterval(quoteRotationTimer);
+  }
+  quoteRotationTimer = setInterval(() => {
+    shuffleQuote(false);
+  }, QUOTE_AUTO_ROTATE_INTERVAL_MS);
 }
 
 function renderQuoteUI(quote, animate = true) {
@@ -2182,26 +2211,30 @@ async function shuffleQuote(userInitiated = true) {
   if (isFetchingQuote) return;
   isFetchingQuote = true;
 
-  if (btnQuoteShuffle) {
-    btnQuoteShuffle.classList.add('spinning');
-  }
-
-  if (userInitiated && quoteTextEl) {
-    quoteTextEl.style.opacity = '0.3';
+  if (userInitiated) {
+    // Reset timer when user manually shuffles
+    startQuoteRotationTimer();
+    if (btnQuoteShuffle) {
+      btnQuoteShuffle.classList.add('spinning');
+    }
+    if (quoteTextEl) {
+      quoteTextEl.style.opacity = '0.3';
+    }
   }
 
   try {
     const newQuote = await fetchOnlineQuote(currentLang);
     activeQuote = newQuote;
     renderQuoteUI(newQuote, true);
-
-    const cacheKey = `cachedQuote_${currentLang}`;
-    chrome.storage.local.set({
-      [cacheKey]: newQuote,
-      lastQuoteFetchTime: Date.now()
-    });
   } catch (err) {
     console.warn('[Daily Quote] Error shuffling quote:', err);
+    // Offline / error fallback
+    const dict = i18n[currentLang] || i18n.en;
+    if (dict.quotes && dict.quotes.length > 0) {
+      const fallback = dict.quotes[Math.floor(Math.random() * dict.quotes.length)];
+      activeQuote = fallback;
+      renderQuoteUI(fallback, true);
+    }
   } finally {
     isFetchingQuote = false;
     if (btnQuoteShuffle) {
@@ -2216,16 +2249,6 @@ function updateQuoteDisplay() {
   const dict = i18n[currentLang] || i18n.en;
   if (quoteBadgeLabel && dict.quoteBadge) quoteBadgeLabel.textContent = dict.quoteBadge;
   if (btnQuoteShuffle && dict.quoteShuffleTitle) btnQuoteShuffle.title = dict.quoteShuffleTitle;
-
-  const cacheKey = `cachedQuote_${currentLang}`;
-  chrome.storage.local.get(cacheKey, (data) => {
-    if (data && data[cacheKey]) {
-      activeQuote = data[cacheKey];
-      renderQuoteUI(activeQuote, true);
-    } else {
-      shuffleQuote(false);
-    }
-  });
 }
 
 // ============================================================
