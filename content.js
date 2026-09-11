@@ -122,13 +122,22 @@
 
     const shadow = host.attachShadow({ mode: 'open' });
 
+    const fontUrl = chrome.runtime.getURL('fonts/space-grotesk.woff2');
     const style = document.createElement('style');
     style.textContent = `
+      @font-face {
+        font-family: 'Space Grotesk';
+        font-style: normal;
+        font-weight: 300 700;
+        font-display: block;
+        src: url('${fontUrl}') format('woff2');
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: 'Space Grotesk';
+        font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
 
       .fab-wrapper {
