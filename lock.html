@@ -39,15 +39,6 @@
   <!-- Unlocked Top Bar -->
   <div id="unlocked-top-bar" class="top-bar">
     <div class="top-bar-actions">
-      <!-- Focus / Pomodoro Quick Toggle -->
-      <button id="focus-btn" class="btn-top-action" title="Focus Timer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="top-action-icon">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-        <span class="top-action-text" id="top-focus-label">Focus</span>
-      </button>
-
       <!-- Dropdown Menu -->
       <div class="menu-wrapper" id="menu-wrapper">
         <button id="menu-btn" class="btn-menu" title="Menu">
@@ -92,16 +83,6 @@
               </svg>
             </span>
             <span class="menu-item-label" id="menu-autolock-label">Auto-Lock Timer</span>
-          </button>
-
-          <button id="menu-focus-btn" class="menu-item menu-item-focus">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="m10 15 5-3-5-3v6Z"></path>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-focus-label">Pomodoro Timer</span>
           </button>
 
           <button id="menu-username-btn" class="menu-item menu-item-user">
@@ -221,70 +202,6 @@
           <button type="button" class="btn-autolock-opt" data-mins="60">60 Min</button>
         </div>
         <div id="autolock-feedback" class="modal-feedback"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Pomodoro / Focus Timer -->
-  <div id="pomodoro-modal-overlay" class="modal-overlay">
-    <div class="modal-card pomodoro-card">
-      <div class="modal-header">
-        <h3 class="modal-title" id="pomodoro-modal-title">Focus & Pomodoro Timer</h3>
-        <button id="pomodoro-modal-close-btn" class="modal-close" title="Close">✕</button>
-      </div>
-
-      <!-- Mode Selector Tabs -->
-      <div class="pomodoro-tabs">
-        <button type="button" class="btn-pomo-tab active" data-mode="focus" id="tab-focus-label">🎯 Focus</button>
-        <button type="button" class="btn-pomo-tab" data-mode="shortBreak" id="tab-short-label">☕ Short Break</button>
-        <button type="button" class="btn-pomo-tab" data-mode="longBreak" id="tab-long-label">🌴 Long Break</button>
-      </div>
-
-      <!-- Big Timer Display with SVG Ring -->
-      <div class="pomodoro-timer-wrap">
-        <svg class="pomodoro-ring" viewBox="0 0 200 200">
-          <circle class="ring-bg" cx="100" cy="100" r="88" />
-          <circle class="ring-progress" id="pomo-ring-progress" cx="100" cy="100" r="88" />
-        </svg>
-        <div class="pomodoro-digits-box">
-          <span id="pomodoro-time-display" class="pomodoro-time-display">25:00</span>
-          <span id="pomodoro-mode-badge" class="pomodoro-mode-badge">Focus Time</span>
-        </div>
-      </div>
-
-      <!-- Timer Action Buttons -->
-      <div class="pomodoro-controls">
-        <button type="button" id="pomo-start-btn" class="btn-pomo-primary">Start</button>
-        <button type="button" id="pomo-reset-btn" class="btn-pomo-secondary">Reset</button>
-        <button type="button" id="pomo-settings-btn" class="btn-pomo-icon" title="Customize Durations">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Settings Panel (Collapsible) -->
-      <div id="pomo-settings-panel" class="pomo-settings-panel">
-        <div class="pomo-setting-row">
-          <label id="lbl-focus-len">Focus (Min):</label>
-          <input type="number" id="input-focus-min" min="1" max="120" value="25">
-        </div>
-        <div class="pomo-setting-row">
-          <label id="lbl-short-len">Short Break (Min):</label>
-          <input type="number" id="input-short-min" min="1" max="60" value="5">
-        </div>
-        <div class="pomo-setting-row">
-          <label id="lbl-long-len">Long Break (Min):</label>
-          <input type="number" id="input-long-min" min="1" max="60" value="15">
-        </div>
-        <div class="pomo-setting-row">
-          <label id="lbl-sound-pomo">Sound Alert:</label>
-          <label class="switch">
-            <input type="checkbox" id="pomo-sound-toggle" checked>
-            <span class="slider round"></span>
-          </label>
-        </div>
       </div>
     </div>
   </div>

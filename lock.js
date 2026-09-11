@@ -15,16 +15,11 @@ const searchInput     = document.getElementById('search-input');
 const searchSection   = document.getElementById('search-section');
 const topBar          = document.getElementById('unlocked-top-bar');
 
-// Top Bar Action Buttons
-const focusBtn        = document.getElementById('focus-btn');
-const topFocusLabel   = document.getElementById('top-focus-label');
-
 // Menu dropdown elements
 const menuBtn         = document.getElementById('menu-btn');
 const menuDropdown    = document.getElementById('menu-dropdown');
 const menuLockBtn     = document.getElementById('menu-lock-btn');
 const menuAutolockBtn = document.getElementById('menu-autolock-btn');
-const menuFocusBtn    = document.getElementById('menu-focus-btn');
 const menuUsernameBtn = document.getElementById('menu-username-btn');
 const menuWeatherBtn  = document.getElementById('menu-weather-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
@@ -33,7 +28,6 @@ const btnLangEn       = document.getElementById('btn-lang-en');
 const menuHeaderLabel = document.getElementById('menu-header-label');
 const menuLockLabel   = document.getElementById('menu-lock-label');
 const menuAutolockLabel = document.getElementById('menu-autolock-label');
-const menuFocusLabel  = document.getElementById('menu-focus-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
@@ -60,29 +54,6 @@ const quicklinkUrlInput       = document.getElementById('quicklink-url-input');
 const quicklinkModalFeedback  = document.getElementById('quicklink-modal-feedback');
 const quicklinkSubmitBtn      = document.getElementById('quicklink-submit-btn');
 const quicklinkDeleteBtn      = document.getElementById('quicklink-delete-btn');
-
-// Pomodoro / Focus Timer Elements
-const pomodoroModalOverlay    = document.getElementById('pomodoro-modal-overlay');
-const pomodoroModalCloseBtn   = document.getElementById('pomodoro-modal-close-btn');
-const pomodoroModalTitle      = document.getElementById('pomodoro-modal-title');
-const tabFocusLabel           = document.getElementById('tab-focus-label');
-const tabShortLabel           = document.getElementById('tab-short-label');
-const tabLongLabel            = document.getElementById('tab-long-label');
-const pomoRingProgress        = document.getElementById('pomo-ring-progress');
-const pomodoroTimeDisplay     = document.getElementById('pomodoro-time-display');
-const pomodoroModeBadge       = document.getElementById('pomodoro-mode-badge');
-const pomoStartBtn            = document.getElementById('pomo-start-btn');
-const pomoResetBtn            = document.getElementById('pomo-reset-btn');
-const pomoSettingsBtn         = document.getElementById('pomo-settings-btn');
-const pomoSettingsPanel       = document.getElementById('pomo-settings-panel');
-const inputFocusMin           = document.getElementById('input-focus-min');
-const inputShortMin           = document.getElementById('input-short-min');
-const inputLongMin            = document.getElementById('input-long-min');
-const pomoSoundToggle         = document.getElementById('pomo-sound-toggle');
-const lblFocusLen             = document.getElementById('lbl-focus-len');
-const lblShortLen             = document.getElementById('lbl-short-len');
-const lblLongLen              = document.getElementById('lbl-long-len');
-const lblSoundPomo            = document.getElementById('lbl-sound-pomo');
 
 // Auto-Lock Inactivity Modal Elements
 const autolockModalOverlay    = document.getElementById('autolock-modal-overlay');
@@ -151,12 +122,10 @@ const i18n = {
     menuHeader: 'Pengaturan',
     menuLock: 'Kunci Browser',
     menuAutolock: 'Auto-Lock Saat Menganggur',
-    menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
     menuLangTitle: 'Bahasa',
-    topFocus: 'Fokus',
     addShortcut: 'Pintasan',
 
     // Greeting
@@ -202,22 +171,6 @@ const i18n = {
     quicklinkDeleteBtn: 'Hapus',
     quicklinkEmptyErr: 'Nama dan URL wajib diisi!',
     quicklinkInvalidUrl: 'Format URL tidak valid (gunakan http:// atau https://)',
-
-    // Pomodoro Modal
-    pomoTitle: 'Focus & Pomodoro Timer',
-    pomoFocusTab: '🎯 Fokus',
-    pomoShortTab: '☕ Istirahat Pendek',
-    pomoLongTab: '🌴 Istirahat Panjang',
-    pomoFocusBadge: 'Waktu Fokus',
-    pomoShortBadge: 'Istirahat Pendek',
-    pomoLongBadge: 'Istirahat Panjang',
-    pomoStart: 'Mulai',
-    pomoPause: 'Jeda',
-    pomoReset: 'Reset',
-    pomoFocusLen: 'Fokus (Menit):',
-    pomoShortLen: 'Istirahat Pendek (Menit):',
-    pomoLongLen: 'Istirahat Panjang (Menit):',
-    pomoSoundAlert: 'Suara Notifikasi:',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Saat Menganggur',
@@ -295,12 +248,10 @@ const i18n = {
     menuHeader: 'Settings',
     menuLock: 'Lock Browser',
     menuAutolock: 'Auto-Lock Inactivity Timer',
-    menuFocus: 'Focus & Pomodoro Timer',
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
     menuLangTitle: 'Language',
-    topFocus: 'Focus',
     addShortcut: 'Shortcut',
 
     // Greeting
@@ -346,22 +297,6 @@ const i18n = {
     quicklinkDeleteBtn: 'Delete',
     quicklinkEmptyErr: 'Name and URL are required!',
     quicklinkInvalidUrl: 'Invalid URL format (use http:// or https://)',
-
-    // Pomodoro Modal
-    pomoTitle: 'Focus & Pomodoro Timer',
-    pomoFocusTab: '🎯 Focus',
-    pomoShortTab: '☕ Short Break',
-    pomoLongTab: '🌴 Long Break',
-    pomoFocusBadge: 'Focus Time',
-    pomoShortBadge: 'Short Break',
-    pomoLongBadge: 'Long Break',
-    pomoStart: 'Start',
-    pomoPause: 'Pause',
-    pomoReset: 'Reset',
-    pomoFocusLen: 'Focus (Min):',
-    pomoShortLen: 'Short Break (Min):',
-    pomoLongLen: 'Long Break (Min):',
-    pomoSoundAlert: 'Sound Alert:',
 
     // Auto-Lock Modal
     autolockTitle: 'Auto-Lock Inactivity Timer',
@@ -452,7 +387,6 @@ function applyTranslations(lang) {
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
   if (menuAutolockLabel) menuAutolockLabel.textContent = dict.menuAutolock;
-  if (menuFocusLabel) menuFocusLabel.textContent = dict.menuFocus;
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
@@ -468,17 +402,6 @@ function applyTranslations(lang) {
   if (quicklinkUrlInput) quicklinkUrlInput.placeholder = dict.quicklinkUrlPh;
   if (quicklinkSubmitBtn) quicklinkSubmitBtn.textContent = dict.quicklinkSaveBtn;
   if (quicklinkDeleteBtn) quicklinkDeleteBtn.textContent = dict.quicklinkDeleteBtn;
-
-  // Pomodoro
-  if (pomodoroModalTitle) pomodoroModalTitle.textContent = dict.pomoTitle;
-  if (tabFocusLabel) tabFocusLabel.textContent = dict.pomoFocusTab;
-  if (tabShortLabel) tabShortLabel.textContent = dict.pomoShortTab;
-  if (tabLongLabel) tabLongLabel.textContent = dict.pomoLongTab;
-  if (lblFocusLen) lblFocusLen.textContent = dict.pomoFocusLen;
-  if (lblShortLen) lblShortLen.textContent = dict.pomoShortLen;
-  if (lblLongLen) lblLongLen.textContent = dict.pomoLongLen;
-  if (lblSoundPomo) lblSoundPomo.textContent = dict.pomoSoundAlert;
-  if (pomoResetBtn) pomoResetBtn.textContent = dict.pomoReset;
 
   // Auto-Lock Modal
   if (autolockModalTitle) autolockModalTitle.textContent = dict.autolockTitle;
@@ -650,7 +573,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize new feature modules
   initDailyQuotes();
   initQuickLinks();
-  initPomodoro();
   initAutoLock();
 
   // CATATAN: checkUpdateStorage() dipanggil di dalam updateLockerState(true)
@@ -719,7 +641,6 @@ function updateLockerState(isUnlocked) {
     closeWeatherModal();
     closeUsernameModal();
     closeModal();
-    closePomodoroModal();
     closeAutoLockModal();
     closeQuickLinkModal();
 
@@ -949,13 +870,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 
 // ---- Menu Dropdown & Top Actions -----------------------------------------
 
-// Top Bar Action Buttons
-if (focusBtn) {
-  focusBtn.addEventListener('click', () => {
-    openPomodoroModal();
-  });
-}
-
 // Toggle dropdown buka/tutup
 menuBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -986,14 +900,6 @@ if (menuAutolockBtn) {
   menuAutolockBtn.addEventListener('click', () => {
     closeDropdown();
     openAutoLockModal();
-  });
-}
-
-// Opsi: Focus Timer
-if (menuFocusBtn) {
-  menuFocusBtn.addEventListener('click', () => {
-    closeDropdown();
-    openPomodoroModal();
   });
 }
 
@@ -1943,266 +1849,7 @@ function handleQuickLinkDelete(e) {
 }
 
 // ============================================================
-// 3. POMODORO & FOCUS TIMER MODULE (With Full Cross-Tab Persistence)
-// ============================================================
-let pomoState = {
-  mode: 'focus',
-  running: false,
-  secondsLeft: 25 * 60,
-  totalSeconds: 25 * 60,
-  focusMin: 25,
-  shortMin: 5,
-  longMin: 15,
-  soundAlert: true
-};
-let pomoInterval = null;
-
-function savePomoConfig() {
-  chrome.storage.local.set({
-    pomodoroConfig: {
-      focusMin: pomoState.focusMin,
-      shortMin: pomoState.shortMin,
-      longMin: pomoState.longMin,
-      soundAlert: pomoState.soundAlert,
-      mode: pomoState.mode
-    }
-  });
-}
-
-function initPomodoro() {
-  chrome.storage.local.get(['pomodoroConfig', 'pomodoroActiveTimer'], (data) => {
-    if (data && data.pomodoroConfig) {
-      pomoState.focusMin = Math.max(1, parseInt(data.pomodoroConfig.focusMin, 10) || 25);
-      pomoState.shortMin = Math.max(1, parseInt(data.pomodoroConfig.shortMin, 10) || 5);
-      pomoState.longMin = Math.max(1, parseInt(data.pomodoroConfig.longMin, 10) || 15);
-      pomoState.soundAlert = data.pomodoroConfig.soundAlert !== false;
-      if (data.pomodoroConfig.mode) {
-        pomoState.mode = data.pomodoroConfig.mode;
-      }
-    }
-    if (inputFocusMin) inputFocusMin.value = pomoState.focusMin;
-    if (inputShortMin) inputShortMin.value = pomoState.shortMin;
-    if (inputLongMin) inputLongMin.value = pomoState.longMin;
-    if (pomoSoundToggle) pomoSoundToggle.checked = pomoState.soundAlert !== false;
-
-    // Check if an active timer was running across tabs
-    if (data && data.pomodoroActiveTimer && data.pomodoroActiveTimer.running && data.pomodoroActiveTimer.targetTimestamp) {
-      const remainingSecs = Math.round((data.pomodoroActiveTimer.targetTimestamp - Date.now()) / 1000);
-      if (remainingSecs > 0) {
-        pomoState.mode = data.pomodoroActiveTimer.mode || pomoState.mode;
-        pomoState.totalSeconds = data.pomodoroActiveTimer.totalSeconds || (pomoState.focusMin * 60);
-        pomoState.secondsLeft = remainingSecs;
-        pomoState.running = true;
-
-        document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
-          tab.classList.toggle('active', tab.dataset.mode === pomoState.mode);
-        });
-
-        const dict = i18n[currentLang] || i18n.en;
-        if (pomoStartBtn) {
-          pomoStartBtn.textContent = dict.pomoPause || 'Pause';
-          pomoStartBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
-        }
-        updatePomoDisplay();
-        
-        pomoInterval = setInterval(() => {
-          if (pomoState.secondsLeft > 0) {
-            pomoState.secondsLeft--;
-            updatePomoDisplay();
-          } else {
-            clearInterval(pomoInterval);
-            pomoInterval = null;
-            pomoState.running = false;
-            chrome.storage.local.remove('pomodoroActiveTimer');
-            if (pomoStartBtn) {
-              pomoStartBtn.textContent = dict.pomoStart || 'Start';
-              pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
-            }
-            playPomoChime();
-          }
-        }, 1000);
-        return;
-      } else {
-        chrome.storage.local.remove('pomodoroActiveTimer');
-      }
-    }
-
-    setPomoMode(pomoState.mode || 'focus', false);
-  });
-
-  if (pomodoroModalCloseBtn) {
-    pomodoroModalCloseBtn.addEventListener('click', closePomodoroModal);
-  }
-  if (pomodoroModalOverlay) {
-    pomodoroModalOverlay.addEventListener('click', (e) => {
-      if (e.target === pomodoroModalOverlay) closePomodoroModal();
-    });
-  }
-
-  document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const mode = tab.dataset.mode;
-      setPomoMode(mode, true);
-      savePomoConfig();
-    });
-  });
-
-  if (pomoStartBtn) {
-    pomoStartBtn.addEventListener('click', togglePomoTimer);
-  }
-  if (pomoResetBtn) {
-    pomoResetBtn.addEventListener('click', resetPomoTimer);
-  }
-  if (pomoSettingsBtn) {
-    pomoSettingsBtn.addEventListener('click', () => {
-      pomoSettingsPanel.classList.toggle('open');
-    });
-  }
-
-  [inputFocusMin, inputShortMin, inputLongMin, pomoSoundToggle].forEach((el) => {
-    if (el) {
-      el.addEventListener('change', () => {
-        pomoState.focusMin = Math.max(1, parseInt(inputFocusMin.value, 10) || 25);
-        pomoState.shortMin = Math.max(1, parseInt(inputShortMin.value, 10) || 5);
-        pomoState.longMin = Math.max(1, parseInt(inputLongMin.value, 10) || 15);
-        pomoState.soundAlert = !!pomoSoundToggle.checked;
-        savePomoConfig();
-        if (!pomoState.running) {
-          setPomoMode(pomoState.mode, false);
-        }
-      });
-    }
-  });
-}
-
-function openPomodoroModal() {
-  if (pomodoroModalOverlay) pomodoroModalOverlay.classList.add('open');
-}
-
-function closePomodoroModal() {
-  if (pomodoroModalOverlay) pomodoroModalOverlay.classList.remove('open');
-}
-
-function setPomoMode(mode, autoReset = true) {
-  pomoState.mode = mode;
-  document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
-    tab.classList.toggle('active', tab.dataset.mode === mode);
-  });
-
-  let minutes = pomoState.focusMin;
-  if (mode === 'shortBreak') minutes = pomoState.shortMin;
-  if (mode === 'longBreak') minutes = pomoState.longMin;
-
-  if (autoReset || !pomoState.running) {
-    if (pomoInterval) {
-      clearInterval(pomoInterval);
-      pomoInterval = null;
-    }
-    pomoState.running = false;
-    chrome.storage.local.remove('pomodoroActiveTimer');
-    pomoState.totalSeconds = minutes * 60;
-    pomoState.secondsLeft = pomoState.totalSeconds;
-    if (pomoStartBtn) {
-      const dict = i18n[currentLang] || i18n.en;
-      pomoStartBtn.textContent = dict.pomoStart || 'Start';
-      pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
-    }
-  }
-
-  updatePomoDisplay();
-}
-
-function updatePomoDisplay() {
-  const dict = i18n[currentLang] || i18n.en;
-  const mins = Math.floor(pomoState.secondsLeft / 60);
-  const secs = pomoState.secondsLeft % 60;
-  const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-  if (pomodoroTimeDisplay) pomodoroTimeDisplay.textContent = timeStr;
-
-  if (pomodoroModeBadge) {
-    if (pomoState.mode === 'focus') pomodoroModeBadge.textContent = dict.pomoFocusBadge || 'Focus Time';
-    else if (pomoState.mode === 'shortBreak') pomodoroModeBadge.textContent = dict.pomoShortBadge || 'Short Break';
-    else pomodoroModeBadge.textContent = dict.pomoLongBadge || 'Long Break';
-  }
-
-  if (pomoRingProgress) {
-    const circumference = 2 * Math.PI * 88;
-    const fraction = pomoState.totalSeconds > 0 ? (pomoState.secondsLeft / pomoState.totalSeconds) : 0;
-    const offset = circumference * (1 - fraction);
-    pomoRingProgress.style.strokeDashoffset = String(offset);
-  }
-}
-
-function togglePomoTimer() {
-  const dict = i18n[currentLang] || i18n.en;
-  if (pomoState.running) {
-    clearInterval(pomoInterval);
-    pomoInterval = null;
-    pomoState.running = false;
-    chrome.storage.local.remove('pomodoroActiveTimer');
-    pomoStartBtn.textContent = dict.pomoStart || 'Start';
-    pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
-  } else {
-    pomoState.running = true;
-    const targetTimestamp = Date.now() + pomoState.secondsLeft * 1000;
-    chrome.storage.local.set({
-      pomodoroActiveTimer: {
-        running: true,
-        targetTimestamp,
-        totalSeconds: pomoState.totalSeconds,
-        mode: pomoState.mode
-      }
-    });
-
-    pomoStartBtn.textContent = dict.pomoPause || 'Pause';
-    pomoStartBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
-
-    pomoInterval = setInterval(() => {
-      if (pomoState.secondsLeft > 0) {
-        pomoState.secondsLeft--;
-        updatePomoDisplay();
-      } else {
-        clearInterval(pomoInterval);
-        pomoInterval = null;
-        pomoState.running = false;
-        chrome.storage.local.remove('pomodoroActiveTimer');
-        pomoStartBtn.textContent = dict.pomoStart || 'Start';
-        pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
-        playPomoChime();
-      }
-    }, 1000);
-  }
-}
-
-function resetPomoTimer() {
-  setPomoMode(pomoState.mode, true);
-}
-
-function playPomoChime() {
-  if (!pomoState.soundAlert) return;
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((freq, idx) => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.15);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.15);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.15 + 0.6);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(audioCtx.currentTime + idx * 0.15);
-      osc.stop(audioCtx.currentTime + idx * 0.15 + 0.6);
-    });
-  } catch (e) {
-    console.warn('[Pomodoro] Audio alert error:', e);
-  }
-}
-
-// ============================================================
-// 4. AUTO-LOCK INACTIVITY TIMER MODULE
+// 3. AUTO-LOCK INACTIVITY TIMER MODULE
 // ============================================================
 let idleMinutesSetting = 0;
 
