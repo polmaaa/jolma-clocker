@@ -51,6 +51,7 @@ const btnAddQuickLink     = document.getElementById('btn-add-quick-link');
 const lblAddShortcut      = document.getElementById('lbl-add-shortcut');
 const quicklinkModalOverlay   = document.getElementById('quicklink-modal-overlay');
 const quicklinkModalCloseBtn  = document.getElementById('quicklink-modal-close-btn');
+const quicklinkModalTitle     = document.getElementById('quicklink-modal-title');
 const quicklinkForm           = document.getElementById('quicklink-form');
 const quicklinkEditIndex      = document.getElementById('quicklink-edit-index');
 const quicklinkNameInput      = document.getElementById('quicklink-name-input');
