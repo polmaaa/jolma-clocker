@@ -19,7 +19,15 @@ const topBar          = document.getElementById('unlocked-top-bar');
 const menuBtn         = document.getElementById('menu-btn');
 const menuDropdown    = document.getElementById('menu-dropdown');
 const menuLockBtn     = document.getElementById('menu-lock-btn');
+const menuUsernameBtn = document.getElementById('menu-username-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
+
+// Modal "Ubah Nama Pengguna" elements
+const usernameModalOverlay   = document.getElementById('username-modal-overlay');
+const usernameModalCloseBtn  = document.getElementById('username-modal-close-btn');
+const modalUsernameForm      = document.getElementById('modal-username-form');
+const modalUsernameInput     = document.getElementById('modal-username-input');
+const usernameModalFeedback  = document.getElementById('username-modal-feedback');
 
 // Modal "Ubah Kata Sandi" elements
 const modalOverlay      = document.getElementById('changepw-modal-overlay');
@@ -29,6 +37,10 @@ const modalOldPw        = document.getElementById('modal-old-password');
 const modalNewPw        = document.getElementById('modal-new-password');
 const modalConfirmPw    = document.getElementById('modal-confirm-password');
 const modalFeedback     = document.getElementById('modal-feedback');
+
+// Greeting Elements
+const greetingPrefix = document.getElementById('greeting-prefix');
+const greetingName   = document.getElementById('greeting-name');
 
 // Update Toast Elements
 const updateToast       = document.getElementById('update-toast');
@@ -362,10 +374,13 @@ lockForm.addEventListener('submit', (e) => {
   });
 });
 
-// Synchronize lock state changes from storage updates in real-time
+// Synchronize lock and settings state changes from storage updates in real-time
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.unlocked) {
     updateLockerState(changes.unlocked.newValue);
+  }
+  if (changes.userName) {
+    updateGreeting();
   }
 });
 
@@ -396,10 +411,57 @@ menuLockBtn.addEventListener('click', () => {
   chrome.runtime.sendMessage({ action: 'lockBrowser' });
 });
 
-// Opsi: Ubah Kata Sandi → buka modal
+// Opsi: Ubah Nama Pengguna → buka modal nama
+menuUsernameBtn.addEventListener('click', () => {
+  closeDropdown();
+  openUsernameModal();
+});
+
+// Opsi: Ubah Kata Sandi → buka modal sandi
 menuChangePwBtn.addEventListener('click', () => {
   closeDropdown();
   openModal();
+});
+
+// ---- Modal Ubah Nama Pengguna --------------------------------------------
+
+function openUsernameModal() {
+  chrome.storage.local.get('userName', (data) => {
+    const currentName = (data && data.userName && data.userName.trim()) || 'Polma Sihotang';
+    modalUsernameInput.value = currentName;
+    usernameModalOverlay.classList.add('open');
+    modalUsernameInput.focus();
+    modalUsernameInput.select();
+  });
+}
+
+function closeUsernameModal() {
+  usernameModalOverlay.classList.remove('open');
+  usernameModalFeedback.className = 'modal-feedback';
+  usernameModalFeedback.textContent = '';
+}
+
+usernameModalCloseBtn.addEventListener('click', closeUsernameModal);
+
+usernameModalOverlay.addEventListener('click', (e) => {
+  if (e.target === usernameModalOverlay) closeUsernameModal();
+});
+
+modalUsernameForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newName = modalUsernameInput.value.trim();
+  if (!newName) {
+    usernameModalFeedback.className = 'modal-feedback error';
+    usernameModalFeedback.textContent = 'Nama tidak boleh kosong!';
+    return;
+  }
+
+  chrome.storage.local.set({ userName: newName }, () => {
+    usernameModalFeedback.className = 'modal-feedback success';
+    usernameModalFeedback.textContent = 'Nama berhasil diperbarui!';
+    updateGreeting();
+    setTimeout(closeUsernameModal, 1200);
+  });
 });
 
 // ---- Modal Ubah Kata Sandi -----------------------------------------------
@@ -483,6 +545,34 @@ window.addEventListener('keydown', (e) => {
   }
 }, true);
 
+// Dashboard: Dynamic Greeting based on time of day and stored user name
+function updateGreeting() {
+  const now = new Date();
+  const hour = now.getHours() + now.getMinutes() / 60;
+  let prefix = 'Selamat Malam';
+
+  if (hour >= 4 && hour < 11) {
+    prefix = 'Selamat Pagi';
+  } else if (hour >= 11 && hour < 15) {
+    prefix = 'Selamat Siang';
+  } else if (hour >= 15 && hour < 18.5) {
+    prefix = 'Selamat Sore';
+  } else {
+    prefix = 'Selamat Malam';
+  }
+
+  if (greetingPrefix) {
+    greetingPrefix.textContent = `${prefix}, `;
+  }
+
+  chrome.storage.local.get('userName', (data) => {
+    const name = (data && data.userName && data.userName.trim()) || 'Polma Sihotang';
+    if (greetingName) {
+      greetingName.textContent = name;
+    }
+  });
+}
+
 // Dashboard: Clock, Date, and Greeting in Indonesian with Dynamic Themes
 function updateClockAndDate() {
   const now = new Date();
@@ -507,7 +597,10 @@ function updateClockAndDate() {
 
   document.getElementById('date').textContent = `${dayName}, ${dayNum} ${monthName} ${year}`;
 
-  // 3. Dynamic Theme Class based on hour
+  // 3. Dynamic Greeting
+  updateGreeting();
+
+  // 4. Dynamic Theme Class based on hour
   const hour = now.getHours();
   let themeClass = 'theme-malam'; // Default to night
 

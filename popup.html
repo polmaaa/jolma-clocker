@@ -60,6 +60,23 @@
       <p class="info-text">Aktivitas browser Anda normal dan dapat diakses sepenuhnya.</p>
       <button id="popup-lock-btn" class="btn-popup btn-danger">Kunci Sekarang</button>
       
+      <!-- Accordion Button for Change Username -->
+      <button id="accordion-username-toggle" class="btn-accordion">
+        Ubah Nama Pengguna
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon" id="chevron-username-icon">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+
+      <!-- Accordion Panel for Username (hidden by default) -->
+      <div id="accordion-username-panel" class="accordion-panel">
+        <form id="change-username-form">
+          <input type="text" id="popup-username-input" placeholder="Nama Anda..." required autocomplete="off" maxlength="32">
+          <div id="change-username-feedback" class="feedback-text"></div>
+          <button type="submit" class="btn-popup btn-secondary">Simpan Nama</button>
+        </form>
+      </div>
+
       <!-- Accordion Button for Change Password -->
       <button id="accordion-toggle" class="btn-accordion">
         Ubah Kata Sandi

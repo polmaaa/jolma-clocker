@@ -61,6 +61,16 @@
           <span class="menu-item-label">Kunci Browser</span>
         </button>
 
+        <button id="menu-username-btn" class="menu-item menu-item-user">
+          <span class="menu-item-icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <span class="menu-item-label">Ubah Nama</span>
+        </button>
+
         <div class="menu-divider"></div>
 
         <button id="menu-changepw-btn" class="menu-item menu-item-pw">
@@ -77,6 +87,21 @@
           <span id="menu-footer-version">Jolma CLocker v0.2.1 • by Polma Sihotang</span>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ubah Nama Pengguna -->
+  <div id="username-modal-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Ubah Nama Pengguna</h3>
+        <button id="username-modal-close-btn" class="modal-close" title="Tutup">✕</button>
+      </div>
+      <form id="modal-username-form">
+        <input type="text" id="modal-username-input" placeholder="Masukkan nama Anda..." required autocomplete="off" maxlength="32">
+        <div id="username-modal-feedback" class="modal-feedback"></div>
+        <button type="submit" class="btn-modal-submit">Simpan Nama</button>
+      </form>
     </div>
   </div>
 
@@ -98,6 +123,14 @@
   </div>
 
   <div class="container">
+    <!-- Dynamic Greeting Text above Clock -->
+    <div class="greeting-container">
+      <h2 id="greeting-text">
+        <span id="greeting-prefix">Selamat Siang,</span>
+        <span id="greeting-name">Polma Sihotang</span>
+      </h2>
+    </div>
+
     <!-- Massive Full Screen Clock & Date -->
     <div class="clock-container">
       <h1 id="clock">00:00:00</h1>

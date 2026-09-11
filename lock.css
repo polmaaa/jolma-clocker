@@ -100,6 +100,42 @@ body {
   text-align: center;
 }
 
+/* Dynamic Greeting Styling above Clock */
+.greeting-container {
+  margin-bottom: 12px;
+  user-select: none;
+  animation: fadeInGreeting 0.8s ease;
+}
+
+@keyframes fadeInGreeting {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#greeting-text {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--text-muted);
+  transition: color 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+#greeting-prefix {
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+#greeting-name {
+  font-weight: 700;
+  color: var(--text-color);
+  transition: color 0.8s ease;
+}
+
 /* Full Screen Clock & Date Sizing (Even Larger) */
 .clock-container {
   margin-bottom: 40px;
@@ -469,6 +505,22 @@ body {
   color: #dc2626;
 }
 
+/* Ubah Nama Pengguna — biru aksen */
+.menu-item-user .menu-item-icon-wrap {
+  background: rgba(2, 132, 199, 0.08);
+}
+.menu-item-user:hover .menu-item-icon-wrap {
+  background: rgba(2, 132, 199, 0.16);
+  transform: scale(1.06);
+}
+.menu-item-user .menu-item-icon {
+  stroke: #0284c7;
+}
+.menu-item-user:hover {
+  background: rgba(2, 132, 199, 0.05);
+  color: #0369a1;
+}
+
 /* Ubah Kata Sandi — ungu aksen */
 .menu-item-pw .menu-item-icon-wrap {
   background: rgba(124, 58, 237, 0.08);
@@ -580,7 +632,8 @@ body {
   color: #ef4444;
 }
 
-.modal-card input[type="password"] {
+.modal-card input[type="password"],
+.modal-card input[type="text"] {
   width: 100%;
   padding: 12px 16px;
   background: #f8fafc;
@@ -594,7 +647,8 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.modal-card input[type="password"]:focus {
+.modal-card input[type="password"]:focus,
+.modal-card input[type="text"]:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
@@ -896,6 +950,10 @@ body.theme-malam .menu-footer { color: #64748b; }
 
 /* Responsiveness */
 @media (max-width: 768px) {
+  #greeting-text {
+    font-size: 19px;
+  }
+
   #clock {
     font-size: 17vw;
   }

@@ -10,7 +10,15 @@ const popupPasswordInput   = document.getElementById('popup-password-input');
 const popupError           = document.getElementById('popup-error');
 const popupLockBtn         = document.getElementById('popup-lock-btn');
 
-// Accordion Elements
+// Accordion Elements - Username
+const accordionUsernameToggle  = document.getElementById('accordion-username-toggle');
+const accordionUsernamePanel   = document.getElementById('accordion-username-panel');
+const chevronUsernameIcon      = document.getElementById('chevron-username-icon');
+const changeUsernameForm       = document.getElementById('change-username-form');
+const popupUsernameInput       = document.getElementById('popup-username-input');
+const changeUsernameFeedback   = document.getElementById('change-username-feedback');
+
+// Accordion Elements - Password
 const accordionToggle      = document.getElementById('accordion-toggle');
 const accordionPanel       = document.getElementById('accordion-panel');
 const chevronIcon          = document.getElementById('chevron-icon');
@@ -35,6 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tampilkan versi lokal di header
   const localVersion = chrome.runtime.getManifest().version;
   if (localVersionEl) localVersionEl.textContent = `v${localVersion}`;
+
+  // Load saved user name
+  chrome.storage.local.get('userName', (data) => {
+    if (popupUsernameInput) {
+      popupUsernameInput.value = (data && data.userName && data.userName.trim()) || 'Polma Sihotang';
+    }
+  });
 
   // Cek status lock
   const storageSession = chrome.storage.session || chrome.storage.local;
@@ -129,8 +144,42 @@ function updatePopupUI(isUnlocked) {
     lockedActions.classList.add('active');
     accordionPanel.classList.remove('show');
     chevronIcon.classList.remove('rotate');
+    if (accordionUsernamePanel) {
+      accordionUsernamePanel.classList.remove('show');
+      chevronUsernameIcon.classList.remove('rotate');
+    }
     clearChangePasswordForm();
   }
+}
+
+// ---- Change Username Accordion -------------------------------------------
+
+if (accordionUsernameToggle) {
+  accordionUsernameToggle.addEventListener('click', () => {
+    accordionUsernamePanel.classList.toggle('show');
+    chevronUsernameIcon.classList.toggle('rotate');
+    if (changeUsernameFeedback) {
+      changeUsernameFeedback.className = 'feedback-text';
+      changeUsernameFeedback.textContent = '';
+    }
+  });
+}
+
+if (changeUsernameForm) {
+  changeUsernameForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newName = popupUsernameInput.value.trim();
+    if (!newName) {
+      changeUsernameFeedback.className = 'feedback-text error';
+      changeUsernameFeedback.textContent = 'Nama tidak boleh kosong!';
+      return;
+    }
+
+    chrome.storage.local.set({ userName: newName }, () => {
+      changeUsernameFeedback.className = 'feedback-text success';
+      changeUsernameFeedback.textContent = 'Nama berhasil diperbarui!';
+    });
+  });
 }
 
 // ---- Change Password Accordion -------------------------------------------
