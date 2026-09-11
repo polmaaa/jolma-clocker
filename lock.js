@@ -1898,27 +1898,28 @@ function handleQuickLinkSubmit(e) {
     return;
   }
 
-  const updatedLinks = [...quickLinksList];
-  if (idx >= 0 && idx < updatedLinks.length) {
-    updatedLinks[idx] = { name, url };
+  if (idx >= 0 && idx < quickLinksList.length) {
+    quickLinksList[idx] = { name, url };
   } else {
-    updatedLinks.push({ name, url });
+    quickLinksList.push({ name, url });
   }
 
-  quickLinksList = updatedLinks;
-  chrome.storage.local.set({ quickLinks: updatedLinks }, () => {
-    renderQuickLinks(updatedLinks);
+  chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
+    renderQuickLinks(quickLinksList);
     closeQuickLinkModal();
   });
 }
 
-function handleQuickLinkDelete() {
+function handleQuickLinkDelete(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
   const idx = parseInt(quicklinkEditIndex.value, 10);
   if (idx >= 0 && idx < quickLinksList.length) {
-    const updatedLinks = quickLinksList.filter((_, i) => i !== idx);
-    quickLinksList = updatedLinks;
-    chrome.storage.local.set({ quickLinks: updatedLinks }, () => {
-      renderQuickLinks(updatedLinks);
+    quickLinksList.splice(idx, 1);
+    chrome.storage.local.set({ quickLinks: quickLinksList }, () => {
+      renderQuickLinks(quickLinksList);
       closeQuickLinkModal();
     });
   }

@@ -296,10 +296,10 @@
         <h3 class="modal-title" id="quicklink-modal-title">Tambah Pintasan</h3>
         <button id="quicklink-modal-close-btn" class="modal-close" title="Close">✕</button>
       </div>
-      <form id="quicklink-form">
+      <form id="quicklink-form" novalidate>
         <input type="hidden" id="quicklink-edit-index" value="-1">
         <input type="text" id="quicklink-name-input" placeholder="Nama Situs (misal: YouTube)" required autocomplete="off" maxlength="24">
-        <input type="url" id="quicklink-url-input" placeholder="URL (misal: https://youtube.com)" required autocomplete="off">
+        <input type="text" id="quicklink-url-input" placeholder="URL (misal: youtube.com atau https://...)" required autocomplete="off">
         <div id="quicklink-modal-feedback" class="modal-feedback"></div>
         <div class="modal-btn-row">
           <button type="submit" class="btn-modal-submit" id="quicklink-submit-btn">Simpan</button>
