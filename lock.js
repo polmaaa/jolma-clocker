@@ -573,6 +573,35 @@ function updateGreeting() {
   });
 }
 
+// Helper: Dapatkan singkatan zona waktu (WIB, WITA, WIT, atau offset GMT)
+function getTimezoneAbbreviation() {
+  try {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timeZone === 'Asia/Jakarta' || timeZone === 'Asia/Pontianak' || timeZone === 'Asia/Bangkok') return 'WIB';
+    if (timeZone === 'Asia/Makassar' || timeZone === 'Asia/Ujung_Pandang' || timeZone === 'Asia/Denpasar' || timeZone === 'Asia/Manado' || timeZone === 'Asia/Singapore') return 'WITA';
+    if (timeZone === 'Asia/Jayapura' || timeZone === 'Asia/Ambon' || timeZone === 'Asia/Tokyo') return 'WIT';
+
+    // Fallback berdasarkan UTC offset (-getTimezoneOffset() dalam menit)
+    const offset = -new Date().getTimezoneOffset();
+    if (offset === 420) return 'WIB';   // UTC+7
+    if (offset === 480) return 'WITA';  // UTC+8
+    if (offset === 540) return 'WIT';   // UTC+9
+
+    // Format fallback dari Intl API
+    const parts = new Intl.DateTimeFormat('id-ID', { timeZoneName: 'short' }).formatToParts(new Date());
+    const tzPart = parts.find(p => p.type === 'timeZoneName');
+    if (tzPart && tzPart.value) {
+      return tzPart.value;
+    }
+
+    const hoursOffset = offset / 60;
+    const sign = hoursOffset >= 0 ? '+' : '';
+    return `GMT${sign}${hoursOffset}`;
+  } catch (e) {
+    return 'WIB';
+  }
+}
+
 // Dashboard: Clock, Date, and Greeting in Indonesian with Dynamic Themes
 function updateClockAndDate() {
   const now = new Date();
@@ -582,6 +611,12 @@ function updateClockAndDate() {
   const minutes = now.getMinutes().toString().padStart(2, '0');
   const seconds = now.getSeconds().toString().padStart(2, '0');
   document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+  // Timezone Badge (WIB, WITA, WIT, dll.)
+  const timezoneBadge = document.getElementById('timezone-badge');
+  if (timezoneBadge) {
+    timezoneBadge.textContent = getTimezoneAbbreviation();
+  }
 
   // 2. Date in Indonesian
   const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];

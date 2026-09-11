@@ -148,6 +148,13 @@ body {
   user-select: none;
 }
 
+.clock-wrapper {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
 #clock {
   font-family: var(--font-mono);
   font-size: 13.5vw; /* Extremely large full-screen clock */
@@ -157,6 +164,27 @@ body {
   color: var(--text-color);
   transition: color 0.8s ease;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.timezone-badge {
+  font-family: var(--font-sans);
+  font-size: 1.5vw;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-color);
+  opacity: 0.75;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 2px 10px;
+  margin-top: 0.8vw;
+  margin-left: 12px;
+  line-height: 1.2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.8s ease;
+  user-select: none;
 }
 
 #date {
@@ -962,6 +990,14 @@ body.theme-malam .menu-footer { color: #64748b; }
 
   #clock {
     font-size: 17vw;
+  }
+  
+  .timezone-badge {
+    font-size: 3.2vw;
+    margin-top: 1.2vw;
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 6px;
   }
   
   .lock-pill-container {
