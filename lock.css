@@ -2958,6 +2958,706 @@ body.theme-malam .about-footer-meta {
   to   { transform: rotate(360deg); }
 }
 
+/* ============================================================
+   MODAL THEMES FOR 4 TIME OF DAY DURATIONS
+   ============================================================ */
 
+/* 1. PAGI (04:00 - 10:59) — Nordic Glacier Mist */
+body.theme-pagi .modal-overlay {
+  background: rgba(12, 74, 110, 0.35);
+}
+body.theme-pagi .modal-card {
+  background: rgba(240, 249, 255, 0.96);
+  border: 1px solid rgba(186, 230, 253, 0.85);
+  box-shadow: 0 24px 60px rgba(12, 74, 110, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  color: #0c4a6e;
+}
+body.theme-pagi .modal-title {
+  color: #0c4a6e;
+}
+body.theme-pagi .modal-close {
+  color: #0369a1;
+}
+body.theme-pagi .modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+body.theme-pagi .modal-card input[type="password"],
+body.theme-pagi .modal-card input[type="text"] {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(186, 230, 253, 0.9);
+  color: #0c4a6e;
+}
+body.theme-pagi .modal-card input[type="password"]::placeholder,
+body.theme-pagi .modal-card input[type="text"]::placeholder {
+  color: #64748b;
+}
+body.theme-pagi .modal-card input[type="password"]:focus,
+body.theme-pagi .modal-card input[type="text"]:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+  background: #ffffff;
+}
+body.theme-pagi .btn-modal-submit {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+  color: #ffffff;
+}
+body.theme-pagi .btn-autolock-opt {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(186, 230, 253, 0.8);
+  color: #0c4a6e;
+}
+body.theme-pagi .btn-autolock-opt:hover {
+  border-color: #0284c7;
+}
+body.theme-pagi .btn-autolock-opt.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+body.theme-pagi .quicklink-type-tabs {
+  background: rgba(224, 242, 254, 0.6);
+}
+body.theme-pagi .btn-type-tab {
+  color: #0369a1;
+}
+body.theme-pagi .btn-type-tab.active {
+  background: #ffffff;
+  color: #0284c7;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+}
+body.theme-pagi .setting-toggle-row {
+  border-bottom-color: rgba(186, 230, 253, 0.6);
+}
+body.theme-pagi .setting-toggle-title {
+  color: #0c4a6e;
+}
+body.theme-pagi .setting-toggle-desc,
+body.theme-pagi .setting-helper-text {
+  color: #0369a1;
+}
+body.theme-pagi .weather-info-box {
+  background: rgba(224, 242, 254, 0.6);
+  border-color: rgba(186, 230, 253, 0.8);
+}
+body.theme-pagi .modal-weather-temp {
+  color: #0c4a6e;
+}
+body.theme-pagi .modal-weather-desc {
+  color: #0369a1;
+}
+body.theme-pagi .modal-weather-loc {
+  color: #0369a1;
+  border-top-color: rgba(186, 230, 253, 0.6);
+}
+body.theme-pagi .about-hero {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+  border-color: rgba(2, 132, 199, 0.25);
+}
+body.theme-pagi .about-logo-badge {
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+body.theme-pagi .about-app-name {
+  color: #0c4a6e;
+}
+body.theme-pagi .about-app-tagline {
+  color: #0369a1;
+}
+body.theme-pagi .about-version-badge {
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.12);
+}
+body.theme-pagi .about-password-badge {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+body.theme-pagi .about-password-badge strong {
+  color: #047857;
+}
+body.theme-pagi .about-section-title {
+  color: #0c4a6e;
+}
+body.theme-pagi .about-desc {
+  color: #0369a1;
+}
+body.theme-pagi .about-features-list li {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(186, 230, 253, 0.7);
+}
+body.theme-pagi .about-features-list li:hover {
+  background: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.3);
+}
+body.theme-pagi .about-feat-content strong {
+  color: #0c4a6e;
+}
+body.theme-pagi .about-feat-content p {
+  color: #0369a1;
+}
+body.theme-pagi .about-feat-content code {
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+}
+body.theme-pagi .about-contact-item {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(186, 230, 253, 0.7);
+}
+body.theme-pagi .about-contact-item:hover {
+  background: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);
+}
+body.theme-pagi .about-contact-type {
+  color: #0369a1;
+}
+body.theme-pagi .about-contact-val {
+  color: #0c4a6e;
+}
+body.theme-pagi .about-support-box {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.06) 100%);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+body.theme-pagi .about-support-title {
+  color: #b45309;
+}
+body.theme-pagi .about-support-desc {
+  color: #0369a1;
+}
+body.theme-pagi .about-footer-meta {
+  border-top-color: rgba(186, 230, 253, 0.6);
+}
+body.theme-pagi .about-footer-meta span {
+  color: #0369a1;
+}
+body.theme-pagi .modal-about-body::-webkit-scrollbar-thumb {
+  background: rgba(2, 132, 199, 0.25);
+}
 
+/* 2. SIANG (11:00 - 14:59) — Solar Royal Azure */
+body.theme-siang .modal-overlay {
+  background: rgba(30, 27, 75, 0.35);
+}
+body.theme-siang .modal-card {
+  background: rgba(245, 247, 255, 0.96);
+  border: 1px solid rgba(199, 210, 254, 0.85);
+  box-shadow: 0 24px 60px rgba(30, 27, 75, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  color: #1e1b4b;
+}
+body.theme-siang .modal-title {
+  color: #1e1b4b;
+}
+body.theme-siang .modal-close {
+  color: #4338ca;
+}
+body.theme-siang .modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+body.theme-siang .modal-card input[type="password"],
+body.theme-siang .modal-card input[type="text"] {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(199, 210, 254, 0.9);
+  color: #1e1b4b;
+}
+body.theme-siang .modal-card input[type="password"]::placeholder,
+body.theme-siang .modal-card input[type="text"]::placeholder {
+  color: #64748b;
+}
+body.theme-siang .modal-card input[type="password"]:focus,
+body.theme-siang .modal-card input[type="text"]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  background: #ffffff;
+}
+body.theme-siang .btn-modal-submit {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+  color: #ffffff;
+}
+body.theme-siang .btn-autolock-opt {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(199, 210, 254, 0.8);
+  color: #1e1b4b;
+}
+body.theme-siang .btn-autolock-opt:hover {
+  border-color: #4f46e5;
+}
+body.theme-siang .btn-autolock-opt.active {
+  background: #4f46e5;
+  color: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+body.theme-siang .quicklink-type-tabs {
+  background: rgba(238, 242, 255, 0.7);
+}
+body.theme-siang .btn-type-tab {
+  color: #4338ca;
+}
+body.theme-siang .btn-type-tab.active {
+  background: #ffffff;
+  color: #4f46e5;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.15);
+}
+body.theme-siang .setting-toggle-row {
+  border-bottom-color: rgba(199, 210, 254, 0.6);
+}
+body.theme-siang .setting-toggle-title {
+  color: #1e1b4b;
+}
+body.theme-siang .setting-toggle-desc,
+body.theme-siang .setting-helper-text {
+  color: #4338ca;
+}
+body.theme-siang .weather-info-box {
+  background: rgba(238, 242, 255, 0.7);
+  border-color: rgba(199, 210, 254, 0.8);
+}
+body.theme-siang .modal-weather-temp {
+  color: #1e1b4b;
+}
+body.theme-siang .modal-weather-desc {
+  color: #4338ca;
+}
+body.theme-siang .modal-weather-loc {
+  color: #4338ca;
+  border-top-color: rgba(199, 210, 254, 0.6);
+}
+body.theme-siang .about-hero {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+  border-color: rgba(79, 70, 229, 0.25);
+}
+body.theme-siang .about-logo-badge {
+  background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+body.theme-siang .about-app-name {
+  color: #1e1b4b;
+}
+body.theme-siang .about-app-tagline {
+  color: #4338ca;
+}
+body.theme-siang .about-version-badge {
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.12);
+}
+body.theme-siang .about-password-badge {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+body.theme-siang .about-password-badge strong {
+  color: #047857;
+}
+body.theme-siang .about-section-title {
+  color: #1e1b4b;
+}
+body.theme-siang .about-desc {
+  color: #4338ca;
+}
+body.theme-siang .about-features-list li {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(199, 210, 254, 0.7);
+}
+body.theme-siang .about-features-list li:hover {
+  background: rgba(79, 70, 229, 0.08);
+  border-color: rgba(79, 70, 229, 0.3);
+}
+body.theme-siang .about-feat-content strong {
+  color: #1e1b4b;
+}
+body.theme-siang .about-feat-content p {
+  color: #4338ca;
+}
+body.theme-siang .about-feat-content code {
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+}
+body.theme-siang .about-contact-item {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(199, 210, 254, 0.7);
+}
+body.theme-siang .about-contact-item:hover {
+  background: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.15);
+}
+body.theme-siang .about-contact-type {
+  color: #4338ca;
+}
+body.theme-siang .about-contact-val {
+  color: #1e1b4b;
+}
+body.theme-siang .about-support-box {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.06) 100%);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+body.theme-siang .about-support-title {
+  color: #b45309;
+}
+body.theme-siang .about-support-desc {
+  color: #4338ca;
+}
+body.theme-siang .about-footer-meta {
+  border-top-color: rgba(199, 210, 254, 0.6);
+}
+body.theme-siang .about-footer-meta span {
+  color: #4338ca;
+}
+body.theme-siang .modal-about-body::-webkit-scrollbar-thumb {
+  background: rgba(79, 70, 229, 0.25);
+}
 
+/* 3. SORE (15:00 - 18:29) — Twilight Amber Sunset */
+body.theme-sore .modal-overlay {
+  background: rgba(67, 20, 7, 0.35);
+}
+body.theme-sore .modal-card {
+  background: rgba(255, 250, 245, 0.96);
+  border: 1px solid rgba(254, 215, 170, 0.85);
+  box-shadow: 0 24px 60px rgba(67, 20, 7, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  color: #431407;
+}
+body.theme-sore .modal-title {
+  color: #431407;
+}
+body.theme-sore .modal-close {
+  color: #9a3412;
+}
+body.theme-sore .modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+body.theme-sore .modal-card input[type="password"],
+body.theme-sore .modal-card input[type="text"] {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(254, 215, 170, 0.9);
+  color: #431407;
+}
+body.theme-sore .modal-card input[type="password"]::placeholder,
+body.theme-sore .modal-card input[type="text"]::placeholder {
+  color: #64748b;
+}
+body.theme-sore .modal-card input[type="password"]:focus,
+body.theme-sore .modal-card input[type="text"]:focus {
+  border-color: #ea580c;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.2);
+  background: #ffffff;
+}
+body.theme-sore .btn-modal-submit {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+  color: #ffffff;
+}
+body.theme-sore .btn-autolock-opt {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(254, 215, 170, 0.8);
+  color: #431407;
+}
+body.theme-sore .btn-autolock-opt:hover {
+  border-color: #ea580c;
+}
+body.theme-sore .btn-autolock-opt.active {
+  background: #ea580c;
+  color: #ffffff;
+  border-color: #ea580c;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+body.theme-sore .quicklink-type-tabs {
+  background: rgba(255, 237, 213, 0.7);
+}
+body.theme-sore .btn-type-tab {
+  color: #9a3412;
+}
+body.theme-sore .btn-type-tab.active {
+  background: #ffffff;
+  color: #ea580c;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.15);
+}
+body.theme-sore .setting-toggle-row {
+  border-bottom-color: rgba(254, 215, 170, 0.6);
+}
+body.theme-sore .setting-toggle-title {
+  color: #431407;
+}
+body.theme-sore .setting-toggle-desc,
+body.theme-sore .setting-helper-text {
+  color: #9a3412;
+}
+body.theme-sore .weather-info-box {
+  background: rgba(255, 237, 213, 0.7);
+  border-color: rgba(254, 215, 170, 0.8);
+}
+body.theme-sore .modal-weather-temp {
+  color: #431407;
+}
+body.theme-sore .modal-weather-desc {
+  color: #9a3412;
+}
+body.theme-sore .modal-weather-loc {
+  color: #9a3412;
+  border-top-color: rgba(254, 215, 170, 0.6);
+}
+body.theme-sore .about-hero {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+  border-color: rgba(234, 88, 12, 0.25);
+}
+body.theme-sore .about-logo-badge {
+  background: linear-gradient(135deg, #ea580c 0%, #fb923c 100%);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+}
+body.theme-sore .about-app-name {
+  color: #431407;
+}
+body.theme-sore .about-app-tagline {
+  color: #9a3412;
+}
+body.theme-sore .about-version-badge {
+  color: #ea580c;
+  background: rgba(234, 88, 12, 0.12);
+}
+body.theme-sore .about-password-badge {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+body.theme-sore .about-password-badge strong {
+  color: #047857;
+}
+body.theme-sore .about-section-title {
+  color: #431407;
+}
+body.theme-sore .about-desc {
+  color: #9a3412;
+}
+body.theme-sore .about-features-list li {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(254, 215, 170, 0.7);
+}
+body.theme-sore .about-features-list li:hover {
+  background: rgba(234, 88, 12, 0.08);
+  border-color: rgba(234, 88, 12, 0.3);
+}
+body.theme-sore .about-feat-content strong {
+  color: #431407;
+}
+body.theme-sore .about-feat-content p {
+  color: #9a3412;
+}
+body.theme-sore .about-feat-content code {
+  background: rgba(234, 88, 12, 0.1);
+  color: #ea580c;
+}
+body.theme-sore .about-contact-item {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(254, 215, 170, 0.7);
+}
+body.theme-sore .about-contact-item:hover {
+  background: #ffffff;
+  border-color: #ea580c;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.15);
+}
+body.theme-sore .about-contact-type {
+  color: #9a3412;
+}
+body.theme-sore .about-contact-val {
+  color: #431407;
+}
+body.theme-sore .about-support-box {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.06) 100%);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+body.theme-sore .about-support-title {
+  color: #b45309;
+}
+body.theme-sore .about-support-desc {
+  color: #9a3412;
+}
+body.theme-sore .about-footer-meta {
+  border-top-color: rgba(254, 215, 170, 0.6);
+}
+body.theme-sore .about-footer-meta span {
+  color: #9a3412;
+}
+body.theme-sore .modal-about-body::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.25);
+}
+
+/* 4. MALAM (18:30 - 03:59) — Starry Midnight Dark Glass */
+body.theme-malam .modal-overlay {
+  background: rgba(3, 2, 8, 0.65);
+}
+body.theme-malam .modal-card {
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  color: #f8fafc;
+}
+body.theme-malam .modal-title {
+  color: #f8fafc;
+}
+body.theme-malam .modal-close {
+  color: #94a3b8;
+}
+body.theme-malam .modal-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+body.theme-malam .modal-card input[type="password"],
+body.theme-malam .modal-card input[type="text"] {
+  background: rgba(30, 27, 75, 0.6);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #f8fafc;
+}
+body.theme-malam .modal-card input[type="password"]::placeholder,
+body.theme-malam .modal-card input[type="text"]::placeholder {
+  color: #64748b;
+}
+body.theme-malam .modal-card input[type="password"]:focus,
+body.theme-malam .modal-card input[type="text"]:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+  background: rgba(30, 27, 75, 0.85);
+}
+body.theme-malam .btn-modal-submit {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+}
+body.theme-malam .btn-autolock-opt {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+body.theme-malam .btn-autolock-opt:hover {
+  border-color: #8b5cf6;
+}
+body.theme-malam .btn-autolock-opt.active {
+  background: #8b5cf6;
+  color: #ffffff;
+  border-color: #8b5cf6;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+body.theme-malam .quicklink-type-tabs {
+  background: rgba(30, 27, 75, 0.6);
+}
+body.theme-malam .btn-type-tab {
+  color: #94a3b8;
+}
+body.theme-malam .btn-type-tab.active {
+  background: rgba(139, 92, 246, 0.35);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+body.theme-malam .setting-toggle-row {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+body.theme-malam .setting-toggle-title {
+  color: #f8fafc;
+}
+body.theme-malam .setting-toggle-desc,
+body.theme-malam .setting-helper-text {
+  color: #94a3b8;
+}
+body.theme-malam .weather-info-box {
+  background: rgba(30, 27, 75, 0.5);
+  border-color: rgba(139, 92, 246, 0.25);
+}
+body.theme-malam .modal-weather-temp {
+  color: #f8fafc;
+}
+body.theme-malam .modal-weather-desc {
+  color: #cbd5e1;
+}
+body.theme-malam .modal-weather-loc {
+  color: #94a3b8;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+body.theme-malam .about-hero {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+body.theme-malam .about-logo-badge {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);
+}
+body.theme-malam .about-app-name {
+  color: #f8fafc;
+}
+body.theme-malam .about-app-tagline {
+  color: #cbd5e1;
+}
+body.theme-malam .about-version-badge {
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.25);
+}
+body.theme-malam .about-password-badge {
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+body.theme-malam .about-password-badge strong {
+  color: #a7f3d0;
+}
+body.theme-malam .about-section-title {
+  color: #f8fafc;
+}
+body.theme-malam .about-desc {
+  color: #cbd5e1;
+}
+body.theme-malam .about-features-list li {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+body.theme-malam .about-features-list li:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+body.theme-malam .about-feat-content strong {
+  color: #f8fafc;
+}
+body.theme-malam .about-feat-content p {
+  color: #94a3b8;
+}
+body.theme-malam .about-feat-content code {
+  background: rgba(255, 255, 255, 0.12);
+  color: #c4b5fd;
+}
+body.theme-malam .about-contact-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+body.theme-malam .about-contact-item:hover {
+  background: rgba(30, 27, 75, 0.85);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+body.theme-malam .about-contact-type {
+  color: #94a3b8;
+}
+body.theme-malam .about-contact-val {
+  color: #f8fafc;
+}
+body.theme-malam .about-support-box {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(251, 191, 36, 0.08) 100%);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+body.theme-malam .about-support-title {
+  color: #fbbf24;
+}
+body.theme-malam .about-support-desc {
+  color: #94a3b8;
+}
+body.theme-malam .about-footer-meta {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+body.theme-malam .about-footer-meta span {
+  color: #64748b;
+}
+body.theme-malam .modal-about-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
