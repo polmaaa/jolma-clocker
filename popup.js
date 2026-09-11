@@ -194,9 +194,6 @@ function applyTranslations(lang) {
   if (confirmPasswordInput) confirmPasswordInput.placeholder = dict.confirmPwPlaceholder;
   if (popupPwSubmit) popupPwSubmit.textContent = dict.pwSaveBtn;
 
-  // Footer & update
-  if (checkUpdateLabel && !checkUpdateBtn.disabled) checkUpdateLabel.textContent = dict.checkUpdate;
-
   // Update weather preview text if present
   chrome.storage.local.get('weatherCache', (data) => {
     if (data && data.weatherCache && popupWeatherInfo) {
@@ -205,8 +202,12 @@ function applyTranslations(lang) {
       if (c.weatherCode !== undefined && dict.weatherDesc[c.weatherCode]) {
         cond = dict.weatherDesc[c.weatherCode];
       }
+      const isGps = c.source === 'GPS Presisi' || c.source === 'Precise GPS';
+      const sourceLabel = isGps 
+        ? (currentLang === 'en' ? 'Precise GPS' : 'GPS Presisi') 
+        : (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP');
       const city = c.city || (currentLang === 'en' ? 'Worldwide' : 'Indonesia');
-      popupWeatherInfo.textContent = `${c.temp || '--°C'} • ${cond} (${city})`;
+      popupWeatherInfo.textContent = `${c.temp || '--°C'} • ${cond} • 📍 ${city} (${sourceLabel})`;
     }
   });
 }
@@ -235,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load language first
   chrome.storage.local.get(['language', 'userName', 'useGpsLocation', 'weatherCache'], (data) => {
-    const lang = (data && data.language) || 'id';
+    const lang = (data && data.language) || 'en';
     applyTranslations(lang);
 
     if (popupUsernameInput) {
@@ -251,9 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (c.weatherCode !== undefined && dict.weatherDesc[c.weatherCode]) {
         cond = dict.weatherDesc[c.weatherCode];
       }
+      const isGps = c.source === 'GPS Presisi' || c.source === 'Precise GPS';
+      const sourceLabel = isGps 
+        ? (currentLang === 'en' ? 'Precise GPS' : 'GPS Presisi') 
+        : (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP');
       const city = c.city || (currentLang === 'en' ? 'Worldwide' : 'Indonesia');
       if (popupWeatherIcon) popupWeatherIcon.textContent = c.icon || '🌤️';
-      if (popupWeatherInfo) popupWeatherInfo.textContent = `${c.temp || '--°C'} • ${cond || 'Cerah'} (${city})`;
+      if (popupWeatherInfo) popupWeatherInfo.textContent = `${c.temp || '--°C'} • ${cond || 'Clear'} • 📍 ${city} (${sourceLabel})`;
     }
   });
 
