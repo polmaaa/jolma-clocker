@@ -92,8 +92,17 @@
     } catch (e) {}
   }
 
+  let currentLang = 'en';
+  chrome.storage.local.get('language', (data) => {
+    if (data && data.language) currentLang = data.language;
+  });
+
   try {
     chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (changes.language) {
+        currentLang = changes.language.newValue || 'en';
+        updateFloatingButtonLanguage();
+      }
       if (changes.floatingLockBtnEnabled !== undefined) {
         if (changes.floatingLockBtnEnabled.newValue === false) {
           removeFloatingButton();
@@ -111,6 +120,16 @@
     });
   } catch (e) {}
 
+  function updateFloatingButtonLanguage() {
+    const host = document.getElementById(HOST_ID);
+    if (!host || !host.shadowRoot) return;
+    const isId = currentLang === 'id';
+    const tooltipText = host.shadowRoot.querySelector('.tooltip-text');
+    const lockBtn = host.shadowRoot.querySelector('#lock-btn-trigger');
+    if (tooltipText) tooltipText.textContent = isId ? 'Kunci Browser' : 'Lock Browser';
+    if (lockBtn) lockBtn.title = isId ? 'Kunci Browser (Ctrl+L)' : 'Lock Browser (Ctrl+L)';
+  }
+
   function renderFloatingButton() {
     const currentTheme = getThemeClass();
     let host = document.getElementById(HOST_ID);
@@ -121,6 +140,7 @@
       if (wrapper) {
         wrapper.className = `fab-wrapper ${currentTheme}`;
       }
+      updateFloatingButtonLanguage();
       return;
     }
 
@@ -423,10 +443,11 @@
 
     const wrapper = document.createElement('div');
     wrapper.className = `fab-wrapper fab-enter ${currentTheme}`;
+    const isId = currentLang === 'id';
     wrapper.innerHTML = `
       <!-- Stylish Floating Tooltip on Hover -->
       <div class="fab-tooltip">
-        <span class="tooltip-text">Kunci Browser</span>
+        <span class="tooltip-text">${isId ? 'Kunci Browser' : 'Lock Browser'}</span>
         <span class="tooltip-badge">CTRL+L</span>
       </div>
 
@@ -434,7 +455,7 @@
       <div class="fab-aura"></div>
 
       <!-- Compact Glass Button matching Menu Button -->
-      <button class="fab-btn" id="lock-btn-trigger" title="Kunci Browser (Ctrl+L)">
+      <button class="fab-btn" id="lock-btn-trigger" title="${isId ? 'Kunci Browser (Ctrl+L)' : 'Lock Browser (Ctrl+L)'}">
         <svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect class="lock-body" x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path class="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4"></path>

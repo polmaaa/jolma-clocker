@@ -148,6 +148,8 @@ let currentLang = 'en';
 
 const i18n = {
   id: {
+    // Menu
+    menuTitle: 'Menu',
     menuHeader: 'Pengaturan',
     menuFloatingLock: 'Tombol Kunci',
     menuShortcutsToggle: 'Pintasan',
@@ -160,6 +162,7 @@ const i18n = {
     menuAbout: 'Tentang',
     menuLangTitle: 'Bahasa',
     addShortcut: 'Pintasan',
+    closeBtnTitle: 'Tutup',
 
     // Greeting
     greetingPagi: 'Selamat Pagi',
@@ -179,11 +182,23 @@ const i18n = {
     searchPlaceholder: 'Cari di Google...',
     passwordPlaceholder: 'Masukkan kata sandi...',
     passwordError: 'Sandi salah. Silakan coba lagi!',
+    showPasswordTitle: 'Tampilkan Kata Sandi',
+    hidePasswordTitle: 'Sembunyikan Kata Sandi',
     unlockedBtn: 'Buka Kunci',
+
+    // Toast Update
+    updateToastTitle: 'Update tersedia!',
+    updateToastSub: 'Versi baru siap diunduh',
+    updateToastBtn: 'Unduh',
+    updateToastDownloading: '⏳ Mengunduh...',
+    updateToastFailed: '✗ Gagal',
+    updateToastSaved: '✓ Tersimpan!',
 
     // Quotes ID
     quoteBadge: 'Kutipan Hari Ini',
     quoteShuffleTitle: 'Kutipan Lain',
+    quoteLoading: 'Memuat kutipan...',
+    quoteUnknownAuthor: 'Anonim',
     quotes: [
       { text: "Waktu adalah aset paling berharga. Gunakan dengan bijak.", author: "Polma Sihotang" },
       { text: "Masa depan tergantung pada apa yang kamu lakukan hari ini.", author: "Mahatma Gandhi" },
@@ -192,7 +207,14 @@ const i18n = {
       { text: "Kesuksesan berawal dari keputusan untuk mencoba.", author: "John F. Kennedy" },
       { text: "Fokus pada proses, hasil terbaik akan mengikuti.", author: "Anonim" },
       { text: "Disiplin adalah jembatan antara tujuan dan pencapaian.", author: "Jim Rohn" },
-      { text: "Hari ini adalah kesempatan untuk membangun hari esok yang kamu inginkan.", author: "Ken Poirot" }
+      { text: "Hari ini adalah kesempatan untuk membangun hari esok yang kamu inginkan.", author: "Ken Poirot" },
+      { text: "Tindakan adalah kunci dasar dari semua kesuksesan.", author: "Pablo Picasso" },
+      { text: "Bermimpilah setinggi langit, jika engkau jatuh, engkau akan jatuh di antara bintang-bintang.", author: "Soekarno" },
+      { text: "Jangan pernah berhenti belajar, karena hidup tak pernah berhenti mengajarkan.", author: "Anonim" },
+      { text: "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas.", author: "Henry Ford" },
+      { text: "Kunci menuju kebahagiaan adalah memiliki impian; kunci menuju kesuksesan adalah mewujudkannya.", author: "James Allen" },
+      { text: "Kerja keras mengalahkan bakat ketika bakat tidak bekerja keras.", author: "Tim Notke" },
+      { text: "Keberanian bukanlah ketiadaan rasa takut, tetapi kemenangan atas rasa takut itu.", author: "Nelson Mandela" }
     ],
 
     // Quick Links & Folder Modal
@@ -220,6 +242,12 @@ const i18n = {
     autolockTitle: 'Auto-Lock Saat Menganggur',
     autolockDesc: 'Kunci browser secara otomatis saat tidak ada aktivitas pengguna.',
     autolockActive: (m) => m > 0 ? `✓ Kunci otomatis aktif (${m} menit tidak aktif).` : '✓ Kunci otomatis dinonaktifkan.',
+    autolockOff: 'Off',
+    autolock1Min: '1 Menit',
+    autolock5Min: '5 Menit',
+    autolock15Min: '15 Menit',
+    autolock30Min: '30 Menit',
+    autolock60Min: '60 Menit',
 
     // Username Modal
     usernameModalTitle: 'Ubah Nama Pengguna',
@@ -228,7 +256,8 @@ const i18n = {
     usernameSuccess: 'Nama berhasil diperbarui!',
     usernameEmpty: 'Nama tidak boleh kosong!',
 
-    // Weather Modal
+    // Weather Modal & Footer
+    weatherSettingsTitle: 'Pengaturan Cuaca',
     weatherModalTitle: 'Pengaturan Cuaca',
     weatherGpsTitle: 'Lokasi Presisi (GPS Real-time)',
     weatherGpsDesc: 'Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.',
@@ -303,18 +332,28 @@ const i18n = {
     aboutF4Title: 'Pintasan & Folder Minimalis',
     aboutF4Desc: 'Akses cepat ke website favorit bergaya macOS Dock & Stack Popover.',
     aboutF5Title: 'Kutipan Inspirasi Harian',
-    aboutF5Desc: 'Menampilkan kutipan motivasi yang berganti dan dapat diacak sewaktu-waktu.',
+    aboutF5Desc: 'Menampilkan kutipan motivasi yang diambil secara online dan dapat diacak sewaktu-waktu.',
     aboutF6Title: 'Tema Dinamis 4 Waktu',
     aboutF6Desc: 'Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.',
     aboutF7Title: 'Anti-Sleep & Keep Awake',
     aboutF7Desc: 'Mencegah layar dan laptop masuk mode sleep/mati otomatis saat browser sedang terkunci.',
     aboutContactTitle: '📬 Bantuan & Request Pengembangan',
     aboutContactDesc: 'Punya saran fitur, pertanyaan, atau ingin request pengembangan khusus? Hubungi saya melalui:',
+    aboutEmailTitle: 'Kirim Email',
+    aboutLinkedinTitle: 'Profil LinkedIn',
+    aboutInstagramTitle: 'Profil Instagram',
     aboutSupportTitle: '☕ Dukung Pengembang',
     aboutSupportDesc: 'Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.',
-    aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>'
+    aboutSaweriaTitle: 'Dukung via Saweria',
+    aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>',
+    aboutCopyright: '© 2026 Jolma CLocker • Semua Hak Dilindungi',
+
+    // Footer
+    copyrightText: '© 2026 Jolma CLocker v0.2.1 • oleh Polma Sihotang'
   },
   en: {
+    // Menu
+    menuTitle: 'Menu',
     menuHeader: 'Settings',
     menuFloatingLock: 'Lock Button',
     menuShortcutsToggle: 'Shortcuts',
@@ -327,6 +366,7 @@ const i18n = {
     menuAbout: 'About',
     menuLangTitle: 'Language',
     addShortcut: 'Shortcut',
+    closeBtnTitle: 'Close',
 
     // Greeting
     greetingPagi: 'Good Morning',
@@ -346,11 +386,23 @@ const i18n = {
     searchPlaceholder: 'Search Google...',
     passwordPlaceholder: 'Enter password...',
     passwordError: 'Incorrect password. Please try again!',
+    showPasswordTitle: 'Show Password',
+    hidePasswordTitle: 'Hide Password',
     unlockedBtn: 'Unlock',
+
+    // Toast Update
+    updateToastTitle: 'Update available!',
+    updateToastSub: 'New version ready to download',
+    updateToastBtn: 'Download',
+    updateToastDownloading: '⏳ Downloading...',
+    updateToastFailed: '✗ Failed',
+    updateToastSaved: '✓ Saved!',
 
     // Quotes EN
     quoteBadge: 'Daily Quote',
     quoteShuffleTitle: 'Shuffle Quote',
+    quoteLoading: 'Loading quote...',
+    quoteUnknownAuthor: 'Anonymous',
     quotes: [
       { text: "Time is our most valuable asset. Spend it with purpose.", author: "Polma Sihotang" },
       { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
@@ -359,7 +411,13 @@ const i18n = {
       { text: "Success begins with the decision to try.", author: "John F. Kennedy" },
       { text: "Focus on the process, and the results will take care of themselves.", author: "Anonymous" },
       { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn" },
-      { text: "Today is your opportunity to build the tomorrow you want.", author: "Ken Poirot" }
+      { text: "Today is your opportunity to build the tomorrow you want.", author: "Ken Poirot" },
+      { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
+      { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+      { text: "Never stop learning, because life never stops teaching.", author: "Anonymous" },
+      { text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford" },
+      { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+      { text: "Courage is not the absence of fear, but the triumph over it.", author: "Nelson Mandela" }
     ],
 
     // Quick Links & Folder Modal
@@ -387,6 +445,12 @@ const i18n = {
     autolockTitle: 'Auto-Lock Inactivity Timer',
     autolockDesc: 'Automatically locks the browser when no user activity is detected.',
     autolockActive: (m) => m > 0 ? `✓ Auto-lock enabled (${m} min inactivity).` : '✓ Auto-lock disabled.',
+    autolockOff: 'Off',
+    autolock1Min: '1 Min',
+    autolock5Min: '5 Min',
+    autolock15Min: '15 Min',
+    autolock30Min: '30 Min',
+    autolock60Min: '60 Min',
 
     // Username Modal
     usernameModalTitle: 'Change Username',
@@ -395,7 +459,8 @@ const i18n = {
     usernameSuccess: 'Name updated successfully!',
     usernameEmpty: 'Name cannot be empty!',
 
-    // Weather Modal
+    // Weather Modal & Footer
+    weatherSettingsTitle: 'Weather Settings',
     weatherModalTitle: 'Weather Settings',
     weatherGpsTitle: 'Precise Location (Real-time GPS)',
     weatherGpsDesc: 'Uses device GPS (requires location permission). If disabled, location is detected automatically via IP network.',
@@ -470,16 +535,24 @@ const i18n = {
     aboutF4Title: 'Minimalist Shortcuts & Folders',
     aboutF4Desc: 'Quick access to your favorite sites with macOS-inspired Dock & Stack Popovers.',
     aboutF5Title: 'Daily Inspiring Quotes',
-    aboutF5Desc: 'Displays motivational quotes updated daily and shuffleable anytime.',
+    aboutF5Desc: 'Displays motivational quotes fetched online in real-time and shuffleable anytime.',
     aboutF6Title: 'Dynamic 4-Time Theme Engine',
     aboutF6Desc: 'Aesthetic background adapts smoothly to Morning, Afternoon, Evening, and Night.',
     aboutF7Title: 'Anti-Sleep & Keep Awake',
     aboutF7Desc: 'Prevents display and laptop from automatically sleeping or locking while browser is locked.',
     aboutContactTitle: '📬 Support & Feature Requests',
     aboutContactDesc: 'Have questions, feature suggestions, or custom development requests? Feel free to reach out:',
+    aboutEmailTitle: 'Send Email',
+    aboutLinkedinTitle: 'LinkedIn Profile',
+    aboutInstagramTitle: 'Instagram Profile',
     aboutSupportTitle: '☕ Support Developer',
     aboutSupportDesc: 'If you enjoy using this extension, you can support further development via Saweria.',
-    aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>'
+    aboutSaweriaTitle: 'Support via Saweria',
+    aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>',
+    aboutCopyright: '© 2026 Jolma CLocker • All Rights Reserved',
+
+    // Footer
+    copyrightText: '© 2026 Jolma CLocker v0.2.1 • by Polma Sihotang'
   }
 };
 
@@ -491,7 +564,23 @@ function applyTranslations(lang) {
   if (btnLangId) btnLangId.classList.toggle('active', currentLang === 'id');
   if (btnLangEn) btnLangEn.classList.toggle('active', currentLang === 'en');
 
-  // Menu texts
+  // Toast notification
+  const updateToastTitleEl = document.querySelector('.update-toast-title');
+  if (updateToastTitleEl) updateToastTitleEl.textContent = dict.updateToastTitle;
+  if (updateToastVer && !updateToastVer.dataset.customVersion) {
+    updateToastVer.textContent = dict.updateToastSub;
+  }
+  if (updateToastLink && !updateToastLink.dataset.isDownloading) {
+    updateToastLink.textContent = dict.updateToastBtn;
+  }
+  if (updateToastClose) updateToastClose.title = dict.closeBtnTitle;
+
+  // Menu button & texts
+  if (menuBtn) {
+    menuBtn.title = dict.menuTitle;
+    const menuBtnText = menuBtn.querySelector('.menu-btn-text');
+    if (menuBtnText) menuBtnText.textContent = dict.menuTitle;
+  }
   if (menuHeaderLabel) menuHeaderLabel.textContent = dict.menuHeader;
   if (menuFloatingLockLabel) menuFloatingLockLabel.textContent = dict.menuFloatingLock;
   if (menuShortcutsToggleLabel) menuShortcutsToggleLabel.textContent = dict.menuShortcutsToggle;
@@ -503,28 +592,52 @@ function applyTranslations(lang) {
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
   if (menuAboutLabel) menuAboutLabel.textContent = dict.menuAbout;
 
-  // Search & Lock Form Placeholders
+  // Search & Lock Form Placeholders & Titles
   if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
   if (passwordInput) passwordInput.placeholder = dict.passwordPlaceholder;
   if (errorMessage) errorMessage.textContent = dict.passwordError;
+  if (togglePasswordBtn) {
+    togglePasswordBtn.title = (passwordInput && passwordInput.type === 'text')
+      ? dict.hidePasswordTitle
+      : dict.showPasswordTitle;
+  }
+  const submitLockBtn = document.querySelector('.btn-pill-submit');
+  if (submitLockBtn) submitLockBtn.title = dict.unlockedBtn;
 
   // Quick Links & Folder
   if (lblAddShortcut) lblAddShortcut.textContent = dict.addShortcut;
   if (btnTypeLink) btnTypeLink.textContent = dict.quicklinkTypeLink;
   if (btnTypeFolder) btnTypeFolder.textContent = dict.quicklinkTypeFolder;
-  if (quicklinkNameInput) quicklinkNameInput.placeholder = dict.quicklinkNamePh;
+  if (quicklinkNameInput) {
+    quicklinkNameInput.placeholder = (quicklinkSelectedType && quicklinkSelectedType.value === 'folder')
+      ? dict.quicklinkFolderNamePh
+      : dict.quicklinkNamePh;
+  }
   if (quicklinkUrlInput) quicklinkUrlInput.placeholder = dict.quicklinkUrlPh;
   if (quicklinkSubmitBtn) quicklinkSubmitBtn.textContent = dict.quicklinkSaveBtn;
   if (quicklinkDeleteBtn) quicklinkDeleteBtn.textContent = dict.quicklinkDeleteBtn;
+  if (quicklinkModalCloseBtn) quicklinkModalCloseBtn.title = dict.closeBtnTitle;
+  if (dockPopoverCloseBtn) dockPopoverCloseBtn.title = dict.closeBtnTitle;
 
   // Auto-Lock Modal
   if (autolockModalTitle) autolockModalTitle.textContent = dict.autolockTitle;
   if (autolockDesc) autolockDesc.textContent = dict.autolockDesc;
+  if (autolockModalCloseBtn) autolockModalCloseBtn.title = dict.closeBtnTitle;
+  autolockOptionBtns.forEach((btn) => {
+    const mins = Number(btn.dataset.mins);
+    if (mins === 0) btn.textContent = dict.autolockOff;
+    else if (mins === 1) btn.textContent = dict.autolock1Min;
+    else if (mins === 5) btn.textContent = dict.autolock5Min;
+    else if (mins === 15) btn.textContent = dict.autolock15Min;
+    else if (mins === 30) btn.textContent = dict.autolock30Min;
+    else if (mins === 60) btn.textContent = dict.autolock60Min;
+  });
 
-  // Update quote display and quick links with new language
+  // Quotes
   if (quoteBadgeLabel && dict.quoteBadge) quoteBadgeLabel.textContent = dict.quoteBadge;
   if (btnQuoteShuffle && dict.quoteShuffleTitle) btnQuoteShuffle.title = dict.quoteShuffleTitle;
   updateQuoteDisplay();
+
   if (quickLinksList && quickLinksList.length > 0) {
     renderQuickLinks(quickLinksList);
   }
@@ -533,6 +646,7 @@ function applyTranslations(lang) {
   const usernameModalTitle = document.getElementById('username-modal-title');
   const modalUsernameSubmit = document.getElementById('modal-username-submit');
   if (usernameModalTitle) usernameModalTitle.textContent = dict.usernameModalTitle;
+  if (usernameModalCloseBtn) usernameModalCloseBtn.title = dict.closeBtnTitle;
   if (modalUsernameInput) modalUsernameInput.placeholder = dict.usernamePlaceholder;
   if (modalUsernameSubmit) modalUsernameSubmit.textContent = dict.usernameSaveBtn;
 
@@ -541,16 +655,19 @@ function applyTranslations(lang) {
   const settingToggleTitleEl = document.getElementById('setting-toggle-title-el');
   const settingToggleDescEl = document.getElementById('setting-toggle-desc-el');
   if (weatherModalTitle) weatherModalTitle.textContent = dict.weatherModalTitle;
+  if (weatherModalCloseBtn) weatherModalCloseBtn.title = dict.closeBtnTitle;
   if (settingToggleTitleEl) settingToggleTitleEl.textContent = dict.weatherGpsTitle;
   if (settingToggleDescEl) settingToggleDescEl.textContent = dict.weatherGpsDesc;
   if (settingToggleEffectsTitle) settingToggleEffectsTitle.textContent = dict.weatherEffectsTitle;
   if (settingToggleEffectsDesc) settingToggleEffectsDesc.textContent = dict.weatherEffectsDesc;
   if (modalRefreshWeatherBtn) modalRefreshWeatherBtn.textContent = dict.weatherRefreshBtn;
+  if (weatherBtn) weatherBtn.title = dict.weatherSettingsTitle;
 
   // Password Modal
   const changepwModalTitle = document.getElementById('changepw-modal-title');
   const modalChangepwSubmit = document.getElementById('modal-changepw-submit');
   if (changepwModalTitle) changepwModalTitle.textContent = dict.pwModalTitle;
+  if (modalCloseBtn) modalCloseBtn.title = dict.closeBtnTitle;
   if (modalOldPw) modalOldPw.placeholder = dict.oldPwPlaceholder;
   if (modalNewPw) modalNewPw.placeholder = dict.newPwPlaceholder;
   if (modalConfirmPw) modalConfirmPw.placeholder = dict.confirmPwPlaceholder;
@@ -580,9 +697,12 @@ function applyTranslations(lang) {
   const aboutContactDesc = document.getElementById('about-contact-desc');
   const aboutSupportTitle = document.getElementById('about-support-title');
   const aboutSupportDesc = document.getElementById('about-support-desc');
+  const btnAboutSaweria = document.getElementById('btn-about-saweria');
   const aboutDevBy = document.getElementById('about-dev-by');
+  const aboutCopyright = document.querySelector('.about-copyright');
 
   if (aboutModalTitle && dict.aboutModalTitle) aboutModalTitle.textContent = dict.aboutModalTitle;
+  if (aboutModalCloseBtn) aboutModalCloseBtn.title = dict.closeBtnTitle;
   if (aboutTagline && dict.aboutTagline) aboutTagline.textContent = dict.aboutTagline;
   if (aboutPurposeTitle && dict.aboutPurposeTitle) aboutPurposeTitle.textContent = dict.aboutPurposeTitle;
   if (aboutPurposeDesc && dict.aboutPurposeDesc) aboutPurposeDesc.textContent = dict.aboutPurposeDesc;
@@ -605,7 +725,21 @@ function applyTranslations(lang) {
   if (aboutContactDesc && dict.aboutContactDesc) aboutContactDesc.textContent = dict.aboutContactDesc;
   if (aboutSupportTitle && dict.aboutSupportTitle) aboutSupportTitle.textContent = dict.aboutSupportTitle;
   if (aboutSupportDesc && dict.aboutSupportDesc) aboutSupportDesc.textContent = dict.aboutSupportDesc;
+  if (btnAboutSaweria && dict.aboutSaweriaTitle) btnAboutSaweria.title = dict.aboutSaweriaTitle;
   if (aboutDevBy && dict.aboutDevBy) aboutDevBy.innerHTML = dict.aboutDevBy;
+  if (aboutCopyright && dict.aboutCopyright) aboutCopyright.textContent = dict.aboutCopyright;
+
+  // Contact links tooltips in About modal
+  const emailItem = document.querySelector('.about-contact-item[href^="mailto:"]');
+  const linkedinItem = document.querySelector('.about-contact-item[href*="linkedin.com"]');
+  const instagramItem = document.querySelector('.about-contact-item[href*="instagram.com"]');
+  if (emailItem) emailItem.title = dict.aboutEmailTitle;
+  if (linkedinItem) linkedinItem.title = dict.aboutLinkedinTitle;
+  if (instagramItem) instagramItem.title = dict.aboutInstagramTitle;
+
+  // Footer Copyright Text
+  const copyrightTextEl = document.getElementById('copyright-text');
+  if (copyrightTextEl) copyrightTextEl.textContent = dict.copyrightText;
 
   // Update Clock, Greeting, and Weather display immediately
   updateClockAndDate();
@@ -622,6 +756,7 @@ function setLanguage(lang) {
     applyTranslations(currentLang);
   });
 }
+
 
 if (btnLangId) {
   btnLangId.addEventListener('click', (e) => {
@@ -1908,45 +2043,189 @@ async function loadWeather(forceRefresh = false) {
 }
 
 // ============================================================
-// 1. DAILY INSPIRING QUOTES MODULE
+// 1. REAL-TIME ONLINE DAILY INSPIRING QUOTES MODULE
 // ============================================================
-let currentQuoteIndex = 0;
+let activeQuote = null;
+let isFetchingQuote = false;
+
+// Translates English text to Indonesian via Google Translate API
+async function translateQuoteToIndonesian(text) {
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=id&dt=t&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Translation failed');
+    const data = await res.json();
+    if (data && Array.isArray(data[0])) {
+      return data[0].map(item => item[0]).join('');
+    }
+  } catch (err) {
+    console.warn('[Quote Translation] Offline or translation failed:', err);
+  }
+  return null;
+}
+
+// Fetches a new quote online from multiple public REST endpoints with graceful offline fallback
+async function fetchOnlineQuote(lang = currentLang) {
+  const dict = i18n[lang] || i18n.en;
+  let rawText = '';
+  let author = '';
+
+  // 1. Primary Online Endpoint: DummyJSON Quotes API
+  try {
+    const res = await fetch('https://dummyjson.com/quotes/random', { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.quote) {
+        rawText = data.quote.trim();
+        author = data.author ? data.author.trim() : (dict.quoteUnknownAuthor || 'Anonymous');
+      }
+    }
+  } catch (e1) {
+    // 2. Secondary Online Endpoint: Quotable API
+    try {
+      const res2 = await fetch('https://api.quotable.io/quotes/random', { cache: 'no-store' });
+      if (res2.ok) {
+        const data2 = await res2.json();
+        const item = Array.isArray(data2) ? data2[0] : data2;
+        if (item && (item.content || item.quote)) {
+          rawText = (item.content || item.quote).trim();
+          author = item.author ? item.author.trim() : (dict.quoteUnknownAuthor || 'Anonymous');
+        }
+      }
+    } catch (e2) {
+      // 3. Tertiary Online Endpoint: AdviceSlip API
+      try {
+        const res3 = await fetch('https://api.adviceslip.com/advice', { cache: 'no-store' });
+        if (res3.ok) {
+          const data3 = await res3.json();
+          if (data3 && data3.slip && data3.slip.advice) {
+            rawText = data3.slip.advice.trim();
+            author = dict.quoteUnknownAuthor || 'Wisdom';
+          }
+        }
+      } catch (e3) {
+        // Fallback handled below
+      }
+    }
+  }
+
+  // If online fetching succeeded
+  if (rawText) {
+    let displayText = rawText;
+    if (lang === 'id') {
+      const translated = await translateQuoteToIndonesian(rawText);
+      if (translated) {
+        displayText = translated;
+      }
+    }
+    return { text: displayText, rawEnText: rawText, author: author, source: 'online' };
+  }
+
+  // Graceful offline fallback: pick randomly from curated local quotes bank
+  const localList = dict.quotes || i18n.en.quotes;
+  const picked = localList[Math.floor(Math.random() * localList.length)];
+  return { text: picked.text, rawEnText: picked.text, author: picked.author, source: 'offline' };
+}
 
 function initDailyQuotes() {
-  const dict = i18n[currentLang] || i18n.en;
-  if (dict.quotes && dict.quotes.length > 0) {
-    currentQuoteIndex = Math.floor(Math.random() * dict.quotes.length);
-  } else {
-    currentQuoteIndex = 0;
+  if (btnQuoteShuffle) {
+    btnQuoteShuffle.addEventListener('click', () => {
+      shuffleQuote(true);
+    });
   }
-  updateQuoteDisplay();
+
+  // Check cached quote in storage for instantaneous render
+  const cacheKey = `cachedQuote_${currentLang}`;
+  chrome.storage.local.get([cacheKey, 'lastQuoteFetchTime'], (data) => {
+    if (data && data[cacheKey]) {
+      activeQuote = data[cacheKey];
+      renderQuoteUI(activeQuote, false);
+      // If cached quote is older than 6 hours, fetch a fresh one in the background
+      const sixHours = 6 * 60 * 60 * 1000;
+      if (!data.lastQuoteFetchTime || (Date.now() - data.lastQuoteFetchTime > sixHours)) {
+        shuffleQuote(false);
+      }
+    } else {
+      // First load or no cache: pick initial local quote & fetch fresh online
+      const dict = i18n[currentLang] || i18n.en;
+      const initial = dict.quotes[Math.floor(Math.random() * dict.quotes.length)];
+      activeQuote = initial;
+      renderQuoteUI(initial, false);
+      shuffleQuote(false);
+    }
+  });
+}
+
+function renderQuoteUI(quote, animate = true) {
+  if (!quote || !quoteTextEl || !quoteAuthorEl) return;
+  const dict = i18n[currentLang] || i18n.en;
+  const authorName = quote.author || dict.quoteUnknownAuthor || 'Anonymous';
+
+  if (animate) {
+    quoteTextEl.style.opacity = '0';
+    quoteAuthorEl.style.opacity = '0';
+    setTimeout(() => {
+      quoteTextEl.textContent = `"${quote.text}"`;
+      quoteAuthorEl.textContent = `— ${authorName}`;
+      quoteTextEl.style.opacity = '0.85';
+      quoteAuthorEl.style.opacity = '0.7';
+    }, 180);
+  } else {
+    quoteTextEl.textContent = `"${quote.text}"`;
+    quoteAuthorEl.textContent = `— ${authorName}`;
+    quoteTextEl.style.opacity = '0.85';
+    quoteAuthorEl.style.opacity = '0.7';
+  }
+}
+
+async function shuffleQuote(userInitiated = true) {
+  if (isFetchingQuote) return;
+  isFetchingQuote = true;
 
   if (btnQuoteShuffle) {
-    btnQuoteShuffle.addEventListener('click', shuffleQuote);
+    btnQuoteShuffle.classList.add('spinning');
+  }
+
+  if (userInitiated && quoteTextEl) {
+    quoteTextEl.style.opacity = '0.3';
+  }
+
+  try {
+    const newQuote = await fetchOnlineQuote(currentLang);
+    activeQuote = newQuote;
+    renderQuoteUI(newQuote, true);
+
+    const cacheKey = `cachedQuote_${currentLang}`;
+    chrome.storage.local.set({
+      [cacheKey]: newQuote,
+      lastQuoteFetchTime: Date.now()
+    });
+  } catch (err) {
+    console.warn('[Daily Quote] Error shuffling quote:', err);
+  } finally {
+    isFetchingQuote = false;
+    if (btnQuoteShuffle) {
+      setTimeout(() => {
+        btnQuoteShuffle.classList.remove('spinning');
+      }, 400);
+    }
   }
 }
 
 function updateQuoteDisplay() {
   const dict = i18n[currentLang] || i18n.en;
-  if (!dict.quotes || !quoteTextEl || !quoteAuthorEl) return;
-  const quote = dict.quotes[currentQuoteIndex % dict.quotes.length];
-  quoteTextEl.style.opacity = '0';
-  setTimeout(() => {
-    quoteTextEl.textContent = `"${quote.text}"`;
-    quoteAuthorEl.textContent = `— ${quote.author}`;
-    quoteTextEl.style.opacity = '0.85';
-  }, 150);
-}
+  if (quoteBadgeLabel && dict.quoteBadge) quoteBadgeLabel.textContent = dict.quoteBadge;
+  if (btnQuoteShuffle && dict.quoteShuffleTitle) btnQuoteShuffle.title = dict.quoteShuffleTitle;
 
-function shuffleQuote() {
-  const dict = i18n[currentLang] || i18n.en;
-  if (!dict.quotes) return;
-  let nextIndex = Math.floor(Math.random() * dict.quotes.length);
-  if (nextIndex === currentQuoteIndex && dict.quotes.length > 1) {
-    nextIndex = (nextIndex + 1) % dict.quotes.length;
-  }
-  currentQuoteIndex = nextIndex;
-  updateQuoteDisplay();
+  const cacheKey = `cachedQuote_${currentLang}`;
+  chrome.storage.local.get(cacheKey, (data) => {
+    if (data && data[cacheKey]) {
+      activeQuote = data[cacheKey];
+      renderQuoteUI(activeQuote, true);
+    } else {
+      shuffleQuote(false);
+    }
+  });
 }
 
 // ============================================================
