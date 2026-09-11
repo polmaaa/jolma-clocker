@@ -1876,7 +1876,7 @@ body.theme-siang .weather-snowflake {
 
 .daily-quote-container {
   position: fixed;
-  bottom: 65px; /* Dinaikkan lebih tinggi agar proporsional dan tidak menempel ke bawah */
+  bottom: 72px; /* Posisi proporsional di mode dashboard */
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -1903,7 +1903,7 @@ body.theme-siang .weather-snowflake {
 
 /* Khusus Mode Terkunci: Naikkan posisi quote lebih tinggi agar seimbang dengan lock pill */
 body.is-locked .daily-quote-container {
-  bottom: 85px;
+  bottom: 105px;
 }
 
 .quote-text {

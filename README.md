@@ -61,6 +61,31 @@ Dibuat & dikembangkan oleh: **Polma Sihotang**
 
 ---
 
-## 👨‍💻 Pengembang
-**Polma Sihotang**
-* GitHub: [@polmaaa](https://github.com/polmaaa)
+---
+
+## ☕ Dukungan & Donasi
+
+Jika Anda merasa **Jolma CLocker** bermanfaat untuk menjaga privasi kerja dan meningkatkan produktivitas harian Anda, Anda dapat memberikan apresiasi dan mendukung pengembangan fitur-fitur baru melalui:
+
+[![Saweria](https://img.shields.io/badge/Dukung%20via-Saweria-FFA500?style=for-the-badge&logo=coffee&logoColor=white)](https://saweria.co/jolmaaa)
+
+👉 **Link Donasi Saweria:** [saweria.co/jolmaaa](https://saweria.co/jolmaaa)
+
+Setiap dukungan dan secangkir kopi dari Anda sangat berarti untuk memotivasi pemeliharaan dan inovasi proyek open-source ini! ❤️
+
+---
+
+## 📬 Kontak & Bantuan
+
+Punya saran fitur, menemukan bug, atau ingin berdiskusi mengenai kustomisasi dan kolaborasi?
+
+* **Email:** [polma.sihotang@gmail.com](mailto:polma.sihotang@gmail.com)
+* **LinkedIn:** [Polma Sihotang](https://id.linkedin.com/in/polma-sihotang-46535a141)
+* **Instagram:** [@polma.sihotang](https://www.instagram.com/polma.sihotang/)
+* **GitHub:** [@polmaaa](https://github.com/polmaaa)
+
+---
+
+## 📄 Lisensi
+© 2026 **Jolma CLocker** by **Polma Sihotang**. All Rights Reserved.
+Dibuat dengan ❤️ untuk komunitas open-source.
