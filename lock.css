@@ -1726,12 +1726,10 @@ body.theme-siang .weather-snowflake {
    ============================================================ */
 
 .quick-links-section {
-  margin-top: 20px;
+  margin-top: 22px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  width: 100%;
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
@@ -1739,10 +1737,11 @@ body.theme-siang .weather-snowflake {
 
 .quick-links-grid {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
-  justify-content: center;
+  width: 100%;
 }
 
 .quick-link-item {
@@ -1750,16 +1749,26 @@ body.theme-siang .weather-snowflake {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  width: 62px;
-  text-decoration: none;
-  cursor: pointer;
+  width: 68px;
   user-select: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.quick-link-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
 }
 
 .quick-link-icon-box {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -1770,10 +1779,11 @@ body.theme-siang .weather-snowflake {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 6px;
 }
 
 .quick-link-item:hover .quick-link-icon-box {
-  transform: translateY(-4px) scale(1.06);
+  transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 20px -3px rgba(0, 0, 0, 0.12);
   border-color: var(--primary);
 }
@@ -1801,81 +1811,95 @@ body.theme-malam .quick-link-item:hover .quick-link-icon-box {
   font-size: 11px;
   font-weight: 500;
   color: var(--text-color);
-  max-width: 60px;
+  max-width: 64px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   text-align: center;
   opacity: 0.85;
+  line-height: 1.2;
 }
 
 .quick-link-edit-btn {
   position: absolute;
-  top: -3px;
-  right: 5px;
-  width: 18px;
-  height: 18px;
+  top: -4px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: #64748b;
-  font-size: 9px;
-  transition: all 0.15s;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.15s ease;
+  z-index: 10;
+  padding: 0;
 }
 
 .quick-link-item:hover .quick-link-edit-btn {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .quick-link-edit-btn:hover {
   background: var(--primary);
   color: #ffffff;
   border-color: var(--primary);
+  transform: scale(1.15);
 }
 
-.btn-add-quick-link {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1.5px dashed rgba(15, 23, 42, 0.18);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.edit-pencil-icon {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+}
+
+body.theme-malam .quick-link-edit-btn {
+  background: #1e1b4b;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+}
+
+/* Add Shortcut item (Parallel & Identical geometry) */
+.quick-link-add-item {
   cursor: pointer;
-  color: var(--text-muted);
-  transition: all 0.2s;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
-.btn-add-quick-link:hover {
-  background: rgba(255, 255, 255, 0.8);
+.quick-link-add-box {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1.5px dashed rgba(15, 23, 42, 0.22);
+  color: var(--text-muted);
+}
+
+.quick-link-add-item:hover .quick-link-add-box {
+  background: rgba(255, 255, 255, 0.85);
   border-color: var(--primary);
   color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.05);
 }
 
-body.theme-malam .btn-add-quick-link {
+body.theme-malam .quick-link-add-box {
   background: rgba(12, 8, 24, 0.35);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-body.theme-malam .btn-add-quick-link:hover {
-  background: rgba(20, 14, 38, 0.65);
-  border-color: rgba(139, 92, 246, 0.5);
-  color: #c4b5fd;
+body.theme-malam .quick-link-add-item:hover .quick-link-add-box {
+  background: rgba(20, 14, 38, 0.85);
+  border-color: #818cf8;
+  color: #818cf8;
 }
 
 .add-link-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
 }
 
 .add-link-label {

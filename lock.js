@@ -478,8 +478,11 @@ function applyTranslations(lang) {
   if (autolockModalTitle) autolockModalTitle.textContent = dict.autolockTitle;
   if (autolockDesc) autolockDesc.textContent = dict.autolockDesc;
 
-  // Update quote display with new language
+  // Update quote display and quick links with new language
   updateQuoteDisplay();
+  if (quickLinksList && quickLinksList.length > 0) {
+    renderQuickLinks(quickLinksList);
+  }
 
   // Username Modal
   const usernameModalTitle = document.getElementById('username-modal-title');
@@ -1707,6 +1710,7 @@ function shuffleQuote() {
 }
 
 // ============================================================
+// ============================================================
 // 2. MINIMALIST QUICK LINKS MODULE
 // ============================================================
 const DEFAULT_QUICK_LINKS = [
@@ -1732,9 +1736,6 @@ function initQuickLinks() {
     renderQuickLinks(quickLinksList);
   });
 
-  if (btnAddQuickLink) {
-    btnAddQuickLink.addEventListener('click', openAddQuickLinkModal);
-  }
   if (quicklinkModalCloseBtn) {
     quicklinkModalCloseBtn.addEventListener('click', closeQuickLinkModal);
   }
@@ -1763,10 +1764,16 @@ function getFaviconUrl(url) {
 function renderQuickLinks(links) {
   if (!quickLinksGrid) return;
   quickLinksGrid.innerHTML = '';
+  const dict = i18n[currentLang] || i18n.en;
 
+  // 1. Render all shortcut items
   links.forEach((item, index) => {
+    const itemWrap = document.createElement('div');
+    itemWrap.className = 'quick-link-item';
+
+    // Link clickable wrapper (icon + text)
     const linkEl = document.createElement('a');
-    linkEl.className = 'quick-link-item';
+    linkEl.className = 'quick-link-link';
     linkEl.href = item.url;
     linkEl.target = '_blank';
     linkEl.rel = 'noopener noreferrer';
@@ -1787,22 +1794,50 @@ function renderQuickLinks(links) {
     titleEl.className = 'quick-link-title';
     titleEl.textContent = item.name;
 
+    linkEl.appendChild(iconBox);
+    linkEl.appendChild(titleEl);
+
+    // Edit button as dedicated overlay control
     const editBtn = document.createElement('button');
     editBtn.type = 'button';
     editBtn.className = 'quick-link-edit-btn';
-    editBtn.title = 'Edit';
-    editBtn.innerHTML = '✎';
+    editBtn.title = `Edit: ${item.name}`;
+    editBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="edit-pencil-icon">
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+      </svg>
+    `;
     editBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       openEditQuickLinkModal(index);
     });
 
-    linkEl.appendChild(iconBox);
-    linkEl.appendChild(titleEl);
-    linkEl.appendChild(editBtn);
-    quickLinksGrid.appendChild(linkEl);
+    itemWrap.appendChild(linkEl);
+    itemWrap.appendChild(editBtn);
+    quickLinksGrid.appendChild(itemWrap);
   });
+
+  // 2. Render Add button in the exact same grid geometry for 100% horizontal alignment
+  const addWrap = document.createElement('div');
+  addWrap.className = 'quick-link-item quick-link-add-item';
+  addWrap.id = 'btn-add-quick-link';
+  addWrap.title = dict.quicklinkAddTitle || 'Tambah Pintasan';
+  addWrap.innerHTML = `
+    <div class="quick-link-icon-box quick-link-add-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="add-link-icon">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </div>
+    <span class="quick-link-title" id="lbl-add-shortcut">${dict.addShortcut || 'Pintasan'}</span>
+  `;
+  addWrap.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openAddQuickLinkModal();
+  });
+  quickLinksGrid.appendChild(addWrap);
 }
 
 function openAddQuickLinkModal() {
@@ -1815,7 +1850,7 @@ function openAddQuickLinkModal() {
   quicklinkModalTitle.textContent = dict.quicklinkAddTitle;
   quicklinkDeleteBtn.style.display = 'none';
   quicklinkModalOverlay.classList.add('open');
-  quicklinkNameInput.focus();
+  setTimeout(() => quicklinkNameInput.focus(), 50);
 }
 
 function openEditQuickLinkModal(index) {
@@ -1830,7 +1865,7 @@ function openEditQuickLinkModal(index) {
   quicklinkModalTitle.textContent = dict.quicklinkEditTitle;
   quicklinkDeleteBtn.style.display = 'inline-block';
   quicklinkModalOverlay.classList.add('open');
-  quicklinkNameInput.focus();
+  setTimeout(() => quicklinkNameInput.focus(), 50);
 }
 
 function closeQuickLinkModal() {
@@ -1890,7 +1925,7 @@ function handleQuickLinkDelete() {
 }
 
 // ============================================================
-// 3. POMODORO & FOCUS TIMER MODULE
+// 3. POMODORO & FOCUS TIMER MODULE (With Full Cross-Tab Persistence)
 // ============================================================
 let pomoState = {
   mode: 'focus',
@@ -1904,15 +1939,76 @@ let pomoState = {
 };
 let pomoInterval = null;
 
+function savePomoConfig() {
+  chrome.storage.local.set({
+    pomodoroConfig: {
+      focusMin: pomoState.focusMin,
+      shortMin: pomoState.shortMin,
+      longMin: pomoState.longMin,
+      soundAlert: pomoState.soundAlert,
+      mode: pomoState.mode
+    }
+  });
+}
+
 function initPomodoro() {
-  chrome.storage.local.get('pomodoroConfig', (data) => {
+  chrome.storage.local.get(['pomodoroConfig', 'pomodoroActiveTimer'], (data) => {
     if (data && data.pomodoroConfig) {
-      pomoState = { ...pomoState, ...data.pomodoroConfig };
+      pomoState.focusMin = Math.max(1, parseInt(data.pomodoroConfig.focusMin, 10) || 25);
+      pomoState.shortMin = Math.max(1, parseInt(data.pomodoroConfig.shortMin, 10) || 5);
+      pomoState.longMin = Math.max(1, parseInt(data.pomodoroConfig.longMin, 10) || 15);
+      pomoState.soundAlert = data.pomodoroConfig.soundAlert !== false;
+      if (data.pomodoroConfig.mode) {
+        pomoState.mode = data.pomodoroConfig.mode;
+      }
     }
     if (inputFocusMin) inputFocusMin.value = pomoState.focusMin;
     if (inputShortMin) inputShortMin.value = pomoState.shortMin;
     if (inputLongMin) inputLongMin.value = pomoState.longMin;
     if (pomoSoundToggle) pomoSoundToggle.checked = pomoState.soundAlert !== false;
+
+    // Check if an active timer was running across tabs
+    if (data && data.pomodoroActiveTimer && data.pomodoroActiveTimer.running && data.pomodoroActiveTimer.targetTimestamp) {
+      const remainingSecs = Math.round((data.pomodoroActiveTimer.targetTimestamp - Date.now()) / 1000);
+      if (remainingSecs > 0) {
+        pomoState.mode = data.pomodoroActiveTimer.mode || pomoState.mode;
+        pomoState.totalSeconds = data.pomodoroActiveTimer.totalSeconds || (pomoState.focusMin * 60);
+        pomoState.secondsLeft = remainingSecs;
+        pomoState.running = true;
+
+        document.querySelectorAll('.btn-pomo-tab').forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.mode === pomoState.mode);
+        });
+
+        const dict = i18n[currentLang] || i18n.en;
+        if (pomoStartBtn) {
+          pomoStartBtn.textContent = dict.pomoPause || 'Pause';
+          pomoStartBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+        }
+        updatePomoDisplay();
+        
+        pomoInterval = setInterval(() => {
+          if (pomoState.secondsLeft > 0) {
+            pomoState.secondsLeft--;
+            updatePomoDisplay();
+          } else {
+            clearInterval(pomoInterval);
+            pomoInterval = null;
+            pomoState.running = false;
+            chrome.storage.local.remove('pomodoroActiveTimer');
+            if (pomoStartBtn) {
+              pomoStartBtn.textContent = dict.pomoStart || 'Start';
+              pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
+            }
+            playPomoChime();
+          }
+        }, 1000);
+        return;
+      } else {
+        chrome.storage.local.remove('pomodoroActiveTimer');
+      }
+    }
+
     setPomoMode(pomoState.mode || 'focus', false);
   });
 
@@ -1929,6 +2025,7 @@ function initPomodoro() {
     tab.addEventListener('click', () => {
       const mode = tab.dataset.mode;
       setPomoMode(mode, true);
+      savePomoConfig();
     });
   });
 
@@ -1951,14 +2048,7 @@ function initPomodoro() {
         pomoState.shortMin = Math.max(1, parseInt(inputShortMin.value, 10) || 5);
         pomoState.longMin = Math.max(1, parseInt(inputLongMin.value, 10) || 15);
         pomoState.soundAlert = !!pomoSoundToggle.checked;
-        chrome.storage.local.set({
-          pomodoroConfig: {
-            focusMin: pomoState.focusMin,
-            shortMin: pomoState.shortMin,
-            longMin: pomoState.longMin,
-            soundAlert: pomoState.soundAlert
-          }
-        });
+        savePomoConfig();
         if (!pomoState.running) {
           setPomoMode(pomoState.mode, false);
         }
@@ -1991,6 +2081,7 @@ function setPomoMode(mode, autoReset = true) {
       pomoInterval = null;
     }
     pomoState.running = false;
+    chrome.storage.local.remove('pomodoroActiveTimer');
     pomoState.totalSeconds = minutes * 60;
     pomoState.secondsLeft = pomoState.totalSeconds;
     if (pomoStartBtn) {
@@ -2031,10 +2122,21 @@ function togglePomoTimer() {
     clearInterval(pomoInterval);
     pomoInterval = null;
     pomoState.running = false;
+    chrome.storage.local.remove('pomodoroActiveTimer');
     pomoStartBtn.textContent = dict.pomoStart || 'Start';
     pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
   } else {
     pomoState.running = true;
+    const targetTimestamp = Date.now() + pomoState.secondsLeft * 1000;
+    chrome.storage.local.set({
+      pomodoroActiveTimer: {
+        running: true,
+        targetTimestamp,
+        totalSeconds: pomoState.totalSeconds,
+        mode: pomoState.mode
+      }
+    });
+
     pomoStartBtn.textContent = dict.pomoPause || 'Pause';
     pomoStartBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
 
@@ -2046,6 +2148,7 @@ function togglePomoTimer() {
         clearInterval(pomoInterval);
         pomoInterval = null;
         pomoState.running = false;
+        chrome.storage.local.remove('pomodoroActiveTimer');
         pomoStartBtn.textContent = dict.pomoStart || 'Start';
         pomoStartBtn.style.background = 'linear-gradient(135deg, var(--primary), #6366f1)';
         playPomoChime();
