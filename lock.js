@@ -1369,6 +1369,7 @@ if (menuAboutBtn) {
 }
 
 function openAboutModal() {
+  applyTranslations(currentLang);
   if (aboutModalOverlay) aboutModalOverlay.classList.add('open');
 }
 
@@ -1398,6 +1399,7 @@ if (weatherBtn) {
 // ---- Modal Ubah Nama Pengguna --------------------------------------------
 
 function openUsernameModal() {
+  applyTranslations(currentLang);
   chrome.storage.local.get('userName', (data) => {
     const currentName = (data && data.userName && data.userName.trim()) || 'Polma Sihotang';
     modalUsernameInput.value = currentName;
@@ -1440,6 +1442,7 @@ modalUsernameForm.addEventListener('submit', (e) => {
 // ---- Modal Pengaturan Cuaca ----------------------------------------------
 
 function openWeatherModal() {
+  applyTranslations(currentLang);
   const dict = i18n[currentLang] || i18n.id;
   chrome.storage.local.get(['useGpsLocation', 'weatherCache', 'weatherEffectsEnabled'], (data) => {
     modalGpsToggle.checked = !!data.useGpsLocation;
@@ -1575,6 +1578,7 @@ if (modalRefreshWeatherBtn) {
 // ---- Modal Ubah Kata Sandi -----------------------------------------------
 
 function openModal() {
+  applyTranslations(currentLang);
   modalOverlay.classList.add('open');
   modalOldPw.focus();
 }
@@ -2698,6 +2702,7 @@ function renderQuickLinks(links) {
 
 // Add / Edit Modal Functions
 function openAddQuickLinkModal(parentFolderIndex = -1) {
+  applyTranslations(currentLang);
   const dict = i18n[currentLang] || i18n.en;
   quicklinkEditIndex.value = '-1';
   quicklinkParentFolderIndex.value = String(parentFolderIndex);
@@ -2724,6 +2729,7 @@ function openAddQuickLinkModal(parentFolderIndex = -1) {
 }
 
 function openEditQuickLinkModal(index, parentFolderIndex = -1) {
+  applyTranslations(currentLang);
   const dict = i18n[currentLang] || i18n.en;
   quicklinkEditIndex.value = String(index);
   quicklinkParentFolderIndex.value = String(parentFolderIndex);
@@ -2897,6 +2903,7 @@ function initAutoLock() {
 }
 
 function openAutoLockModal() {
+  applyTranslations(currentLang);
   if (autolockModalOverlay) autolockModalOverlay.classList.add('open');
 }
 
