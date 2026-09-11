@@ -101,15 +101,22 @@
       <!-- Accordion Panel for Weather Settings (hidden by default) -->
       <div id="accordion-weather-panel" class="accordion-panel">
         <div class="popup-toggle-row">
-          <span class="popup-toggle-label" id="popup-weather-gps-label">Lokasi Presisi (GPS Real-time)</span>
+          <span class="popup-toggle-label" id="popup-weather-gps-label">Precise Location (Real-time GPS)</span>
           <label class="switch">
             <input type="checkbox" id="popup-gps-toggle">
             <span class="slider round"></span>
           </label>
         </div>
+        <div class="popup-toggle-row">
+          <span class="popup-toggle-label" id="popup-weather-effects-label">Atmospheric Weather Visual Effects</span>
+          <label class="switch">
+            <input type="checkbox" id="popup-weather-effects-toggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
         <div id="popup-weather-preview" class="popup-weather-preview">
           <span id="popup-weather-icon">🌤️</span>
-          <span id="popup-weather-info">Memuat cuaca...</span>
+          <span id="popup-weather-info">Loading weather...</span>
         </div>
         <div id="popup-weather-feedback" class="feedback-text"></div>
       </div>

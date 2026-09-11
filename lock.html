@@ -32,6 +32,9 @@
     <div class="blob blob-3"></div>
   </div>
 
+  <!-- Atmospheric Weather Visual Effects Layer -->
+  <div id="weather-effects-layer" class="weather-effects-layer"></div>
+
   <!-- Unlocked Top Bar -->
   <div id="unlocked-top-bar" class="top-bar">
     <!-- Dropdown Menu -->
@@ -98,7 +101,7 @@
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
             </svg>
           </span>
-          <span class="menu-item-label" id="menu-pw-label">Ubah Kata Sandi</span>
+          <span class="menu-item-label" id="menu-pw-label">Change Password</span>
         </button>
 
         <div class="menu-footer">
@@ -112,13 +115,13 @@
   <div id="username-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title" id="username-modal-title">Ubah Nama Pengguna</h3>
-        <button id="username-modal-close-btn" class="modal-close" title="Tutup">✕</button>
+        <h3 class="modal-title" id="username-modal-title">Change Username</h3>
+        <button id="username-modal-close-btn" class="modal-close" title="Close">✕</button>
       </div>
       <form id="modal-username-form">
-        <input type="text" id="modal-username-input" placeholder="Masukkan nama Anda..." required autocomplete="off" maxlength="32">
+        <input type="text" id="modal-username-input" placeholder="Enter your name..." required autocomplete="off" maxlength="32">
         <div id="username-modal-feedback" class="modal-feedback"></div>
-        <button type="submit" class="btn-modal-submit" id="modal-username-submit">Simpan Nama</button>
+        <button type="submit" class="btn-modal-submit" id="modal-username-submit">Save Name</button>
       </form>
     </div>
   </div>
@@ -127,17 +130,28 @@
   <div id="weather-modal-overlay" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title" id="weather-modal-title">Pengaturan Cuaca</h3>
-        <button id="weather-modal-close-btn" class="modal-close" title="Tutup">✕</button>
+        <h3 class="modal-title" id="weather-modal-title">Weather Settings</h3>
+        <button id="weather-modal-close-btn" class="modal-close" title="Close">✕</button>
       </div>
       <div class="modal-weather-body">
         <div class="setting-toggle-row">
           <div class="setting-toggle-info">
-            <span class="setting-toggle-title" id="setting-toggle-title-el">Lokasi Presisi (GPS Real-time)</span>
-            <span class="setting-toggle-desc" id="setting-toggle-desc-el">Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.</span>
+            <span class="setting-toggle-title" id="setting-toggle-title-el">Precise Location (Real-time GPS)</span>
+            <span class="setting-toggle-desc" id="setting-toggle-desc-el">Uses device GPS (requires location permission). If disabled, location is detected automatically via IP network.</span>
           </div>
           <label class="switch">
             <input type="checkbox" id="modal-gps-toggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="setting-toggle-info">
+            <span class="setting-toggle-title" id="setting-toggle-effects-title">Atmospheric Weather Visual Effects</span>
+            <span class="setting-toggle-desc" id="setting-toggle-effects-desc">Displays dynamic visual effects (rain, clouds, lightning, fog, etc.) on the dashboard background.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="modal-weather-effects-toggle" checked>
             <span class="slider round"></span>
           </label>
         </div>

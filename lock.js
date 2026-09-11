@@ -30,7 +30,8 @@ const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
 
-// Weather Footer & Modal elements
+// Weather Footer, Effects & Modal elements
+const weatherEffectsLayer     = document.getElementById('weather-effects-layer');
 const weatherFooter           = document.getElementById('weather-footer');
 const weatherBtn              = document.getElementById('weather-btn');
 const weatherIcon             = document.getElementById('weather-icon');
@@ -40,6 +41,9 @@ const weatherCity             = document.getElementById('weather-city');
 const weatherModalOverlay     = document.getElementById('weather-modal-overlay');
 const weatherModalCloseBtn    = document.getElementById('weather-modal-close-btn');
 const modalGpsToggle          = document.getElementById('modal-gps-toggle');
+const modalWeatherEffectsToggle = document.getElementById('modal-weather-effects-toggle');
+const settingToggleEffectsTitle = document.getElementById('setting-toggle-effects-title');
+const settingToggleEffectsDesc  = document.getElementById('setting-toggle-effects-desc');
 const modalWeatherIcon        = document.getElementById('modal-weather-icon');
 const modalWeatherTemp        = document.getElementById('modal-weather-temp');
 const modalWeatherDesc        = document.getElementById('modal-weather-desc');
@@ -120,6 +124,10 @@ const i18n = {
     weatherModalTitle: 'Pengaturan Cuaca',
     weatherGpsTitle: 'Lokasi Presisi (GPS Real-time)',
     weatherGpsDesc: 'Menggunakan GPS perangkat (memerlukan izin lokasi). Jika dinonaktifkan, lokasi dideteksi otomatis via IP jaringan.',
+    weatherEffectsTitle: 'Efek Visual Cuaca Atmosferik',
+    weatherEffectsDesc: 'Menampilkan efek dinamis hujan, awan, kabut, petir, atau salju pada background.',
+    weatherEffectsActive: '✓ Efek visual cuaca aktif!',
+    weatherEffectsDisabled: '✓ Efek visual cuaca nonaktif.',
     weatherRefreshBtn: 'Perbarui Cuaca Sekarang',
     weatherRefreshing: '⏳ Memperbarui...',
     weatherSuccess: '✓ Data cuaca berhasil diperbarui!',
@@ -211,6 +219,10 @@ const i18n = {
     weatherModalTitle: 'Weather Settings',
     weatherGpsTitle: 'Precise Location (Real-time GPS)',
     weatherGpsDesc: 'Uses device GPS (requires location permission). If disabled, location is detected automatically via IP network.',
+    weatherEffectsTitle: 'Atmospheric Weather Visual Effects',
+    weatherEffectsDesc: 'Displays dynamic visual effects (rain, clouds, lightning, fog, snow, etc.) on the dashboard background.',
+    weatherEffectsActive: '✓ Weather visual effects enabled!',
+    weatherEffectsDisabled: '✓ Weather visual effects disabled.',
     weatherRefreshBtn: 'Refresh Weather Now',
     weatherRefreshing: '⏳ Refreshing...',
     weatherSuccess: '✓ Weather data updated successfully!',
@@ -299,6 +311,8 @@ function applyTranslations(lang) {
   if (weatherModalTitle) weatherModalTitle.textContent = dict.weatherModalTitle;
   if (settingToggleTitleEl) settingToggleTitleEl.textContent = dict.weatherGpsTitle;
   if (settingToggleDescEl) settingToggleDescEl.textContent = dict.weatherGpsDesc;
+  if (settingToggleEffectsTitle) settingToggleEffectsTitle.textContent = dict.weatherEffectsTitle;
+  if (settingToggleEffectsDesc) settingToggleEffectsDesc.textContent = dict.weatherEffectsDesc;
   if (modalRefreshWeatherBtn) modalRefreshWeatherBtn.textContent = dict.weatherRefreshBtn;
 
   // Password Modal
@@ -691,6 +705,19 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   if (changes.userName) {
     updateGreeting();
   }
+  if (changes.weatherEffectsEnabled !== undefined) {
+    chrome.storage.local.get('weatherCache', (data) => {
+      if (data && data.weatherCache) {
+        if (changes.weatherEffectsEnabled.newValue === false && weatherEffectsLayer) {
+          weatherEffectsLayer.innerHTML = '';
+          weatherEffectsLayer.dataset.currentEffect = '';
+        } else {
+          weatherEffectsLayer.dataset.currentEffect = '';
+          renderWeatherEffects(data.weatherCache.weatherCode, data.weatherCache.isDay);
+        }
+      }
+    });
+  }
 });
 
 // ---- Menu Dropdown -------------------------------------------------------
@@ -791,8 +818,11 @@ modalUsernameForm.addEventListener('submit', (e) => {
 
 function openWeatherModal() {
   const dict = i18n[currentLang] || i18n.id;
-  chrome.storage.local.get(['useGpsLocation', 'weatherCache'], (data) => {
+  chrome.storage.local.get(['useGpsLocation', 'weatherCache', 'weatherEffectsEnabled'], (data) => {
     modalGpsToggle.checked = !!data.useGpsLocation;
+    if (modalWeatherEffectsToggle) {
+      modalWeatherEffectsToggle.checked = data.weatherEffectsEnabled !== false;
+    }
     if (data.weatherCache) {
       const c = data.weatherCache;
       let cond = c.condition;
@@ -878,6 +908,29 @@ if (modalGpsToggle) {
         loadWeather(true);
       });
     }
+  });
+}
+
+// Toggle Efek Visual Cuaca
+if (modalWeatherEffectsToggle) {
+  modalWeatherEffectsToggle.addEventListener('change', () => {
+    const isEffects = modalWeatherEffectsToggle.checked;
+    const dict = i18n[currentLang] || i18n.id;
+    chrome.storage.local.set({ weatherEffectsEnabled: isEffects }, () => {
+      weatherModalFeedback.className = 'modal-feedback success';
+      weatherModalFeedback.textContent = isEffects ? dict.weatherEffectsActive : dict.weatherEffectsDisabled;
+      chrome.storage.local.get('weatherCache', (data) => {
+        if (data && data.weatherCache) {
+          if (!isEffects && weatherEffectsLayer) {
+            weatherEffectsLayer.innerHTML = '';
+            weatherEffectsLayer.dataset.currentEffect = '';
+          } else {
+            weatherEffectsLayer.dataset.currentEffect = '';
+            renderWeatherEffects(data.weatherCache.weatherCode, data.weatherCache.isDay);
+          }
+        }
+      });
+    });
   });
 }
 
@@ -1129,6 +1182,113 @@ function getWeatherDetails(code, isDay = 1) {
   return { label, icon };
 }
 
+function renderWeatherEffects(weatherCode, isDay = 1) {
+  if (!weatherEffectsLayer) return;
+  chrome.storage.local.get('weatherEffectsEnabled', (data) => {
+    const isEnabled = data.weatherEffectsEnabled !== false;
+    if (!isEnabled || weatherCode === undefined || weatherCode === null) {
+      weatherEffectsLayer.innerHTML = '';
+      weatherEffectsLayer.dataset.currentEffect = '';
+      return;
+    }
+
+    const currentEffectKey = `${weatherCode}_${isDay}`;
+    if (weatherEffectsLayer.dataset.currentEffect === currentEffectKey) {
+      return;
+    }
+    weatherEffectsLayer.dataset.currentEffect = currentEffectKey;
+    weatherEffectsLayer.innerHTML = '';
+
+    // 1. Rain / Drizzle (WMO codes: 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82)
+    const isRain = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode);
+    const isThunder = [95, 96, 99].includes(weatherCode);
+    const isCloudy = [2, 3].includes(weatherCode);
+    const isFog = [45, 48].includes(weatherCode);
+    const isSnow = [71, 73, 75, 77, 85, 86].includes(weatherCode);
+    const isClear = [0, 1].includes(weatherCode);
+
+    if (isThunder) {
+      // Petir + Hujan deras
+      const lightning = document.createElement('div');
+      lightning.className = 'weather-lightning-overlay';
+      weatherEffectsLayer.appendChild(lightning);
+
+      const dropCount = 45;
+      for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'weather-rain-drop';
+        drop.style.left = `${Math.random() * 105 - 2}%`;
+        drop.style.animationDuration = `${0.5 + Math.random() * 0.4}s`;
+        drop.style.animationDelay = `${Math.random() * 2}s`;
+        drop.style.opacity = `${0.4 + Math.random() * 0.5}`;
+        weatherEffectsLayer.appendChild(drop);
+      }
+    } else if (isRain) {
+      const isHeavy = [65, 81, 82].includes(weatherCode);
+      const dropCount = isHeavy ? 50 : 35;
+      for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'weather-rain-drop';
+        drop.style.left = `${Math.random() * 105 - 2}%`;
+        drop.style.animationDuration = `${(isHeavy ? 0.5 : 0.7) + Math.random() * 0.4}s`;
+        drop.style.animationDelay = `${Math.random() * 2}s`;
+        drop.style.opacity = `${0.35 + Math.random() * 0.45}`;
+        weatherEffectsLayer.appendChild(drop);
+      }
+    } else if (isCloudy) {
+      const cloudCount = (weatherCode === 3) ? 5 : 3;
+      for (let i = 0; i < cloudCount; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'weather-cloud';
+        cloud.style.top = `${10 + Math.random() * 55}%`;
+        const size = 320 + Math.random() * 260;
+        cloud.style.width = `${size}px`;
+        cloud.style.height = `${size * 0.65}px`;
+        cloud.style.animationDuration = `${40 + Math.random() * 30}s`;
+        cloud.style.animationDelay = `-${Math.random() * 35}s`;
+        weatherEffectsLayer.appendChild(cloud);
+      }
+    } else if (isFog) {
+      const fog = document.createElement('div');
+      fog.className = 'weather-fog-layer';
+      weatherEffectsLayer.appendChild(fog);
+    } else if (isSnow) {
+      const snowCount = 35;
+      for (let i = 0; i < snowCount; i++) {
+        const flake = document.createElement('div');
+        flake.className = 'weather-snowflake';
+        const size = 3 + Math.random() * 4.5;
+        flake.style.width = `${size}px`;
+        flake.style.height = `${size}px`;
+        flake.style.left = `${Math.random() * 100}%`;
+        flake.style.animationDuration = `${5 + Math.random() * 5}s`;
+        flake.style.animationDelay = `${Math.random() * 5}s`;
+        weatherEffectsLayer.appendChild(flake);
+      }
+    } else if (isClear) {
+      if (isDay !== 0) {
+        const sunbeam = document.createElement('div');
+        sunbeam.className = 'weather-sunbeam';
+        weatherEffectsLayer.appendChild(sunbeam);
+      } else {
+        const starCount = 28;
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement('div');
+          star.className = 'weather-star';
+          const size = 1.5 + Math.random() * 2;
+          star.style.width = `${size}px`;
+          star.style.height = `${size}px`;
+          star.style.left = `${Math.random() * 98}%`;
+          star.style.top = `${Math.random() * 75}%`;
+          star.style.animationDuration = `${2 + Math.random() * 3.5}s`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          weatherEffectsLayer.appendChild(star);
+        }
+      }
+    }
+  });
+}
+
 function updateWeatherUI(cache) {
   if (!cache) return;
   const dict = i18n[currentLang] || i18n.id;
@@ -1156,6 +1316,11 @@ function updateWeatherUI(cache) {
   if (modalWeatherTemp) modalWeatherTemp.textContent = cache.temp || '--°C';
   if (modalWeatherDesc) modalWeatherDesc.textContent = condition || (currentLang === 'en' ? 'Clear' : 'Cerah');
   if (modalWeatherLoc) modalWeatherLoc.textContent = dict.weatherLocLabel(cityLabel, sourceLabel);
+
+  // Render efek visual cuaca atmosferik di seluruh background
+  if (cache.weatherCode !== undefined) {
+    renderWeatherEffects(cache.weatherCode, cache.isDay);
+  }
 }
 
 async function loadWeather(forceRefresh = false) {

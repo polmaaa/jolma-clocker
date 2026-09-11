@@ -33,6 +33,8 @@ const accordionWeatherPanel    = document.getElementById('accordion-weather-pane
 const chevronWeatherIcon       = document.getElementById('chevron-weather-icon');
 const popupWeatherGpsLabel     = document.getElementById('popup-weather-gps-label');
 const popupGpsToggle           = document.getElementById('popup-gps-toggle');
+const popupWeatherEffectsLabel = document.getElementById('popup-weather-effects-label');
+const popupWeatherEffectsToggle= document.getElementById('popup-weather-effects-toggle');
 const popupWeatherIcon         = document.getElementById('popup-weather-icon');
 const popupWeatherInfo         = document.getElementById('popup-weather-info');
 const popupWeatherFeedback     = document.getElementById('popup-weather-feedback');
@@ -82,6 +84,7 @@ const i18n = {
     usernameEmpty: 'Nama tidak boleh kosong!',
     weatherTitle: 'Pengaturan Cuaca',
     weatherGpsLabel: 'Lokasi Presisi (GPS Real-time)',
+    weatherEffectsLabel: 'Efek Visual Cuaca Atmosferik',
     weatherGpsActive: '✓ Lokasi presisi GPS aktif!',
     weatherGpsError: 'Izin lokasi ditolak/gagal.',
     weatherIpActive: '✓ Menggunakan deteksi IP otomatis.',
@@ -126,6 +129,7 @@ const i18n = {
     usernameEmpty: 'Name cannot be empty!',
     weatherTitle: 'Weather Settings',
     weatherGpsLabel: 'Precise Location (Real-time GPS)',
+    weatherEffectsLabel: 'Atmospheric Weather Visual Effects',
     weatherGpsActive: '✓ GPS precise location enabled!',
     weatherGpsError: 'Location permission denied/failed.',
     weatherIpActive: '✓ Using automatic IP detection.',
@@ -186,6 +190,7 @@ function applyTranslations(lang) {
   // Weather
   if (accordionWeatherLabel) accordionWeatherLabel.textContent = dict.weatherTitle;
   if (popupWeatherGpsLabel) popupWeatherGpsLabel.textContent = dict.weatherGpsLabel;
+  if (popupWeatherEffectsLabel) popupWeatherEffectsLabel.textContent = dict.weatherEffectsLabel;
 
   // Password
   if (accordionPwLabel) accordionPwLabel.textContent = dict.pwTitle;
@@ -234,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (localVersionEl) localVersionEl.textContent = `v${localVersion}`;
 
   // Load language first
-  chrome.storage.local.get(['language', 'userName', 'useGpsLocation', 'weatherCache'], (data) => {
+  chrome.storage.local.get(['language', 'userName', 'useGpsLocation', 'weatherEffectsEnabled', 'weatherCache'], (data) => {
     const lang = (data && data.language) || 'id';
     applyTranslations(lang);
 
@@ -243,6 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (popupGpsToggle) {
       popupGpsToggle.checked = !!(data && data.useGpsLocation);
+    }
+    if (popupWeatherEffectsToggle) {
+      popupWeatherEffectsToggle.checked = data.weatherEffectsEnabled !== false;
     }
     if (data && data.weatherCache) {
       const dict = i18n[currentLang];
@@ -308,6 +316,11 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   // Sinkronisasi bahasa
   if (changes.language) {
     applyTranslations(changes.language.newValue);
+  }
+
+  // Sinkronisasi efek cuaca
+  if (changes.weatherEffectsEnabled !== undefined && popupWeatherEffectsToggle) {
+    popupWeatherEffectsToggle.checked = changes.weatherEffectsEnabled.newValue !== false;
   }
 
   // Sinkronisasi state lock/unlock
@@ -453,6 +466,12 @@ if (popupGpsToggle) {
         popupWeatherFeedback.textContent = dict.weatherIpActive;
       });
     }
+  });
+}
+
+if (popupWeatherEffectsToggle) {
+  popupWeatherEffectsToggle.addEventListener('change', () => {
+    chrome.storage.local.set({ weatherEffectsEnabled: popupWeatherEffectsToggle.checked });
   });
 }
 

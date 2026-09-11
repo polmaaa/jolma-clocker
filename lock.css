@@ -1393,3 +1393,214 @@ body.theme-malam .modal-weather-loc { border-top-color: rgba(255, 255, 255, 0.08
 
 .update-toast-close:hover { background: rgba(217, 119, 6, 0.12); }
 
+/* ============================================================
+   ATMOSPHERIC WEATHER VISUAL EFFECTS LAYER
+   ============================================================ */
+
+.weather-effects-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* Di atas bg-gradient & blob, tapi di bawah konten container */
+  overflow: hidden;
+  transition: opacity 1s ease;
+}
+
+/* 1. Rain Drops */
+.weather-rain-drop {
+  position: absolute;
+  width: 1.5px;
+  height: 32px;
+  background: linear-gradient(180deg, transparent, rgba(147, 197, 253, 0.65));
+  border-radius: 2px;
+  opacity: 0;
+  animation: rainFall linear infinite;
+  pointer-events: none;
+}
+
+body.theme-malam .weather-rain-drop {
+  background: linear-gradient(180deg, transparent, rgba(199, 210, 254, 0.5));
+}
+
+@keyframes rainFall {
+  0% {
+    transform: translate3d(0, -60px, 0) rotate(14deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.75;
+  }
+  90% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(-60px, 106vh, 0) rotate(14deg);
+    opacity: 0;
+  }
+}
+
+/* 2. Floating Clouds / Overcast */
+.weather-cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(148, 163, 184, 0.26) 0%, rgba(148, 163, 184, 0.08) 50%, transparent 75%);
+  filter: blur(45px);
+  pointer-events: none;
+  animation: cloudDrift linear infinite;
+}
+
+body.theme-malam .weather-cloud {
+  background: radial-gradient(ellipse at center, rgba(100, 116, 139, 0.22) 0%, rgba(51, 65, 85, 0.06) 50%, transparent 75%);
+}
+
+@keyframes cloudDrift {
+  0% {
+    transform: translate3d(-35vw, 0, 0);
+  }
+  100% {
+    transform: translate3d(125vw, 0, 0);
+  }
+}
+
+/* 3. Thunderstorm Ambient Flash */
+.weather-lightning-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 15%, rgba(245, 243, 255, 0.45), transparent 75%);
+  opacity: 0;
+  animation: thunderFlash 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+body.theme-malam .weather-lightning-overlay {
+  background: radial-gradient(circle at 50% 15%, rgba(224, 231, 255, 0.4), transparent 75%);
+}
+
+@keyframes thunderFlash {
+  0%, 91%, 93%, 95%, 97%, 100% {
+    opacity: 0;
+  }
+  92% {
+    opacity: 0.5;
+  }
+  94% {
+    opacity: 0.25;
+  }
+  96% {
+    opacity: 0.65;
+  }
+}
+
+/* 4. Fog / Mist Layer */
+.weather-fog-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(226, 232, 240, 0.18) 0%, rgba(203, 213, 225, 0.28) 45%, rgba(226, 232, 240, 0.15) 100%);
+  filter: blur(30px);
+  animation: fogDrift 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+body.theme-malam .weather-fog-layer {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.25) 0%, rgba(51, 65, 85, 0.35) 45%, rgba(30, 41, 59, 0.2) 100%);
+}
+
+@keyframes fogDrift {
+  0% {
+    opacity: 0.45;
+    transform: translateY(-8px) scale(0.98);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translateY(8px) scale(1.02);
+  }
+}
+
+/* 5. Falling Snowflakes */
+.weather-snowflake {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  filter: blur(0.6px);
+  animation: snowFall linear infinite;
+  pointer-events: none;
+}
+
+body.theme-pagi .weather-snowflake,
+body.theme-siang .weather-snowflake {
+  background: rgba(219, 234, 254, 0.9);
+  box-shadow: 0 0 3px rgba(147, 197, 253, 0.5);
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -30px, 0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(24px, 50vh, 0) rotate(180deg);
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(-20px, 106vh, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 6. Clear Sky: Sunbeam Shimmer (Day) & Night Stars */
+.weather-sunbeam {
+  position: absolute;
+  top: -12%;
+  right: 8%;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.2) 0%, rgba(251, 191, 36, 0.08) 45%, transparent 70%);
+  filter: blur(45px);
+  border-radius: 50%;
+  animation: sunGlow 7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sunGlow {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0.95;
+  }
+}
+
+.weather-star {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: starTwinkle ease-in-out infinite alternate;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes starTwinkle {
+  0% {
+    opacity: 0.15;
+    transform: scale(0.65);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1.35);
+  }
+}
+
+
