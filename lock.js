@@ -354,10 +354,12 @@ const i18n = {
     aboutSupportDesc: 'Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.',
     aboutSaweriaTitle: 'Dukung via Saweria',
     aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>',
+    aboutDefaultPw: '🔑 Password Default: <strong>ganteng</strong>',
     aboutCopyright: '© 2026 Jolma CLocker • Semua Hak Dilindungi',
 
     // Footer
-    copyrightText: '© 2026 Jolma CLocker v0.2.1 • oleh Polma Sihotang'
+    copyrightText: '© 2026 Jolma CLocker v0.2.1 • oleh Polma Sihotang',
+    copyrightTooltip: 'Klik untuk melihat Tentang Jolma CLocker'
   },
   en: {
     // Menu
@@ -564,10 +566,12 @@ const i18n = {
     aboutSupportDesc: 'If you enjoy using this extension, you can support further development via Saweria.',
     aboutSaweriaTitle: 'Support via Saweria',
     aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>',
+    aboutDefaultPw: '🔑 Default Password: <strong>ganteng</strong>',
     aboutCopyright: '© 2026 Jolma CLocker • All Rights Reserved',
 
     // Footer
-    copyrightText: '© 2026 Jolma CLocker v0.2.1 • by Polma Sihotang'
+    copyrightText: '© 2026 Jolma CLocker v0.2.1 • by Polma Sihotang',
+    copyrightTooltip: 'Click to view About Jolma CLocker'
   }
 };
 
@@ -743,6 +747,9 @@ function applyTranslations(lang) {
   if (aboutDevBy && dict.aboutDevBy) aboutDevBy.innerHTML = dict.aboutDevBy;
   if (aboutCopyright && dict.aboutCopyright) aboutCopyright.textContent = dict.aboutCopyright;
 
+  const aboutDefaultPwEl = document.getElementById('about-default-pw');
+  if (aboutDefaultPwEl && dict.aboutDefaultPw) aboutDefaultPwEl.innerHTML = dict.aboutDefaultPw;
+
   // Contact links tooltips in About modal
   const emailItem = document.querySelector('.about-contact-item[href^="mailto:"]');
   const linkedinItem = document.querySelector('.about-contact-item[href*="linkedin.com"]');
@@ -751,9 +758,10 @@ function applyTranslations(lang) {
   if (linkedinItem) linkedinItem.title = dict.aboutLinkedinTitle;
   if (instagramItem) instagramItem.title = dict.aboutInstagramTitle;
 
-  // Footer Copyright Text
+  // Footer Copyright Text & Tooltip
   const copyrightTextEl = document.getElementById('copyright-text');
   if (copyrightTextEl) copyrightTextEl.textContent = dict.copyrightText;
+  if (copyrightFooter && dict.copyrightTooltip) copyrightFooter.title = dict.copyrightTooltip;
 
   // Update Clock, Greeting, and Weather display immediately
   updateClockAndDate();
@@ -1394,6 +1402,19 @@ if (aboutModalOverlay) {
 if (weatherBtn) {
   weatherBtn.addEventListener('click', () => {
     openWeatherModal();
+  });
+}
+
+// Klik teks copyright di footer → buka modal Tentang (About)
+if (copyrightFooter) {
+  copyrightFooter.addEventListener('click', () => {
+    openAboutModal();
+  });
+  copyrightFooter.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openAboutModal();
+    }
   });
 }
 
