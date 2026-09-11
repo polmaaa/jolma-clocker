@@ -988,6 +988,9 @@ function updateLockerState(isUnlocked) {
   isCurrentlyUnlocked = !!isUnlocked;
 
   if (isUnlocked) {
+    document.body.classList.remove('is-locked');
+    document.body.classList.add('is-unlocked');
+
     // Release keyboard lock & restore window state
     releaseKeyboardLock();
     chrome.runtime.sendMessage({ action: 'exitFullscreen' });
@@ -1025,6 +1028,9 @@ function updateLockerState(isUnlocked) {
       checkUpdateStorage();
     }
   } else {
+    document.body.classList.remove('is-unlocked');
+    document.body.classList.add('is-locked');
+
     // Request keyboard lock on lock screen
     requestKeyboardLock();
 
