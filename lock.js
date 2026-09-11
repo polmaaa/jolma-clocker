@@ -32,10 +32,10 @@ const menuUserLabel   = document.getElementById('menu-user-label');
 const menuWeatherLabel= document.getElementById('menu-weather-label');
 const menuPwLabel     = document.getElementById('menu-pw-label');
 
-// Feature Toggles Elements (ON / OFF switches)
-const toggleFloatingLockBtn   = document.getElementById('toggle-floating-lock-btn');
-const toggleQuickLinks        = document.getElementById('toggle-quick-links');
-const toggleQuotes            = document.getElementById('toggle-quotes');
+// Feature Toggles Elements (ON / OFF segmented switch pills)
+const pillGroupFloating       = document.getElementById('pill-group-floating');
+const pillGroupShortcuts      = document.getElementById('pill-group-shortcuts');
+const pillGroupQuotes         = document.getElementById('pill-group-quotes');
 const menuToggleFloatingRow   = document.getElementById('menu-toggle-floating-row');
 const menuToggleShortcutsRow  = document.getElementById('menu-toggle-shortcuts-row');
 const menuToggleQuotesRow     = document.getElementById('menu-toggle-quotes-row');
@@ -143,9 +143,9 @@ let currentLang = 'en';
 const i18n = {
   id: {
     menuHeader: 'Pengaturan',
-    menuFloatingLock: 'Tombol Kunci Melayang',
+    menuFloatingLock: 'Tombol Kunci',
     menuShortcutsToggle: 'Pintasan',
-    menuQuotesToggle: 'Kutipan Hari Ini',
+    menuQuotesToggle: 'Kutipan',
     menuLock: 'Kunci Layar Sekarang',
     menuAutolock: 'Auto-Lock Saat Menganggur',
     menuUser: 'Ubah Nama',
@@ -283,9 +283,9 @@ const i18n = {
   },
   en: {
     menuHeader: 'Settings',
-    menuFloatingLock: 'Floating Lock Button',
+    menuFloatingLock: 'Lock Button',
     menuShortcutsToggle: 'Shortcuts',
-    menuQuotesToggle: 'Daily Quotes',
+    menuQuotesToggle: 'Quotes',
     menuLock: 'Lock Screen Now',
     menuAutolock: 'Auto-Lock Inactivity Timer',
     menuUser: 'Change Name',
@@ -609,84 +609,79 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 // Synchronous state tracking for instant event blocking
 let isCurrentlyUnlocked = false;
 
-// Feature Toggles Management (Floating Lock Button, Shortcuts, Daily Quotes)
+// Helper for updating segmented switch pills state
+function updatePillGroupState(pillGroupId, isOn) {
+  const group = document.getElementById(pillGroupId);
+  if (!group) return;
+  const btnOn = group.querySelector('[data-state="on"]');
+  const btnOff = group.querySelector('[data-state="off"]');
+  if (btnOn) btnOn.classList.toggle('active', !!isOn);
+  if (btnOff) btnOff.classList.toggle('active', !isOn);
+}
+
+// Feature Toggles Management (Floating Lock Button, Shortcuts, Quotes)
 function initFeatureToggles() {
   chrome.storage.local.get(['floatingLockBtnEnabled', 'quickLinksEnabled', 'quotesEnabled'], (data) => {
     const isFloatingEnabled = data.floatingLockBtnEnabled !== false;
     const isLinksEnabled = data.quickLinksEnabled !== false;
     const isQuotesEnabled = data.quotesEnabled !== false;
 
-    if (toggleFloatingLockBtn) {
-      toggleFloatingLockBtn.checked = isFloatingEnabled;
-    }
-    if (toggleQuickLinks) {
-      toggleQuickLinks.checked = isLinksEnabled;
-      applyQuickLinksVisibility(isLinksEnabled);
-    }
-    if (toggleQuotes) {
-      toggleQuotes.checked = isQuotesEnabled;
-      applyQuotesVisibility(isQuotesEnabled);
-    }
+    updatePillGroupState('pill-group-floating', isFloatingEnabled);
+    updatePillGroupState('pill-group-shortcuts', isLinksEnabled);
+    updatePillGroupState('pill-group-quotes', isQuotesEnabled);
+
+    applyQuickLinksVisibility(isLinksEnabled);
+    applyQuotesVisibility(isQuotesEnabled);
   });
 
-  // 1. Toggle Floating Lock Button listener
-  if (toggleFloatingLockBtn) {
-    toggleFloatingLockBtn.addEventListener('change', () => {
-      const enabled = toggleFloatingLockBtn.checked;
-      chrome.storage.local.set({ floatingLockBtnEnabled: enabled });
-    });
-  }
+  // Setup pill group click listeners
+  function setupPillToggle(groupId, storageKey, onToggle) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
 
-  // 2. Toggle Quick Links listener
-  if (toggleQuickLinks) {
-    toggleQuickLinks.addEventListener('change', () => {
-      const enabled = toggleQuickLinks.checked;
-      chrome.storage.local.set({ quickLinksEnabled: enabled }, () => {
-        applyQuickLinksVisibility(enabled);
+    group.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const btn = e.target.closest('.btn-toggle-pill');
+      if (!btn) return;
+      const willBeOn = btn.dataset.state === 'on';
+      chrome.storage.local.set({ [storageKey]: willBeOn }, () => {
+        updatePillGroupState(groupId, willBeOn);
+        if (typeof onToggle === 'function') onToggle(willBeOn);
       });
     });
   }
 
-  // 3. Toggle Quotes listener
-  if (toggleQuotes) {
-    toggleQuotes.addEventListener('change', () => {
-      const enabled = toggleQuotes.checked;
-      chrome.storage.local.set({ quotesEnabled: enabled }, () => {
-        applyQuotesVisibility(enabled);
-      });
-    });
-  }
+  setupPillToggle('pill-group-floating', 'floatingLockBtnEnabled');
+  setupPillToggle('pill-group-shortcuts', 'quickLinksEnabled', (enabled) => {
+    applyQuickLinksVisibility(enabled);
+  });
+  setupPillToggle('pill-group-quotes', 'quotesEnabled', (enabled) => {
+    applyQuotesVisibility(enabled);
+  });
 
   // Row clicks to toggle switch smoothly when clicking anywhere on item label/icon
-  if (menuToggleFloatingRow) {
-    menuToggleFloatingRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
+  function setupRowClick(rowEl, storageKey, groupId, onToggle) {
+    if (!rowEl) return;
+    rowEl.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (toggleFloatingLockBtn) {
-        toggleFloatingLockBtn.checked = !toggleFloatingLockBtn.checked;
-        toggleFloatingLockBtn.dispatchEvent(new Event('change'));
-      }
+      chrome.storage.local.get(storageKey, (data) => {
+        const currentVal = data[storageKey] !== false;
+        const newVal = !currentVal;
+        chrome.storage.local.set({ [storageKey]: newVal }, () => {
+          updatePillGroupState(groupId, newVal);
+          if (typeof onToggle === 'function') onToggle(newVal);
+        });
+      });
     });
   }
 
-  if (menuToggleShortcutsRow) {
-    menuToggleShortcutsRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (toggleQuickLinks) {
-        toggleQuickLinks.checked = !toggleQuickLinks.checked;
-        toggleQuickLinks.dispatchEvent(new Event('change'));
-      }
-    });
-  }
-
-  if (menuToggleQuotesRow) {
-    menuToggleQuotesRow.querySelector('.menu-item-main')?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (toggleQuotes) {
-        toggleQuotes.checked = !toggleQuotes.checked;
-        toggleQuotes.dispatchEvent(new Event('change'));
-      }
-    });
-  }
+  setupRowClick(menuToggleFloatingRow, 'floatingLockBtnEnabled', 'pill-group-floating');
+  setupRowClick(menuToggleShortcutsRow, 'quickLinksEnabled', 'pill-group-shortcuts', (enabled) => {
+    applyQuickLinksVisibility(enabled);
+  });
+  setupRowClick(menuToggleQuotesRow, 'quotesEnabled', 'pill-group-quotes', (enabled) => {
+    applyQuotesVisibility(enabled);
+  });
 }
 
 function applyQuickLinksVisibility(show) {
@@ -704,7 +699,7 @@ function applyQuickLinksVisibility(show) {
 
 function applyQuotesVisibility(show) {
   if (dailyQuoteContainer) {
-    if (show && isCurrentlyUnlocked) {
+    if (show) {
       dailyQuoteContainer.classList.add('active');
       dailyQuoteContainer.style.display = 'flex';
     } else {
@@ -787,13 +782,21 @@ function updateLockerState(isUnlocked) {
     // Request keyboard lock on lock screen
     requestKeyboardLock();
 
-    // Transition to locked state — sembunyikan toast update & footer cuaca & widgets
+    // Transition to locked state — sembunyikan toast update & search/topbar & widgets modal
     hideUpdateToast();
     searchSection.classList.remove('active');
     topBar.classList.remove('active');
-    if (weatherFooter) weatherFooter.classList.remove('active');
-    if (copyrightFooter) copyrightFooter.classList.remove('active');
-    applyQuotesVisibility(false);
+
+    // Tampilkan footer cuaca, copyright, dan kutipan (jika aktif) saat layar terkunci
+    if (weatherFooter) weatherFooter.classList.add('active');
+    if (copyrightFooter) copyrightFooter.classList.add('active');
+    loadWeather();
+
+    chrome.storage.local.get('quotesEnabled', (feat) => {
+      const showQuotes = feat && feat.quotesEnabled !== false;
+      applyQuotesVisibility(showQuotes);
+    });
+
     applyQuickLinksVisibility(false);
     closeWeatherModal();
     closeUsernameModal();
@@ -995,16 +998,16 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   }
   if (changes.floatingLockBtnEnabled !== undefined) {
     const isFloatingEnabled = changes.floatingLockBtnEnabled.newValue !== false;
-    if (toggleFloatingLockBtn) toggleFloatingLockBtn.checked = isFloatingEnabled;
+    updatePillGroupState('pill-group-floating', isFloatingEnabled);
   }
   if (changes.quickLinksEnabled !== undefined) {
     const isLinksEnabled = changes.quickLinksEnabled.newValue !== false;
-    if (toggleQuickLinks) toggleQuickLinks.checked = isLinksEnabled;
+    updatePillGroupState('pill-group-shortcuts', isLinksEnabled);
     applyQuickLinksVisibility(isLinksEnabled);
   }
   if (changes.quotesEnabled !== undefined) {
     const isQuotesEnabled = changes.quotesEnabled.newValue !== false;
-    if (toggleQuotes) toggleQuotes.checked = isQuotesEnabled;
+    updatePillGroupState('pill-group-quotes', isQuotesEnabled);
     applyQuotesVisibility(isQuotesEnabled);
   }
   if (changes.language) {

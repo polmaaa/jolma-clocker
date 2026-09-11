@@ -65,7 +65,59 @@
             </div>
           </div>
 
-          <!-- Feature Toggles (ON / OFF) -->
+          <!-- Actions on Top -->
+          <button id="menu-lock-btn" class="menu-item menu-item-locknow">
+            <span class="menu-item-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <span class="menu-item-label" id="menu-lock-label">Kunci Layar Sekarang</span>
+          </button>
+
+          <button id="menu-autolock-btn" class="menu-item menu-item-autolock">
+            <span class="menu-item-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 14 14"></polyline>
+              </svg>
+            </span>
+            <span class="menu-item-label" id="menu-autolock-label">Auto-Lock Saat Menganggur</span>
+          </button>
+
+          <button id="menu-username-btn" class="menu-item menu-item-user">
+            <span class="menu-item-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <span class="menu-item-label" id="menu-user-label">Ubah Nama</span>
+          </button>
+
+          <button id="menu-weather-btn" class="menu-item menu-item-weather">
+            <span class="menu-item-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+              </svg>
+            </span>
+            <span class="menu-item-label" id="menu-weather-label">Pengaturan Cuaca</span>
+          </button>
+
+          <button id="menu-changepw-btn" class="menu-item menu-item-pw">
+            <span class="menu-item-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </span>
+            <span class="menu-item-label" id="menu-pw-label">Ubah Kata Sandi</span>
+          </button>
+
+          <div class="menu-divider"></div>
+
+          <!-- Feature Toggles (ON / OFF Segmented Switch) at Bottom -->
           <div class="menu-item menu-item-toggle menu-item-floating-lock" id="menu-toggle-floating-row">
             <div class="menu-item-main">
               <span class="menu-item-icon-wrap">
@@ -74,12 +126,12 @@
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
               </span>
-              <span class="menu-item-label" id="menu-floating-lock-label">Floating Lock Button</span>
+              <span class="menu-item-label" id="menu-floating-lock-label">Tombol Kunci</span>
             </div>
-            <label class="switch menu-switch" title="Toggle Floating Lock Button">
-              <input type="checkbox" id="toggle-floating-lock-btn" checked>
-              <span class="slider round"></span>
-            </label>
+            <div class="toggle-pill-group" id="pill-group-floating">
+              <button type="button" class="btn-toggle-pill active" data-state="on">ON</button>
+              <button type="button" class="btn-toggle-pill" data-state="off">OFF</button>
+            </div>
           </div>
 
           <div class="menu-item menu-item-toggle menu-item-shortcuts" id="menu-toggle-shortcuts-row">
@@ -90,12 +142,12 @@
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                 </svg>
               </span>
-              <span class="menu-item-label" id="menu-shortcuts-toggle-label">Shortcuts</span>
+              <span class="menu-item-label" id="menu-shortcuts-toggle-label">Pintasan</span>
             </div>
-            <label class="switch menu-switch" title="Toggle Shortcuts">
-              <input type="checkbox" id="toggle-quick-links" checked>
-              <span class="slider round"></span>
-            </label>
+            <div class="toggle-pill-group" id="pill-group-shortcuts">
+              <button type="button" class="btn-toggle-pill active" data-state="on">ON</button>
+              <button type="button" class="btn-toggle-pill" data-state="off">OFF</button>
+            </div>
           </div>
 
           <div class="menu-item menu-item-toggle menu-item-quotes" id="menu-toggle-quotes-row">
@@ -106,65 +158,13 @@
                   <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2 0 4-1.5 6-1 8z"></path>
                 </svg>
               </span>
-              <span class="menu-item-label" id="menu-quotes-toggle-label">Daily Quotes</span>
+              <span class="menu-item-label" id="menu-quotes-toggle-label">Kutipan</span>
             </div>
-            <label class="switch menu-switch" title="Toggle Daily Quotes">
-              <input type="checkbox" id="toggle-quotes" checked>
-              <span class="slider round"></span>
-            </label>
+            <div class="toggle-pill-group" id="pill-group-quotes">
+              <button type="button" class="btn-toggle-pill active" data-state="on">ON</button>
+              <button type="button" class="btn-toggle-pill" data-state="off">OFF</button>
+            </div>
           </div>
-
-          <div class="menu-divider"></div>
-
-          <!-- Quick Action: Kunci Sekarang -->
-          <button id="menu-lock-btn" class="menu-item menu-item-locknow">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-lock-label">Lock Screen Now</span>
-          </button>
-
-          <button id="menu-autolock-btn" class="menu-item menu-item-autolock">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 14 14"></polyline>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-autolock-label">Auto-Lock Timer</span>
-          </button>
-
-          <button id="menu-username-btn" class="menu-item menu-item-user">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-user-label">Change Name</span>
-          </button>
-
-          <button id="menu-weather-btn" class="menu-item menu-item-weather">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-weather-label">Weather Settings</span>
-          </button>
-
-          <button id="menu-changepw-btn" class="menu-item menu-item-pw">
-            <span class="menu-item-icon-wrap">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-item-icon">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </span>
-            <span class="menu-item-label" id="menu-pw-label">Change Password</span>
-          </button>
 
           <div class="menu-footer">
             <span id="menu-footer-version">Jolma CLocker v0.2.1</span>
