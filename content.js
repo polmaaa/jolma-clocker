@@ -288,76 +288,76 @@
          THEMES — HARMONIC GLASS PALETTES (Matches time of day)
          ============================================================ */
 
-      /* 1. PAGI (Morning: Warm Honey Amber Quartz Glass) */
+      /* 1. PAGI (Morning: Nordic Glacier Mist / Aurora Dawn Glass) */
       .fab-wrapper.theme-pagi .fab-aura {
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.5) 0%, transparent 70%);
       }
       .fab-wrapper.theme-pagi .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(254, 243, 199, 0.75) 100%);
-        border-color: rgba(245, 158, 11, 0.35);
-        color: #d97706;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(224, 242, 254, 0.8) 100%);
+        border-color: rgba(14, 165, 233, 0.35);
+        color: #0284c7;
         box-shadow: 
-          0 10px 26px -3px rgba(245, 158, 11, 0.22),
+          0 10px 26px -3px rgba(14, 165, 233, 0.22),
           0 3px 10px rgba(0, 0, 0, 0.04),
           inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-pagi .fab-tooltip {
-        background: rgba(255, 254, 246, 0.94);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        color: #92400e;
+        background: rgba(240, 249, 255, 0.95);
+        border: 1px solid rgba(14, 165, 233, 0.35);
+        color: #0369a1;
       }
       .fab-wrapper.theme-pagi .tooltip-badge {
-        background: rgba(245, 158, 11, 0.15);
-        color: #b45309;
-        border: 1px solid rgba(245, 158, 11, 0.3);
+        background: rgba(14, 165, 233, 0.15);
+        color: #0284c7;
+        border: 1px solid rgba(14, 165, 233, 0.3);
       }
 
-      /* 2. SIANG (Afternoon: Crystal Mint Emerald Ice Glass) */
+      /* 2. SIANG (Afternoon: Solar Azure / Royal Sky Daylight Glass) */
       .fab-wrapper.theme-siang .fab-aura {
-        background: radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.5) 0%, transparent 70%);
       }
       .fab-wrapper.theme-siang .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(209, 250, 229, 0.75) 100%);
-        border-color: rgba(16, 185, 129, 0.35);
-        color: #059669;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(224, 231, 255, 0.8) 100%);
+        border-color: rgba(79, 70, 229, 0.35);
+        color: #4f46e5;
         box-shadow: 
-          0 10px 26px -3px rgba(16, 185, 129, 0.22),
+          0 10px 26px -3px rgba(79, 70, 229, 0.22),
           0 3px 10px rgba(0, 0, 0, 0.04),
           inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-siang .fab-tooltip {
-        background: rgba(240, 253, 250, 0.94);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #065f46;
+        background: rgba(238, 242, 255, 0.95);
+        border: 1px solid rgba(79, 70, 229, 0.35);
+        color: #3730a3;
       }
       .fab-wrapper.theme-siang .tooltip-badge {
-        background: rgba(16, 185, 129, 0.15);
-        color: #047857;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(79, 70, 229, 0.15);
+        color: #4f46e5;
+        border: 1px solid rgba(79, 70, 229, 0.3);
       }
 
-      /* 3. SORE (Evening: Sunset Coral Rose Velvet Glass) */
+      /* 3. SORE (Evening: Twilight Amber Sunset / Golden Dusk Glass) */
       .fab-wrapper.theme-sore .fab-aura {
-        background: radial-gradient(circle, rgba(244, 63, 94, 0.5) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(234, 88, 12, 0.5) 0%, transparent 70%);
       }
       .fab-wrapper.theme-sore .fab-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 228, 230, 0.75) 100%);
-        border-color: rgba(244, 63, 94, 0.35);
-        color: #e11d48;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 237, 213, 0.8) 100%);
+        border-color: rgba(234, 88, 12, 0.35);
+        color: #ea580c;
         box-shadow: 
-          0 10px 26px -3px rgba(244, 63, 94, 0.22),
+          0 10px 26px -3px rgba(234, 88, 12, 0.22),
           0 3px 10px rgba(0, 0, 0, 0.04),
           inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
       }
       .fab-wrapper.theme-sore .fab-tooltip {
-        background: rgba(255, 241, 242, 0.94);
-        border: 1px solid rgba(244, 63, 94, 0.3);
-        color: #9f1239;
+        background: rgba(255, 247, 237, 0.95);
+        border: 1px solid rgba(234, 88, 12, 0.35);
+        color: #9a3412;
       }
       .fab-wrapper.theme-sore .tooltip-badge {
-        background: rgba(244, 63, 94, 0.15);
-        color: #be185d;
-        border: 1px solid rgba(244, 63, 94, 0.3);
+        background: rgba(234, 88, 12, 0.15);
+        color: #ea580c;
+        border: 1px solid rgba(234, 88, 12, 0.3);
       }
 
       /* 4. MALAM (Night: Obsidian Midnight Aurora Violet Glass) */

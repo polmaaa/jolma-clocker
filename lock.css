@@ -692,50 +692,59 @@ body {
 
 /* ================= DYNAMIC TIME-BASED THEMES ================= */
 
-/* --- 1. MORNING Sunrise (04:00 - 10:59) --- */
+/* --- 1. MORNING (04:00 - 10:59) — Nordic Glacier Mist / Aurora Dawn Glass --- */
 body.theme-pagi {
-  --bg-color: #fdfbf7;
-  --text-color: #1e293b;
-  --text-muted: #5e6b7e;
-  --glass-bg: rgba(255, 255, 255, 0.68);
-  --glass-border: rgba(255, 255, 255, 0.7);
+  --bg-color: #f0f9ff;
+  --text-color: #0c4a6e;
+  --text-muted: #0369a1;
+  --primary: #0284c7;
+  --primary-glow: rgba(2, 132, 199, 0.16);
+  --primary-hover: #0369a1;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(186, 230, 253, 0.65);
 }
 body.theme-pagi .bg-gradient {
-  background: linear-gradient(135deg, #fffbeb 0%, #ecfeff 50%, #eff6ff 100%);
+  background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #f1f5f9 100%);
 }
-body.theme-pagi .blob-1 { background: radial-gradient(circle, #fef3c7 0%, transparent 70%); }
-body.theme-pagi .blob-2 { background: radial-gradient(circle, #bae6fd 0%, transparent 70%); }
-body.theme-pagi .blob-3 { background: radial-gradient(circle, #fbcfe8 0%, transparent 70%); }
+body.theme-pagi .blob-1 { background: radial-gradient(circle, #7dd3fc 0%, transparent 70%); }
+body.theme-pagi .blob-2 { background: radial-gradient(circle, #99f6e4 0%, transparent 70%); }
+body.theme-pagi .blob-3 { background: radial-gradient(circle, #bae6fd 0%, transparent 70%); }
 
-/* --- 2. AFTERNOON Sunny Day (11:00 - 14:59) --- */
+/* --- 2. AFTERNOON (11:00 - 14:59) — Solar Azure / Royal Sky Daylight Glass --- */
 body.theme-siang {
-  --bg-color: #f4fcfc;
-  --text-color: #0f172a;
-  --text-muted: #475569;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.8);
+  --bg-color: #f5f7ff;
+  --text-color: #1e1b4b;
+  --text-muted: #4338ca;
+  --primary: #4f46e5;
+  --primary-glow: rgba(79, 70, 229, 0.16);
+  --primary-hover: #4338ca;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(199, 210, 254, 0.7);
 }
 body.theme-siang .bg-gradient {
-  background: linear-gradient(135deg, #e0f7fa 0%, #f0fdf4 55%, #f8fafc 100%);
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #f8fafc 100%);
 }
-body.theme-siang .blob-1 { background: radial-gradient(circle, #fef08a 0%, transparent 70%); }
+body.theme-siang .blob-1 { background: radial-gradient(circle, #818cf8 0%, transparent 70%); }
 body.theme-siang .blob-2 { background: radial-gradient(circle, #93c5fd 0%, transparent 70%); }
-body.theme-siang .blob-3 { background: radial-gradient(circle, #99f6e4 0%, transparent 70%); }
+body.theme-siang .blob-3 { background: radial-gradient(circle, #c7d2fe 0%, transparent 70%); }
 
-/* --- 3. EVENING Warm Sunset (15:00 - 18:29) --- */
+/* --- 3. EVENING (15:00 - 18:29) — Twilight Amber Sunset / Golden Dusk Glass --- */
 body.theme-sore {
-  --bg-color: #fff9f8;
-  --text-color: #1e293b;
-  --text-muted: #5e6b7e;
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.75);
+  --bg-color: #fffaf5;
+  --text-color: #431407;
+  --text-muted: #9a3412;
+  --primary: #ea580c;
+  --primary-glow: rgba(234, 88, 12, 0.16);
+  --primary-hover: #c2410c;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(254, 215, 170, 0.7);
 }
 body.theme-sore .bg-gradient {
-  background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 45%, #ffedd5 100%);
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 45%, #fef3c7 100%);
 }
-body.theme-sore .blob-1 { background: radial-gradient(circle, #fecdd3 0%, transparent 70%); }
-body.theme-sore .blob-2 { background: radial-gradient(circle, #fed7aa 0%, transparent 70%); }
-body.theme-sore .blob-3 { background: radial-gradient(circle, #f5d0fe 0%, transparent 70%); }
+body.theme-sore .blob-1 { background: radial-gradient(circle, #fb923c 0%, transparent 70%); }
+body.theme-sore .blob-2 { background: radial-gradient(circle, #fcd34d 0%, transparent 70%); }
+body.theme-sore .blob-3 { background: radial-gradient(circle, #fdba74 0%, transparent 70%); }
 
 /* --- 4. NIGHT Starry Midnight (18:30 - 03:59) --- */
 body.theme-malam {
@@ -782,80 +791,80 @@ body.theme-malam .btn-lock:hover {
    THEME-SPECIFIC MENU DROPDOWN PALETTES
    ============================================================ */
 
-/* 1. PAGI (04:00–10:59) — Warm Golden Ivory Glass */
+/* 1. PAGI (04:00–10:59) — Nordic Glacier Mist */
 body.theme-pagi .btn-menu {
-  background: rgba(255, 253, 240, 0.82);
-  border-color: rgba(245, 158, 11, 0.25);
-  color: #92400e;
-  box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  background: rgba(240, 249, 255, 0.85);
+  border-color: rgba(14, 165, 233, 0.3);
+  color: #0369a1;
+  box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 body.theme-pagi .btn-menu:hover,
 body.theme-pagi .btn-menu.active {
-  background: rgba(255, 253, 240, 0.96);
-  border-color: rgba(245, 158, 11, 0.4);
-  box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+  background: rgba(240, 249, 255, 0.96);
+  border-color: rgba(14, 165, 233, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 body.theme-pagi .menu-dropdown {
-  background: rgba(255, 253, 242, 0.96);
-  border-color: rgba(245, 158, 11, 0.18);
-  box-shadow: 0 20px 48px -8px rgba(245, 158, 11, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  background: rgba(240, 249, 255, 0.96);
+  border-color: rgba(14, 165, 233, 0.2);
+  box-shadow: 0 20px 48px -8px rgba(14, 165, 233, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
 }
-body.theme-pagi .menu-dropdown-label { color: #d97706; }
-body.theme-pagi .menu-item { color: #78350f; }
-body.theme-pagi .menu-item:hover { background: rgba(245, 158, 11, 0.06); }
-body.theme-pagi .menu-item-pw .menu-item-icon-wrap { background: rgba(245, 158, 11, 0.1); }
-body.theme-pagi .menu-item-pw .menu-item-icon { stroke: #d97706; }
-body.theme-pagi .menu-item-pw:hover { color: #b45309; }
+body.theme-pagi .menu-dropdown-label { color: #0284c7; }
+body.theme-pagi .menu-item { color: #0c4a6e; }
+body.theme-pagi .menu-item:hover { background: rgba(14, 165, 233, 0.08); }
+body.theme-pagi .menu-item-pw .menu-item-icon-wrap { background: rgba(14, 165, 233, 0.12); }
+body.theme-pagi .menu-item-pw .menu-item-icon { stroke: #0284c7; }
+body.theme-pagi .menu-item-pw:hover { color: #0284c7; }
 
-/* 2. SIANG (11:00–14:59) — Crystal Mint Emerald Glass */
+/* 2. SIANG (11:00–14:59) — Solar Royal Azure */
 body.theme-siang .btn-menu {
-  background: rgba(240, 253, 250, 0.82);
-  border-color: rgba(16, 185, 129, 0.25);
-  color: #065f46;
-  box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  background: rgba(238, 242, 255, 0.85);
+  border-color: rgba(79, 70, 229, 0.28);
+  color: #3730a3;
+  box-shadow: 0 4px 16px -2px rgba(79, 70, 229, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 body.theme-siang .btn-menu:hover,
 body.theme-siang .btn-menu.active {
-  background: rgba(240, 253, 250, 0.96);
-  border-color: rgba(16, 185, 129, 0.4);
-  box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+  background: rgba(238, 242, 255, 0.96);
+  border-color: rgba(79, 70, 229, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 body.theme-siang .menu-dropdown {
-  background: rgba(244, 253, 250, 0.96);
-  border-color: rgba(16, 185, 129, 0.18);
-  box-shadow: 0 20px 48px -8px rgba(16, 185, 129, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  background: rgba(238, 242, 255, 0.96);
+  border-color: rgba(79, 70, 229, 0.2);
+  box-shadow: 0 20px 48px -8px rgba(79, 70, 229, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
 }
-body.theme-siang .menu-dropdown-label { color: #059669; }
-body.theme-siang .menu-item { color: #064e3b; }
-body.theme-siang .menu-item:hover { background: rgba(16, 185, 129, 0.06); }
-body.theme-siang .menu-item-pw .menu-item-icon-wrap { background: rgba(16, 185, 129, 0.1); }
-body.theme-siang .menu-item-pw .menu-item-icon { stroke: #059669; }
-body.theme-siang .menu-item-pw:hover { color: #047857; }
+body.theme-siang .menu-dropdown-label { color: #4f46e5; }
+body.theme-siang .menu-item { color: #312e81; }
+body.theme-siang .menu-item:hover { background: rgba(79, 70, 229, 0.08); }
+body.theme-siang .menu-item-pw .menu-item-icon-wrap { background: rgba(79, 70, 229, 0.12); }
+body.theme-siang .menu-item-pw .menu-item-icon { stroke: #4f46e5; }
+body.theme-siang .menu-item-pw:hover { color: #4338ca; }
 
-/* 3. SORE (15:00–18:29) — Sunset Rose Coral Glass */
+/* 3. SORE (15:00–18:29) — Twilight Sunset Amber */
 body.theme-sore .btn-menu {
-  background: rgba(255, 241, 242, 0.82);
-  border-color: rgba(244, 63, 94, 0.25);
-  color: #9f1239;
-  box-shadow: 0 4px 16px -2px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  background: rgba(255, 247, 237, 0.85);
+  border-color: rgba(234, 88, 12, 0.28);
+  color: #9a3412;
+  box-shadow: 0 4px 16px -2px rgba(234, 88, 12, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 body.theme-sore .btn-menu:hover,
 body.theme-sore .btn-menu.active {
-  background: rgba(255, 241, 242, 0.96);
-  border-color: rgba(244, 63, 94, 0.4);
-  box-shadow: 0 8px 24px -4px rgba(244, 63, 94, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
+  background: rgba(255, 247, 237, 0.96);
+  border-color: rgba(234, 88, 12, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.2), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 body.theme-sore .menu-dropdown {
-  background: rgba(255, 246, 246, 0.96);
-  border-color: rgba(244, 63, 94, 0.18);
-  box-shadow: 0 20px 48px -8px rgba(244, 63, 94, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 247, 237, 0.96);
+  border-color: rgba(234, 88, 12, 0.2);
+  box-shadow: 0 20px 48px -8px rgba(234, 88, 12, 0.15), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
 }
-body.theme-sore .menu-dropdown-label { color: #e11d48; }
-body.theme-sore .menu-item { color: #881337; }
-body.theme-sore .menu-item:hover { background: rgba(244, 63, 94, 0.06); }
-body.theme-sore .menu-item-pw .menu-item-icon-wrap { background: rgba(244, 63, 94, 0.1); }
-body.theme-sore .menu-item-pw .menu-item-icon { stroke: #e11d48; }
-body.theme-sore .menu-item-pw:hover { color: #be185d; }
+body.theme-sore .menu-dropdown-label { color: #ea580c; }
+body.theme-sore .menu-item { color: #7c2d12; }
+body.theme-sore .menu-item:hover { background: rgba(234, 88, 12, 0.08); }
+body.theme-sore .menu-item-pw .menu-item-icon-wrap { background: rgba(234, 88, 12, 0.12); }
+body.theme-sore .menu-item-pw .menu-item-icon { stroke: #ea580c; }
+body.theme-sore .menu-item-pw:hover { color: #c2410c; }
 
 /* 4. MALAM (18:30–03:59) — Obsidian Midnight Purple Glass */
 body.theme-malam .btn-menu {
