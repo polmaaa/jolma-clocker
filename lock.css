@@ -842,8 +842,8 @@ input:checked + .slider:before {
 
 .weather-footer {
   position: fixed;
-  bottom: 24px;
-  left: 28px;
+  bottom: 10px;
+  left: 20px;
   z-index: 50;
   display: none;
   opacity: 0;
@@ -1197,8 +1197,8 @@ body.theme-malam .modal-weather-loc { border-top-color: rgba(255, 255, 255, 0.08
   }
 
   .weather-footer {
-    bottom: 16px;
-    left: 18px;
+    bottom: 8px;
+    left: 14px;
   }
 
   .weather-btn {
