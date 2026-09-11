@@ -10,8 +10,8 @@
   --error: #ef4444;
   --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: rgba(255, 255, 255, 0.6);
-  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Space Grotesk', monospace;
+  --font-sans: 'Space Grotesk';
+  --font-mono: 'Space Grotesk';
 }
 
 * {
