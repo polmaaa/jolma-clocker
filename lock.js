@@ -157,7 +157,7 @@ const i18n = {
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
     menuPw: 'Ubah Kata Sandi',
-    menuAbout: 'Tentang Aplikasi',
+    menuAbout: 'Tentang',
     menuLangTitle: 'Bahasa',
     addShortcut: 'Pintasan',
 
@@ -289,7 +289,7 @@ const i18n = {
     pwOldWrong: 'Kata sandi lama salah!',
 
     // About Modal ID
-    aboutModalTitle: 'Tentang Aplikasi',
+    aboutModalTitle: 'Tentang',
     aboutTagline: 'Minimalist Privacy Browser Locker & Smart Dashboard',
     aboutPurposeTitle: '🎯 Tujuan & Fungsi',
     aboutPurposeDesc: 'Jolma CLocker dirancang untuk menjaga privasi browser saat Anda meninggalkan komputer atau bekerja di ruang publik, sekaligus menyajikan dashboard new tab yang minimalis, aesthetic, dan produktif.',
@@ -306,6 +306,8 @@ const i18n = {
     aboutF5Desc: 'Menampilkan kutipan motivasi yang berganti dan dapat diacak sewaktu-waktu.',
     aboutF6Title: 'Tema Dinamis 4 Waktu',
     aboutF6Desc: 'Penyesuaian estetika otomatis mengikuti waktu: Pagi, Siang, Sore, dan Malam.',
+    aboutContactTitle: '📬 Bantuan & Request Pengembangan',
+    aboutContactDesc: 'Punya saran fitur, pertanyaan, atau ingin request pengembangan khusus? Hubungi saya melalui:',
     aboutSupportTitle: '☕ Dukung Pengembang',
     aboutSupportDesc: 'Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.',
     aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>'
@@ -320,7 +322,7 @@ const i18n = {
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
     menuPw: 'Change Password',
-    menuAbout: 'About Application',
+    menuAbout: 'About',
     menuLangTitle: 'Language',
     addShortcut: 'Shortcut',
 
@@ -452,7 +454,7 @@ const i18n = {
     pwOldWrong: 'Incorrect current password!',
 
     // About Modal EN
-    aboutModalTitle: 'About Application',
+    aboutModalTitle: 'About',
     aboutTagline: 'Minimalist Privacy Browser Locker & Smart Dashboard',
     aboutPurposeTitle: '🎯 Purpose & Function',
     aboutPurposeDesc: 'Jolma CLocker is designed to protect your browser privacy when stepping away from your computer or working in public spaces, while delivering a sleek, aesthetic, and productive new tab dashboard.',
@@ -469,6 +471,8 @@ const i18n = {
     aboutF5Desc: 'Displays motivational quotes updated daily and shuffleable anytime.',
     aboutF6Title: 'Dynamic 4-Time Theme Engine',
     aboutF6Desc: 'Aesthetic background adapts smoothly to Morning, Afternoon, Evening, and Night.',
+    aboutContactTitle: '📬 Support & Feature Requests',
+    aboutContactDesc: 'Have questions, feature suggestions, or custom development requests? Feel free to reach out:',
     aboutSupportTitle: '☕ Support Developer',
     aboutSupportDesc: 'If you enjoy using this extension, you can support further development via Saweria.',
     aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>'
@@ -566,6 +570,8 @@ function applyTranslations(lang) {
   const aboutF5Desc = document.getElementById('about-f5-desc');
   const aboutF6Title = document.getElementById('about-f6-title');
   const aboutF6Desc = document.getElementById('about-f6-desc');
+  const aboutContactTitle = document.getElementById('about-contact-title');
+  const aboutContactDesc = document.getElementById('about-contact-desc');
   const aboutSupportTitle = document.getElementById('about-support-title');
   const aboutSupportDesc = document.getElementById('about-support-desc');
   const aboutDevBy = document.getElementById('about-dev-by');
@@ -587,6 +593,8 @@ function applyTranslations(lang) {
   if (aboutF5Desc && dict.aboutF5Desc) aboutF5Desc.textContent = dict.aboutF5Desc;
   if (aboutF6Title && dict.aboutF6Title) aboutF6Title.textContent = dict.aboutF6Title;
   if (aboutF6Desc && dict.aboutF6Desc) aboutF6Desc.textContent = dict.aboutF6Desc;
+  if (aboutContactTitle && dict.aboutContactTitle) aboutContactTitle.textContent = dict.aboutContactTitle;
+  if (aboutContactDesc && dict.aboutContactDesc) aboutContactDesc.textContent = dict.aboutContactDesc;
   if (aboutSupportTitle && dict.aboutSupportTitle) aboutSupportTitle.textContent = dict.aboutSupportTitle;
   if (aboutSupportDesc && dict.aboutSupportDesc) aboutSupportDesc.textContent = dict.aboutSupportDesc;
   if (aboutDevBy && dict.aboutDevBy) aboutDevBy.innerHTML = dict.aboutDevBy;
