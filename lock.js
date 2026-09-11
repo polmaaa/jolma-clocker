@@ -204,26 +204,22 @@ const i18n = {
     quotes: [
       { text: "Waktu adalah aset paling berharga. Gunakan dengan bijak.", author: "Polma Sihotang" },
       { text: "Masa depan tergantung pada apa yang kamu lakukan hari ini.", author: "Mahatma Gandhi" },
-      { text: "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
-      { text: "Jangan menunggu kesempatan luar biasa. Raih kesempatan biasa dan buat menjadi luar biasa.", author: "Orison Swett Marden" },
+      { text: "Satu-satunya cara bekerja hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
       { text: "Kesuksesan berawal dari keputusan untuk mencoba.", author: "John F. Kennedy" },
       { text: "Fokus pada proses, hasil terbaik akan mengikuti.", author: "Anonim" },
       { text: "Disiplin adalah jembatan antara tujuan dan pencapaian.", author: "Jim Rohn" },
-      { text: "Hari ini adalah kesempatan untuk membangun hari esok yang kamu inginkan.", author: "Ken Poirot" },
+      { text: "Hari ini adalah kesempatan untuk membangun hari esok yang lebih baik.", author: "Ken Poirot" },
       { text: "Tindakan adalah kunci dasar dari semua kesuksesan.", author: "Pablo Picasso" },
-      { text: "Bermimpilah setinggi langit, jika engkau jatuh, engkau akan jatuh di antara bintang-bintang.", author: "Soekarno" },
-      { text: "Jangan pernah berhenti belajar, karena hidup tak pernah berhenti mengajarkan.", author: "Anonim" },
-      { text: "Kegagalan adalah kesempatan untuk memulai lagi dengan lebih cerdas.", author: "Henry Ford" },
-      { text: "Kunci menuju kebahagiaan adalah memiliki impian; kunci menuju kesuksesan adalah mewujudkannya.", author: "James Allen" },
+      { text: "Bermimpilah setinggi langit, jatuhlah di antara bintang-bintang.", author: "Soekarno" },
+      { text: "Jangan berhenti belajar, hidup tak pernah berhenti mengajarkan.", author: "Anonim" },
+      { text: "Kegagalan adalah kesempatan untuk memulai lagi lebih cerdas.", author: "Henry Ford" },
       { text: "Kerja keras mengalahkan bakat ketika bakat tidak bekerja keras.", author: "Tim Notke" },
-      { text: "Keberanian bukanlah ketiadaan rasa takut, tetapi kemenangan atas rasa takut itu.", author: "Nelson Mandela" },
       { text: "Hidup yang tidak dipertaruhkan tidak akan pernah dimenangkan.", author: "Sutan Sjahrir" },
       { text: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.", author: "Nelson Mandela" },
-      { text: "Jangan biarkan hari kemarin merenggut terlalu banyak hal hari ini.", author: "Will Rogers" },
       { text: "Sederhana dalam sikap, kaya dalam karya.", author: "Anonim" },
-      { text: "Lakukan apa yang bisa kamu lakukan, dengan apa yang kamu miliki, di mana pun kamu berada.", author: "Theodore Roosevelt" },
-      { text: "Ketekunan adalah kerja keras yang kamu lakukan setelah kamu lelah melakukan kerja keras yang sudah kamu lakukan.", author: "Newt Gingrich" },
-      { text: "Setiap langkah kecil membawamu lebih dekat ke tujuan besarmu.", author: "Anonim" }
+      { text: "Setiap langkah kecil membawamu lebih dekat ke tujuan besarmu.", author: "Anonim" },
+      { text: "Pikiran positif menghasilkan kehidupan yang penuh makna.", author: "Anonim" },
+      { text: "Mulai dari tempatmu berada, gunakan apa yang kamu miliki.", author: "Arthur Ashe" }
     ],
 
     // Quick Links & Folder Modal
@@ -2135,14 +2131,15 @@ async function fetchOnlineQuote(lang = currentLang) {
     }
   }
 
-  // If online fetching succeeded
-  if (rawText) {
+  // If online fetching succeeded and is concise (max 95 characters)
+  const MAX_QUOTE_CHARS = 95;
+  if (rawText && rawText.length <= MAX_QUOTE_CHARS) {
     if (normalizedLang === 'id') {
       const translated = await translateQuoteToIndonesian(rawText);
-      if (translated) {
+      if (translated && translated.length <= MAX_QUOTE_CHARS) {
         return { text: translated, rawEnText: rawText, author: author, source: 'online' };
       } else {
-        // Fallback strictly to Indonesian curated pool if translation fails
+        // Fallback strictly to Indonesian curated pool if translation fails or is too long
         const idList = i18n.id.quotes;
         const picked = idList[Math.floor(Math.random() * idList.length)];
         return { text: picked.text, rawEnText: rawText, author: picked.author, source: 'fallback_id' };

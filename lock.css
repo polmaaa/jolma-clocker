@@ -101,15 +101,16 @@ body {
   justify-content: center;
   width: 100%;
   max-width: 900px;
-  padding: 30px;
+  padding: 10px 20px;
   z-index: 50;
   text-align: center;
   position: relative;
+  margin-top: -36px; /* Menaikkan seluruh elemen di atas quote agar tidak bertumpuk */
 }
 
 /* Dynamic Greeting Styling above Clock */
 .greeting-container {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   user-select: none;
   animation: fadeInGreeting 0.8s ease;
 }
@@ -121,7 +122,7 @@ body {
 
 #greeting-text {
   font-family: var(--font-sans);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 500;
   letter-spacing: -0.3px;
   color: var(--text-muted);
@@ -143,15 +144,15 @@ body {
   transition: color 0.8s ease;
 }
 
-/* Full Screen Clock & Date Sizing (Even Larger) */
+/* Full Screen Clock & Date Sizing */
 .clock-container {
-  margin-bottom: 40px;
+  margin-bottom: 20px; /* Disesuaikan agar search dan dock naik */
   user-select: none;
 }
 
 #clock {
   font-family: var(--font-mono);
-  font-size: 13.5vw; /* Extremely large full-screen clock */
+  font-size: 12.5vw;
   font-weight: 700;
   letter-spacing: -3.5px;
   line-height: 0.95;
@@ -162,9 +163,9 @@ body {
 
 #date {
   color: var(--text-muted);
-  font-size: 26px; /* Much larger date text */
-  font-weight: 600; /* Bold/Semibold weight */
-  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 10px;
   letter-spacing: 0.5px;
   text-transform: capitalize;
   transition: color 0.8s ease;
@@ -1875,12 +1876,12 @@ body.theme-siang .weather-snowflake {
 
 .daily-quote-container {
   position: fixed;
-  bottom: 60px;
+  bottom: 38px;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
-  max-width: 1100px;
-  padding: 0 20px;
+  width: 90%;
+  max-width: 900px;
+  padding: 0 16px;
   text-align: center;
   z-index: 20;
   display: none;
@@ -1902,13 +1903,13 @@ body.theme-siang .weather-snowflake {
 
 .quote-text {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 13.5px;
   font-style: italic;
   font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.45;
   color: var(--text-color);
   opacity: 0.85;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: opacity 0.2s ease, color 0.8s ease;
   max-width: 100%;
