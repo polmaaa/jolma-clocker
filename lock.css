@@ -600,20 +600,40 @@ body.theme-malam .toggle-pill-group {
   line-height: 1.4;
 }
 
-.btn-toggle-pill:hover {
-  color: var(--text-color);
+.btn-toggle-pill[data-state="on"]:hover {
+  color: #10b981;
 }
 
-.btn-toggle-pill.active {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+.btn-toggle-pill[data-state="off"]:hover {
+  color: #ef4444;
 }
 
-body.theme-malam .btn-toggle-pill.active {
-  background: #1e1b4b;
-  color: #c4b5fd;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+/* ON: Hijau */
+.btn-toggle-pill.active[data-state="on"],
+.btn-toggle-pill.active:not([data-state="off"]) {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 1.5px 5px rgba(16, 185, 129, 0.35);
+}
+
+/* OFF: Merah */
+.btn-toggle-pill.active[data-state="off"] {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 1.5px 5px rgba(239, 68, 68, 0.35);
+}
+
+body.theme-malam .btn-toggle-pill.active[data-state="on"],
+body.theme-malam .btn-toggle-pill.active:not([data-state="off"]) {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.45);
+}
+
+body.theme-malam .btn-toggle-pill.active[data-state="off"] {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.45);
 }
 
 /* Ikon kontainer rounded per item */
