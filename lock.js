@@ -39,6 +39,7 @@ const modalWeatherDesc        = document.getElementById('modal-weather-desc');
 const modalWeatherLoc         = document.getElementById('modal-weather-loc');
 const weatherModalFeedback    = document.getElementById('weather-modal-feedback');
 const modalRefreshWeatherBtn  = document.getElementById('modal-refresh-weather-btn');
+const copyrightFooter         = document.getElementById('copyright-footer');
 
 // Modal "Ubah Nama Pengguna" elements
 const usernameModalOverlay   = document.getElementById('username-modal-overlay');
@@ -191,6 +192,7 @@ function updateLockerState(isUnlocked) {
         searchSection.classList.add('active');
         topBar.classList.add('active');
         if (weatherFooter) weatherFooter.classList.add('active');
+        if (copyrightFooter) copyrightFooter.classList.add('active');
         searchInput.focus();
       }, 200);
 
@@ -209,6 +211,7 @@ function updateLockerState(isUnlocked) {
     searchSection.classList.remove('active');
     topBar.classList.remove('active');
     if (weatherFooter) weatherFooter.classList.remove('active');
+    if (copyrightFooter) copyrightFooter.classList.remove('active');
     closeWeatherModal();
 
     setTimeout(() => {
