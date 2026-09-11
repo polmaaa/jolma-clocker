@@ -156,6 +156,7 @@ const i18n = {
     menuShortcutsToggle: 'Pintasan',
     menuQuotesToggle: 'Kutipan',
     menuLock: 'Kunci Layar Sekarang',
+    menuLockTitle: 'Kunci Layar Sekarang (CTRL+L)',
     menuAutolock: 'Auto-Lock Saat Menganggur',
     menuUser: 'Ubah Nama',
     menuWeather: 'Pengaturan Cuaca',
@@ -369,6 +370,7 @@ const i18n = {
     menuShortcutsToggle: 'Shortcuts',
     menuQuotesToggle: 'Quotes',
     menuLock: 'Lock Screen Now',
+    menuLockTitle: 'Lock Screen Now (CTRL+L)',
     menuAutolock: 'Auto-Lock Inactivity Timer',
     menuUser: 'Change Name',
     menuWeather: 'Weather Settings',
@@ -605,6 +607,7 @@ function applyTranslations(lang) {
   if (menuShortcutsToggleLabel) menuShortcutsToggleLabel.textContent = dict.menuShortcutsToggle;
   if (menuQuotesToggleLabel) menuQuotesToggleLabel.textContent = dict.menuQuotesToggle;
   if (menuLockLabel) menuLockLabel.textContent = dict.menuLock;
+  if (menuLockBtn) menuLockBtn.title = dict.menuLockTitle || `${dict.menuLock} (CTRL+L)`;
   if (menuAutolockLabel) menuAutolockLabel.textContent = dict.menuAutolock;
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;

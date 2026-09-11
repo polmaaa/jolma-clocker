@@ -679,9 +679,34 @@ body.theme-malam .btn-toggle-pill.active[data-state="off"] {
 .menu-item-locknow .menu-item-icon {
   stroke: #ef4444;
 }
-.menu-item-locknow:hover {
-  background: rgba(239, 68, 68, 0.05);
+.menu-item-locknow .menu-item-shortcut {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: #dc2626;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 1.5px 6px;
+  border-radius: 6px;
+  margin-left: auto;
+  opacity: 0.85;
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+.menu-item-locknow:hover .menu-item-shortcut {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.4);
+  opacity: 1;
+}
+body.theme-malam .menu-item-locknow .menu-item-shortcut {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+body.theme-malam .menu-item-locknow:hover .menu-item-shortcut {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(239, 68, 68, 0.45);
 }
 .menu-item-locknow.disabled {
   opacity: 0.45;
