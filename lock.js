@@ -40,6 +40,7 @@ const menuPwLabel     = document.getElementById('menu-pw-label');
 
 // Daily Quotes Elements
 const dailyQuoteContainer = document.getElementById('daily-quote-container');
+const quoteBadgeLabel     = document.getElementById('quote-badge-label');
 const quoteTextEl         = document.getElementById('quote-text');
 const quoteAuthorEl       = document.getElementById('quote-author');
 const btnQuoteShuffle     = document.getElementById('btn-quote-shuffle');
@@ -179,6 +180,8 @@ const i18n = {
     unlockedBtn: 'Buka Kunci',
 
     // Quotes ID
+    quoteBadge: 'Kutipan Hari Ini',
+    quoteShuffleTitle: 'Kutipan Lain',
     quotes: [
       { text: "Waktu adalah aset paling berharga. Gunakan dengan bijak.", author: "Polma Sihotang" },
       { text: "Masa depan tergantung pada apa yang kamu lakukan hari ini.", author: "Mahatma Gandhi" },
@@ -321,6 +324,8 @@ const i18n = {
     unlockedBtn: 'Unlock',
 
     // Quotes EN
+    quoteBadge: 'Daily Quote',
+    quoteShuffleTitle: 'Shuffle Quote',
     quotes: [
       { text: "Time is our most valuable asset. Spend it with purpose.", author: "Polma Sihotang" },
       { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
@@ -480,6 +485,8 @@ function applyTranslations(lang) {
   if (autolockDesc) autolockDesc.textContent = dict.autolockDesc;
 
   // Update quote display and quick links with new language
+  if (quoteBadgeLabel && dict.quoteBadge) quoteBadgeLabel.textContent = dict.quoteBadge;
+  if (btnQuoteShuffle && dict.quoteShuffleTitle) btnQuoteShuffle.title = dict.quoteShuffleTitle;
   updateQuoteDisplay();
   if (quickLinksList && quickLinksList.length > 0) {
     renderQuickLinks(quickLinksList);
@@ -680,7 +687,10 @@ function updateLockerState(isUnlocked) {
         topBar.classList.add('active');
         if (weatherFooter) weatherFooter.classList.add('active');
         if (copyrightFooter) copyrightFooter.classList.add('active');
-        if (dailyQuoteContainer) dailyQuoteContainer.style.display = 'block';
+        if (dailyQuoteContainer) {
+          dailyQuoteContainer.classList.add('active');
+          dailyQuoteContainer.style.display = 'flex';
+        }
         if (quickLinksSection) quickLinksSection.style.display = 'flex';
         searchInput.focus();
       }, 200);
@@ -701,7 +711,10 @@ function updateLockerState(isUnlocked) {
     topBar.classList.remove('active');
     if (weatherFooter) weatherFooter.classList.remove('active');
     if (copyrightFooter) copyrightFooter.classList.remove('active');
-    if (dailyQuoteContainer) dailyQuoteContainer.style.display = 'none';
+    if (dailyQuoteContainer) {
+      dailyQuoteContainer.classList.remove('active');
+      dailyQuoteContainer.style.display = 'none';
+    }
     if (quickLinksSection) quickLinksSection.style.display = 'none';
     closeWeatherModal();
     closeUsernameModal();
