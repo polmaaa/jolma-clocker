@@ -128,7 +128,7 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+        font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
 
       .fab-wrapper {
