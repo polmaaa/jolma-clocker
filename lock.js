@@ -2068,7 +2068,7 @@ async function loadWeather(forceRefresh = false) {
 let activeQuote = null;
 let isFetchingQuote = false;
 let quoteRotationTimer = null;
-const QUOTE_AUTO_ROTATE_INTERVAL_MS = 30000; // Auto-rotate every 30 seconds
+const QUOTE_AUTO_ROTATE_INTERVAL_MS = 8000; // Auto-rotate every 8 seconds
 
 // Translates English text to Indonesian via Google Translate API
 async function translateQuoteToIndonesian(text) {
