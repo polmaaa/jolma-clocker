@@ -460,8 +460,12 @@ body {
 /* Divider */
 .menu-divider {
   height: 1px;
-  background: rgba(0, 0, 0, 0.05);
-  margin: 3px 8px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 4px 6px;
+}
+
+body.theme-malam .menu-divider {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Item Menu */
