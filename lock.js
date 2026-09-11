@@ -1131,7 +1131,7 @@ function getWeatherDetails(code, isDay = 1) {
 
 function updateWeatherUI(cache) {
   if (!cache) return;
-  const dict = i18n[currentLang] || i18n.en;
+  const dict = i18n[currentLang] || i18n.id;
   let condition = cache.condition;
   let icon = cache.icon;
 
@@ -1141,19 +1141,16 @@ function updateWeatherUI(cache) {
     icon = details.icon;
   }
 
-  const isGps = cache.source === 'GPS Presisi' || cache.source === 'Precise GPS';
-  const sourceLabel = isGps 
+  const sourceLabel = cache.source === 'GPS Presisi' 
     ? (currentLang === 'en' ? 'Precise GPS' : 'GPS Presisi') 
-    : (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP');
+    : (cache.source === 'Deteksi IP' ? (currentLang === 'en' ? 'IP Detection' : 'Deteksi IP') : (cache.source || 'IP'));
 
   const cityLabel = cache.city || dict.weatherDefaultCity;
-  const locationFormatted = `📍 ${cityLabel} (${sourceLabel})`;
 
-  if (weatherBtn) weatherBtn.title = dict.menuWeather;
   if (weatherIcon) weatherIcon.textContent = icon || '🌤️';
   if (weatherTemp) weatherTemp.textContent = cache.temp || '--°C';
   if (weatherCondition) weatherCondition.textContent = condition || (currentLang === 'en' ? 'Clear' : 'Cerah');
-  if (weatherCity) weatherCity.textContent = locationFormatted;
+  if (weatherCity) weatherCity.textContent = cityLabel;
 
   if (modalWeatherIcon) modalWeatherIcon.textContent = icon || '🌤️';
   if (modalWeatherTemp) modalWeatherTemp.textContent = cache.temp || '--°C';
