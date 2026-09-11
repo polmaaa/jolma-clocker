@@ -24,7 +24,6 @@ const menuWeatherBtn  = document.getElementById('menu-weather-btn');
 const menuChangePwBtn = document.getElementById('menu-changepw-btn');
 const btnLangId       = document.getElementById('btn-lang-id');
 const btnLangEn       = document.getElementById('btn-lang-en');
-const menuLangTitle   = document.getElementById('menu-lang-title');
 const menuHeaderLabel = document.getElementById('menu-header-label');
 const menuLockLabel   = document.getElementById('menu-lock-label');
 const menuUserLabel   = document.getElementById('menu-user-label');
@@ -79,7 +78,7 @@ const updateToastClose  = document.getElementById('update-toast-close');
 // INTERNATIONALIZATION (i18n) DICTIONARY
 // ============================================================
 
-let currentLang = 'id';
+let currentLang = 'en';
 
 const i18n = {
   id: {
@@ -267,7 +266,7 @@ const i18n = {
 };
 
 function applyTranslations(lang) {
-  currentLang = (lang === 'en') ? 'en' : 'id';
+  currentLang = (lang === 'id') ? 'id' : 'en';
   const dict = i18n[currentLang];
 
   // Update Language switcher buttons state
@@ -280,7 +279,6 @@ function applyTranslations(lang) {
   if (menuUserLabel) menuUserLabel.textContent = dict.menuUser;
   if (menuWeatherLabel) menuWeatherLabel.textContent = dict.menuWeather;
   if (menuPwLabel) menuPwLabel.textContent = dict.menuPw;
-  if (menuLangTitle) menuLangTitle.textContent = dict.menuLangTitle;
 
   // Search & Lock Form Placeholders
   if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
@@ -322,7 +320,7 @@ function applyTranslations(lang) {
 }
 
 function setLanguage(lang) {
-  currentLang = (lang === 'en') ? 'en' : 'id';
+  currentLang = (lang === 'id') ? 'id' : 'en';
   chrome.storage.local.set({ language: currentLang }, () => {
     applyTranslations(currentLang);
   });
@@ -430,13 +428,10 @@ let isCurrentlyUnlocked = false;
 
 // Initialize view state on load
 document.addEventListener('DOMContentLoaded', () => {
-  // Load language settings first
+  // Load language settings first (default: 'en')
   chrome.storage.local.get(['language', 'userName'], (data) => {
-    if (data && data.language) {
-      applyTranslations(data.language);
-    } else {
-      applyTranslations('id');
-    }
+    const lang = (data && data.language) || 'en';
+    applyTranslations(lang);
   });
 
   // Start Clock and Date immediately

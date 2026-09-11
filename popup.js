@@ -62,7 +62,7 @@ const refreshIcon          = document.getElementById('refresh-icon');
 // INTERNATIONALIZATION (i18n) DICTIONARY
 // ============================================================
 
-let currentLang = 'id';
+let currentLang = 'en';
 let currentIsUnlocked = false;
 
 const i18n = {
@@ -157,7 +157,7 @@ const i18n = {
 };
 
 function applyTranslations(lang) {
-  currentLang = (lang === 'en') ? 'en' : 'id';
+  currentLang = (lang === 'id') ? 'id' : 'en';
   const dict = i18n[currentLang];
 
   // Buttons state
@@ -212,7 +212,7 @@ function applyTranslations(lang) {
 }
 
 function setLanguage(lang) {
-  currentLang = (lang === 'en') ? 'en' : 'id';
+  currentLang = (lang === 'id') ? 'id' : 'en';
   chrome.storage.local.set({ language: currentLang }, () => {
     applyTranslations(currentLang);
   });

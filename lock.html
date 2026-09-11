@@ -49,7 +49,15 @@
 
       <div id="menu-dropdown" class="menu-dropdown">
         <div class="menu-dropdown-header">
-          <span class="menu-dropdown-label" id="menu-header-label">Pengaturan</span>
+          <span class="menu-dropdown-label" id="menu-header-label">Settings</span>
+          <div class="lang-switch-group">
+            <button type="button" class="btn-lang" id="btn-lang-id" data-lang="id" title="Bahasa Indonesia">
+              <span class="lang-text">ID</span>
+            </button>
+            <button type="button" class="btn-lang active" id="btn-lang-en" data-lang="en" title="English">
+              <span class="lang-text">EN</span>
+            </button>
+          </div>
         </div>
 
         <button id="menu-lock-btn" class="menu-item menu-item-lock">
@@ -59,7 +67,7 @@
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
           </span>
-          <span class="menu-item-label" id="menu-lock-label">Kunci Browser</span>
+          <span class="menu-item-label" id="menu-lock-label">Lock Browser</span>
         </button>
 
         <button id="menu-username-btn" class="menu-item menu-item-user">
@@ -69,7 +77,7 @@
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </span>
-          <span class="menu-item-label" id="menu-user-label">Ubah Nama</span>
+          <span class="menu-item-label" id="menu-user-label">Change Name</span>
         </button>
 
         <button id="menu-weather-btn" class="menu-item menu-item-weather">
@@ -78,23 +86,8 @@
               <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
             </svg>
           </span>
-          <span class="menu-item-label" id="menu-weather-label">Pengaturan Cuaca</span>
+          <span class="menu-item-label" id="menu-weather-label">Weather Settings</span>
         </button>
-
-        <!-- Language Switcher in Menu -->
-        <div class="menu-lang-row">
-          <span class="menu-lang-label" id="menu-lang-title">Bahasa</span>
-          <div class="lang-switch-group">
-            <button type="button" class="btn-lang active" id="btn-lang-id" data-lang="id" title="Bahasa Indonesia">
-              <span class="flag-icon">🇮🇩</span>
-              <span class="lang-text">ID</span>
-            </button>
-            <button type="button" class="btn-lang" id="btn-lang-en" data-lang="en" title="English">
-              <span class="flag-icon">🇬🇧</span>
-              <span class="lang-text">EN</span>
-            </button>
-          </div>
-        </div>
 
         <div class="menu-divider"></div>
 
