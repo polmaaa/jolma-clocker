@@ -311,10 +311,29 @@
       </form>
     </div>
 
-    <!-- Minimalist Quick Links Bar (Unlocked State Only) -->
+    <!-- Minimalist Quick Links Dock (Unlocked State Only) -->
     <div id="quick-links-section" class="quick-links-section">
-      <div id="quick-links-grid" class="quick-links-grid">
-        <!-- Dynamic Quick Link items & Add Shortcut Button rendered via lock.js -->
+      <div id="quick-links-dock" class="quick-links-dock">
+        <div id="quick-links-grid" class="quick-links-grid">
+          <!-- Dynamic Quick Link items & Add Shortcut Button rendered via lock.js -->
+        </div>
+      </div>
+
+      <!-- Floating Dock Folder Popover (macOS Stack Style) -->
+      <div id="dock-folder-popover" class="dock-folder-popover">
+        <div class="dock-popover-header">
+          <div class="dock-popover-title-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="dock-popover-folder-icon">
+              <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+            </svg>
+            <span id="dock-popover-title" class="dock-popover-title">Folder</span>
+          </div>
+          <button type="button" id="dock-popover-close-btn" class="dock-popover-close-btn" title="Tutup">✕</button>
+        </div>
+        <div id="dock-popover-grid" class="dock-popover-grid">
+          <!-- Rendered dynamically -->
+        </div>
+        <div id="dock-popover-arrow" class="dock-popover-arrow"></div>
       </div>
     </div>
   </div>
