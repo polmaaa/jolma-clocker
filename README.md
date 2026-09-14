@@ -52,7 +52,7 @@ Dibuat & dikembangkan oleh: **Polma Sihotang**
 
 ## 🔑 Penggunaan & Pengujian
 
-* **Kata Sandi Default**: `ganteng`
+* **Pengaturan Kata Sandi Pertama Kali**: Saat pertama kali dipasang, modal onboarding akan otomatis muncul untuk membuat kata sandi master Anda (tanpa kata sandi default, 100% aman dan privat).
 * **Shortcut Mengunci Instan**: Tekan **`Ctrl + L`** (Windows) atau **`Cmd + L`** (Mac).
 * **Tombol Cepat**: Klik tombol gembok mengambang di pojok kanan bawah setiap halaman web.
 * **Mengubah Kata Sandi**:

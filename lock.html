@@ -187,6 +187,24 @@
     </div>
   </div>
 
+  <!-- Modal: Buat Kata Sandi Pertama Kali (Wajib diisi saat pertama install) -->
+  <div id="setup-password-modal-overlay" class="modal-overlay modal-overlay-forced">
+    <div class="modal-card modal-card-setup">
+      <div class="modal-header">
+        <h3 class="modal-title" id="setup-password-modal-title">Buat Kata Sandi Pengaman</h3>
+      </div>
+      <p class="modal-setup-desc" id="setup-password-modal-desc">
+        Selamat datang di Jolma CLocker! Silakan buat kata sandi pengaman untuk mengunci dan melindungi privasi browser Anda.
+      </p>
+      <form id="modal-setup-password-form">
+        <input type="password" id="modal-setup-new-password" placeholder="Masukkan kata sandi baru..." required autocomplete="off">
+        <input type="password" id="modal-setup-confirm-password" placeholder="Konfirmasi kata sandi baru..." required autocomplete="off">
+        <div id="setup-password-modal-feedback" class="modal-feedback"></div>
+        <button type="submit" class="btn-modal-submit" id="modal-setup-submit">Simpan & Aktifkan</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Modal: Ubah Nama Pengguna -->
   <div id="username-modal-overlay" class="modal-overlay">
     <div class="modal-card">
@@ -343,7 +361,7 @@
           </div>
           <span class="about-app-tagline" id="about-tagline">Minimalist Privacy Browser Locker & Smart Dashboard</span>
           <div class="about-hero-badges">
-            <span class="about-password-badge" id="about-default-pw">🔑 Password Default: <strong>ganteng</strong></span>
+            <span class="about-password-badge" id="about-security-badge">🛡️ 100% Offline & Aman</span>
           </div>
         </div>
 

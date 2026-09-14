@@ -223,7 +223,7 @@ chrome.runtime.onStartup.addListener(() => {
   checkForUpdates(); // Cek update saat browser dibuka
 });
 
-// Perform browser lockdown on installation, set default password, setup alarm
+// Perform browser lockdown on installation, setup alarm
 chrome.runtime.onInstalled.addListener(() => {
   keepScreenAwake(); // Cegah sleep sejak ekstensi pertama kali dimuat
 
@@ -234,13 +234,8 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   chrome.storage.local.get('password', (data) => {
-    if (!data || !data.password) {
-      chrome.storage.local.set({ password: 'ganteng' }, () => {
-        lockBrowser(false);
-      });
-    } else {
-      lockBrowser(false);
-    }
+    // Jika belum ada password, kunci browser agar modal setup password pertama kali muncul
+    lockBrowser(false);
   });
 });
 
@@ -251,12 +246,34 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
-// Message listener for password check, manual locking, and password updates
+// Message listener for password check, setup, manual locking, and password updates
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'setupPassword') {
+    const newPw = message.newPassword ? String(message.newPassword).trim() : '';
+    if (!newPw) {
+      sendResponse({ success: false, error: 'Password tidak boleh kosong!' });
+      return true;
+    }
+
+    chrome.storage.local.set({ password: newPw }, () => {
+      const storageSession = chrome.storage.session || chrome.storage.local;
+      storageSession.set({ unlocked: true }, () => {
+        chrome.storage.local.set({ unlocked: true });
+        releaseScreenAwake();
+        injectContentScriptIntoAllTabs();
+        sendResponse({ success: true });
+      });
+    });
+    return true;
+  }
+
   if (message.action === 'checkPassword') {
     chrome.storage.local.get('password', (data) => {
-      const currentPassword = (data && data.password) || 'ganteng';
-      if (message.password === currentPassword) {
+      if (!data || !data.password) {
+        sendResponse({ success: false, unconfigured: true });
+        return;
+      }
+      if (message.password === data.password) {
         const storageSession = chrome.storage.session || chrome.storage.local;
         storageSession.set({ unlocked: true }, () => {
           chrome.storage.local.set({ unlocked: true });
@@ -275,8 +292,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.action === 'changePassword') {
     chrome.storage.local.get('password', (data) => {
-      const currentPassword = (data && data.password) || 'ganteng';
-      if (message.oldPassword === currentPassword) {
+      if (!data || !data.password) {
+        // Jika belum ada password, simpan password baru langsung
+        chrome.storage.local.set({ password: message.newPassword }, () => {
+          sendResponse({ success: true, isFirstTime: true });
+        });
+        return;
+      }
+      if (message.oldPassword === data.password) {
         chrome.storage.local.set({ password: message.newPassword }, () => {
           sendResponse({ success: true });
         });
@@ -382,4 +405,29 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     setupIdleLock();
   }
 });
+
+// ============================================================
+// ANTI ALT+TAB & WINDOW FOCUS RECAPTURE DEFENSE
+// Memaksa fokus kembali ke jendela yang terkunci jika pengguna
+// mencoba berpindah jendela/aplikasi saat browser dalam keadaan terkunci
+// ============================================================
+if (chrome.windows && chrome.windows.onFocusChanged) {
+  chrome.windows.onFocusChanged.addListener((windowId) => {
+    const storageSession = chrome.storage.session || chrome.storage.local;
+    storageSession.get('unlocked', (session) => {
+      // Jika browser sedang dalam mode TERKUNCI (unlocked === false)
+      if (session && session.unlocked === false) {
+        if (windowId === chrome.windows.WINDOW_ID_NONE) {
+          // Pengguna mencoba Alt+Tab ke jendela/aplikasi di luar browser
+          chrome.windows.getLastFocused((lastWin) => {
+            if (lastWin && lastWin.id) {
+              chrome.windows.update(lastWin.id, { focused: true, state: 'fullscreen' }).catch(() => {});
+            }
+          });
+        }
+      }
+    });
+  });
+}
+
 

@@ -127,6 +127,13 @@ const modalNewPw        = document.getElementById('modal-new-password');
 const modalConfirmPw    = document.getElementById('modal-confirm-password');
 const modalFeedback     = document.getElementById('modal-feedback');
 
+// Modal "Buat Kata Sandi Pengaman" (First-time Onboarding) elements
+const setupPasswordModalOverlay   = document.getElementById('setup-password-modal-overlay');
+const modalSetupPasswordForm      = document.getElementById('modal-setup-password-form');
+const modalSetupNewPassword       = document.getElementById('modal-setup-new-password');
+const modalSetupConfirmPassword   = document.getElementById('modal-setup-confirm-password');
+const setupPasswordModalFeedback  = document.getElementById('setup-password-modal-feedback');
+
 // Modal "Tentang Aplikasi" (About) elements
 const aboutModalOverlay  = document.getElementById('about-modal-overlay');
 const aboutModalCloseBtn = document.getElementById('about-modal-close-btn');
@@ -351,8 +358,18 @@ const i18n = {
     aboutSupportDesc: 'Jika Anda menyukai ekstensi ini, Anda dapat mendukung pengembangannya via Saweria.',
     aboutSaweriaTitle: 'Dukung via Saweria',
     aboutDevBy: 'Dibuat dengan ❤️ oleh <strong>Polma Sihotang</strong>',
-    aboutDefaultPw: '🔑 Password Default: <strong>ganteng</strong>',
+    aboutSecurityBadge: '🛡️ 100% Offline & Aman',
     aboutCopyright: '© 2026 Jolma CLocker • Semua Hak Dilindungi',
+
+    // Setup Master Password Modal ID
+    setupModalTitle: 'Buat Kata Sandi Pengaman',
+    setupModalDesc: 'Selamat datang di Jolma CLocker! Silakan buat kata sandi pengaman untuk mengunci dan melindungi privasi browser Anda.',
+    setupNewPwPlaceholder: 'Masukkan kata sandi baru...',
+    setupConfirmPwPlaceholder: 'Konfirmasi kata sandi baru...',
+    setupSubmitBtn: 'Simpan & Aktifkan',
+    setupSuccess: 'Kata sandi berhasil dibuat! Mengaktifkan Jolma CLocker...',
+    setupMismatch: 'Konfirmasi kata sandi tidak cocok!',
+    setupEmpty: 'Kata sandi tidak boleh kosong!',
 
     // Footer
     copyrightText: '© 2026 Jolma CLocker v0.2.2 • oleh Polma Sihotang',
@@ -564,8 +581,18 @@ const i18n = {
     aboutSupportDesc: 'If you enjoy using this extension, you can support further development via Saweria.',
     aboutSaweriaTitle: 'Support via Saweria',
     aboutDevBy: 'Crafted with ❤️ by <strong>Polma Sihotang</strong>',
-    aboutDefaultPw: '🔑 Default Password: <strong>ganteng</strong>',
+    aboutSecurityBadge: '🛡️ 100% Offline & Secure',
     aboutCopyright: '© 2026 Jolma CLocker • All Rights Reserved',
+
+    // Setup Master Password Modal EN
+    setupModalTitle: 'Set Up Master Password',
+    setupModalDesc: 'Welcome to Jolma CLocker! Please create a master password to protect and secure your browser privacy.',
+    setupNewPwPlaceholder: 'Enter new master password...',
+    setupConfirmPwPlaceholder: 'Confirm new password...',
+    setupSubmitBtn: 'Save & Activate',
+    setupSuccess: 'Master password created! Activating Jolma CLocker...',
+    setupMismatch: 'Password confirmation does not match!',
+    setupEmpty: 'Password cannot be empty!',
 
     // Footer
     copyrightText: '© 2026 Jolma CLocker v0.2.2 • by Polma Sihotang',
@@ -745,9 +772,18 @@ function applyTranslations(lang) {
   if (btnAboutSaweria && dict.aboutSaweriaTitle) btnAboutSaweria.title = dict.aboutSaweriaTitle;
   if (aboutDevBy && dict.aboutDevBy) aboutDevBy.innerHTML = dict.aboutDevBy;
   if (aboutCopyright && dict.aboutCopyright) aboutCopyright.textContent = dict.aboutCopyright;
+  const aboutSecurityBadge = document.getElementById('about-security-badge');
+  if (aboutSecurityBadge && dict.aboutSecurityBadge) aboutSecurityBadge.textContent = dict.aboutSecurityBadge;
 
-  const aboutDefaultPwEl = document.getElementById('about-default-pw');
-  if (aboutDefaultPwEl && dict.aboutDefaultPw) aboutDefaultPwEl.innerHTML = dict.aboutDefaultPw;
+  // Setup Master Password Modal
+  const setupPasswordModalTitle = document.getElementById('setup-password-modal-title');
+  const setupPasswordModalDesc = document.getElementById('setup-password-modal-desc');
+  const modalSetupSubmit = document.getElementById('modal-setup-submit');
+  if (setupPasswordModalTitle && dict.setupModalTitle) setupPasswordModalTitle.textContent = dict.setupModalTitle;
+  if (setupPasswordModalDesc && dict.setupModalDesc) setupPasswordModalDesc.textContent = dict.setupModalDesc;
+  if (modalSetupNewPassword && dict.setupNewPwPlaceholder) modalSetupNewPassword.placeholder = dict.setupNewPwPlaceholder;
+  if (modalSetupConfirmPassword && dict.setupConfirmPwPlaceholder) modalSetupConfirmPassword.placeholder = dict.setupConfirmPwPlaceholder;
+  if (modalSetupSubmit && dict.setupSubmitBtn) modalSetupSubmit.textContent = dict.setupSubmitBtn;
 
   // Contact links tooltips in About modal
   const emailItem = document.querySelector('.about-contact-item[href^="mailto:"]');
@@ -959,10 +995,13 @@ function applyQuotesVisibility(show) {
 
 // Initialize view state on load
 document.addEventListener('DOMContentLoaded', () => {
-  // Load language settings first (default: 'en')
-  chrome.storage.local.get(['language', 'userName'], (data) => {
+  // Load language settings and check password configuration first
+  chrome.storage.local.get(['language', 'userName', 'password'], (data) => {
     const lang = (data && data.language) || 'en';
     applyTranslations(lang);
+    if (!data || !data.password) {
+      openSetupPasswordModal();
+    }
   });
 
   // Start Clock and Date immediately
@@ -1073,13 +1112,17 @@ function isKeyProhibited(e) {
   const key = e.key;
   const code = e.code;
   const target = e.target;
-  const isInput = target && target.id === 'password-input';
+  const isSetupOpen = setupPasswordModalOverlay && setupPasswordModalOverlay.classList.contains('open');
+  const isInput = target && (target.id === 'password-input' || (isSetupOpen && (target.id === 'modal-setup-new-password' || target.id === 'modal-setup-confirm-password')));
 
   // 1. Block Escape (mencegah keluar dari Fullscreen)
   if (key === 'Escape' || code === 'Escape') return true;
 
   // 2. Block Tab & Alt+Tab (mencegah berpindah fokus/tab)
-  if (key === 'Tab' || code === 'Tab') return true;
+  if (key === 'Tab' || code === 'Tab') {
+    if (isSetupOpen) return false; // izinkan navigasi form di setup modal
+    return true;
+  }
 
   // 3. Block all Function Keys F1 - F12 (F11 Fullscreen toggle, F12 DevTools, F5 Refresh, etc.)
   if (key && /^F([1-9]|1[0-2])$/.test(key)) return true;
@@ -1101,7 +1144,9 @@ function isKeyProhibited(e) {
 
   // 6. Jika pengguna mengetik karakter normal di luar kotak input, otomatis arahkan fokus ke password
   if (!isInput && key && key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
-    if (passwordInput) {
+    if (isSetupOpen && modalSetupNewPassword) {
+      modalSetupNewPassword.focus();
+    } else if (passwordInput) {
       passwordInput.focus();
     }
   }
@@ -1115,7 +1160,12 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
-    if (passwordInput && document.activeElement !== passwordInput) {
+    const isSetupOpen = setupPasswordModalOverlay && setupPasswordModalOverlay.classList.contains('open');
+    if (isSetupOpen && modalSetupNewPassword) {
+      if (document.activeElement !== modalSetupConfirmPassword) {
+        modalSetupNewPassword.focus();
+      }
+    } else if (passwordInput && document.activeElement !== passwordInput) {
       passwordInput.focus();
     }
     return false;
@@ -1152,9 +1202,14 @@ document.addEventListener('contextmenu', (e) => {
 }, true);
 
 // Keep focus trapped on password input when locked
-document.addEventListener('click', () => {
+document.addEventListener('click', (e) => {
   if (!isCurrentlyUnlocked) {
-    if (passwordInput && document.activeElement !== passwordInput) {
+    const isSetupOpen = setupPasswordModalOverlay && setupPasswordModalOverlay.classList.contains('open');
+    if (isSetupOpen) {
+      if (!e.target.closest('.modal-card-setup') && modalSetupNewPassword) {
+        modalSetupNewPassword.focus();
+      }
+    } else if (passwordInput && document.activeElement !== passwordInput) {
       passwordInput.focus();
     }
   }
@@ -1163,9 +1218,31 @@ document.addEventListener('click', () => {
 window.addEventListener('focus', () => {
   if (!isCurrentlyUnlocked) {
     requestKeyboardLock();
-    if (passwordInput) {
+    const isSetupOpen = setupPasswordModalOverlay && setupPasswordModalOverlay.classList.contains('open');
+    if (isSetupOpen && modalSetupNewPassword) {
+      if (document.activeElement !== modalSetupConfirmPassword) {
+        modalSetupNewPassword.focus();
+      }
+    } else if (passwordInput) {
       passwordInput.focus();
     }
+  }
+});
+
+// Anti-Alt+Tab / Window switch defense: Recapture focus immediately when screen is locked
+window.addEventListener('blur', () => {
+  if (!isCurrentlyUnlocked) {
+    setTimeout(() => {
+      window.focus();
+      const isSetupOpen = setupPasswordModalOverlay && setupPasswordModalOverlay.classList.contains('open');
+      if (isSetupOpen && modalSetupNewPassword) {
+        if (document.activeElement !== modalSetupConfirmPassword) {
+          modalSetupNewPassword.focus();
+        }
+      } else if (passwordInput) {
+        passwordInput.focus();
+      }
+    }, 10);
   }
 });
 
@@ -1215,7 +1292,11 @@ lockForm.addEventListener('submit', (e) => {
 
   // Retrieve current password directly from shared storage
   chrome.storage.local.get('password', (data) => {
-    const currentPassword = (data && data.password) || 'ganteng';
+    if (!data || !data.password) {
+      openSetupPasswordModal();
+      return;
+    }
+    const currentPassword = data.password;
     if (password === currentPassword) {
       // Write the unlock state directly to session and local storage
       const storageSession = chrome.storage.session || chrome.storage.local;
@@ -1618,7 +1699,12 @@ modalChangePwForm.addEventListener('submit', (e) => {
   }
 
   chrome.storage.local.get('password', (data) => {
-    const currentPassword = (data && data.password) || 'ganteng';
+    const currentPassword = data && data.password;
+    if (!currentPassword) {
+      closeModal();
+      openSetupPasswordModal();
+      return;
+    }
     if (oldPw === currentPassword) {
       chrome.storage.local.set({ password: newPw }, () => {
         modalFeedback.className = 'modal-feedback success';
@@ -1635,6 +1721,70 @@ modalChangePwForm.addEventListener('submit', (e) => {
     }
   });
 });
+
+// ---- Setup Master Password Modal Logic (First Time Onboarding) ------------
+
+function openSetupPasswordModal() {
+  applyTranslations(currentLang);
+  if (setupPasswordModalOverlay) {
+    setupPasswordModalOverlay.classList.add('open');
+  }
+  if (modalSetupNewPassword) {
+    modalSetupNewPassword.value = '';
+    modalSetupConfirmPassword.value = '';
+    if (setupPasswordModalFeedback) setupPasswordModalFeedback.textContent = '';
+    setTimeout(() => modalSetupNewPassword.focus(), 150);
+  }
+}
+
+function closeSetupPasswordModal() {
+  if (setupPasswordModalOverlay) {
+    setupPasswordModalOverlay.classList.remove('open');
+  }
+  if (setupPasswordModalFeedback) {
+    setupPasswordModalFeedback.textContent = '';
+  }
+}
+
+if (modalSetupPasswordForm) {
+  modalSetupPasswordForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const dict = i18n[currentLang] || i18n.en;
+    const newPw = (modalSetupNewPassword.value || '').trim();
+    const confirmPw = (modalSetupConfirmPassword.value || '').trim();
+
+    if (!newPw) {
+      setupPasswordModalFeedback.className = 'modal-feedback error';
+      setupPasswordModalFeedback.textContent = dict.setupEmpty;
+      return;
+    }
+
+    if (newPw !== confirmPw) {
+      setupPasswordModalFeedback.className = 'modal-feedback error';
+      setupPasswordModalFeedback.textContent = dict.setupMismatch;
+      return;
+    }
+
+    // Call background action setupPassword
+    chrome.runtime.sendMessage({ action: 'setupPassword', newPassword: newPw }, (response) => {
+      if (response && response.success) {
+        setupPasswordModalFeedback.className = 'modal-feedback success';
+        setupPasswordModalFeedback.textContent = dict.setupSuccess;
+        setTimeout(() => {
+          closeSetupPasswordModal();
+          isCurrentlyUnlocked = true;
+          releaseKeyboardLock();
+          chrome.runtime.sendMessage({ action: 'exitFullscreen' }, () => {
+            window.location.reload();
+          });
+        }, 1200);
+      } else {
+        setupPasswordModalFeedback.className = 'modal-feedback error';
+        setupPasswordModalFeedback.textContent = (response && response.error) || 'Failed to save password';
+      }
+    });
+  });
+}
 
 // Dashboard: Handle search bar
 searchForm.addEventListener('submit', (e) => {

@@ -596,8 +596,8 @@ changePwForm.addEventListener('submit', (e) => {
       changePwFeedback.textContent = dict.pwStorageError;
       return;
     }
-    const currentPassword = (data && data.password) || 'ganteng';
-    if (oldPassword === currentPassword) {
+    const currentPassword = data && data.password;
+    if (!currentPassword || oldPassword === currentPassword) {
       chrome.storage.local.set({ password: newPassword }, () => {
         if (chrome.runtime.lastError) {
           changePwFeedback.className = 'feedback-text error';
@@ -623,7 +623,11 @@ popupLockForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const password = popupPasswordInput.value;
   chrome.storage.local.get('password', (data) => {
-    const currentPassword = (data && data.password) || 'ganteng';
+    const currentPassword = data && data.password;
+    if (!currentPassword) {
+      chrome.tabs.create({ url: chrome.runtime.getURL('lock.html') });
+      return;
+    }
     if (password === currentPassword) {
       const storageSession = chrome.storage.session || chrome.storage.local;
       storageSession.set({ unlocked: true }, () => {

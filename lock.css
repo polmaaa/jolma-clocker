@@ -916,6 +916,22 @@ body.theme-malam .btn-lang.active {
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.modal-card-setup {
+  width: 380px;
+  max-width: 92vw;
+  padding: 30px;
+  border-radius: 22px;
+}
+
+.modal-setup-desc {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: -10px 0 16px;
+  text-align: left;
+}
+
 .modal-overlay.open .modal-card {
   transform: translateY(0) scale(1);
 }
