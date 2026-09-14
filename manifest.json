@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Jolma CLocker - Browser Security Guard",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Polma Sihotang",
   "description": "Pengaman layar browser modern dengan proteksi kata sandi, auto-lock, jam estetik, dan pintasan instan untuk privasi maksimal.",
   "permissions": [

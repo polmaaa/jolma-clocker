@@ -1,6 +1,6 @@
 # Jolma CLocker - Browser Security Guard 🔒
 
-**Jolma CLocker** (*Jolma Chrome Locker* v0.2.1) adalah ekstensi Google Chrome (Manifest V3) modern, elegan, dan estetik yang berfungsi untuk mengamankan seluruh sesi browsing Anda melalui proteksi kata sandi, auto-fullscreen lock, serta shortcut instan.
+**Jolma CLocker** (*Jolma Chrome Locker* v0.2.2) adalah ekstensi Google Chrome (Manifest V3) modern, elegan, dan estetik yang berfungsi untuk mengamankan seluruh sesi browsing Anda melalui proteksi kata sandi, auto-fullscreen lock, serta shortcut instan.
 
 Dibuat & dikembangkan oleh: **Polma Sihotang**
 

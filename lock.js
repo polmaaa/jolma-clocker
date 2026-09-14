@@ -355,7 +355,7 @@ const i18n = {
     aboutCopyright: '© 2026 Jolma CLocker • Semua Hak Dilindungi',
 
     // Footer
-    copyrightText: '© 2026 Jolma CLocker v0.2.1 • oleh Polma Sihotang',
+    copyrightText: '© 2026 Jolma CLocker v0.2.2 • oleh Polma Sihotang',
     copyrightTooltip: 'Klik untuk melihat Tentang Jolma CLocker'
   },
   en: {
@@ -568,7 +568,7 @@ const i18n = {
     aboutCopyright: '© 2026 Jolma CLocker • All Rights Reserved',
 
     // Footer
-    copyrightText: '© 2026 Jolma CLocker v0.2.1 • by Polma Sihotang',
+    copyrightText: '© 2026 Jolma CLocker v0.2.2 • by Polma Sihotang',
     copyrightTooltip: 'Click to view About Jolma CLocker'
   }
 };
